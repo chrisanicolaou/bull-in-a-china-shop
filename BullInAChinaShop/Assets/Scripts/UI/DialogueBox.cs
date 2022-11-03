@@ -19,6 +19,9 @@ namespace CharaGaming.BullInAChinaShop.UI
         [SerializeField]
         private TextMeshProUGUI _dialogueBody;
 
+        [SerializeField]
+        private AudioSource _audioSource;
+
         private string _headerText;
 
         private string _bodyText;
@@ -28,6 +31,8 @@ namespace CharaGaming.BullInAChinaShop.UI
         private bool _isComplete;
 
         private bool _shouldStayOnScreen;
+
+        private bool _cleanOnComplete = true;
 
         private float _textDisplayDuration;
 
@@ -54,17 +59,16 @@ namespace CharaGaming.BullInAChinaShop.UI
                         .OnComplete(() =>
                         {
                             _callback?.Invoke();
-                            Clean();
+                            if (_cleanOnComplete) Clean();
                         });
                 }
                 else
                 {
                     _callback?.Invoke();
-                    Clean();
+                    if (_cleanOnComplete) Clean(true);
                 }
-            }
-                
-            if (_isShowing)
+            } 
+            else if (_isShowing)
             {
                 _currentTween.Kill();
                 _dialogueBody.text = _bodyText;
@@ -85,9 +89,13 @@ namespace CharaGaming.BullInAChinaShop.UI
             return this;
         }
 
-        public DialogueBox OnComplete(Action callback)
+        public DialogueBox OnComplete(params Action[] callbacks)
         {
-            _callback += callback;
+            _callback = null;
+            foreach (var callback in callbacks)
+            {
+                _callback += callback;
+            }
             return this;
         }
 
@@ -97,27 +105,57 @@ namespace CharaGaming.BullInAChinaShop.UI
             return this;
         }
 
+        public DialogueBox AddAudio(AudioClip clip)
+        {
+            _audioSource.clip = clip;
+            return this;
+        }
+
+        public DialogueBox DontCleanOnComplete()
+        {
+            _cleanOnComplete = false;
+            return this;
+        }
+
         public DialogueBox Show()
         {
             _dialogueHeader.text = _headerText;
+            
+            if (_isShowing)
+            {
+                DisplayText();
+                return this;
+            }
             _dialogueBox.transform.DOScale(new Vector3(1f, 1f, 1f), 0.1f)
-                .OnComplete(() =>
-                {
-                    _isShowing = true;
-                    _currentTween = _dialogueBody.DOText(_bodyText, _textDisplayDuration)
-                        .OnComplete(() => _isComplete = true);
-                });
+                .OnComplete(DisplayText);
+            
             return this;
         }
-        
-        private void Clean()
+
+        private void DisplayText()
         {
-            _headerText = default;
-            _bodyText = default;
-            _isShowing = default;
-            _isComplete = default;
-            _shouldStayOnScreen = default;
-            _textDisplayDuration = default;
+            PlayAudio();
+            _isShowing = true;
+            _dialogueBody.text = "";
+            _currentTween = _dialogueBody.DOText(_bodyText, _textDisplayDuration)
+                .OnComplete(() => _isComplete = true);
+        }
+
+        private void PlayAudio()
+        {
+            _audioSource.Play();
+        }
+
+        private void Clean(bool isShowing = false)
+        {
+            if (!isShowing) _dialogueHeader.text = string.Empty;
+            _dialogueBody.text = string.Empty;
+            if (!isShowing) _headerText = string.Empty;
+            _bodyText = string.Empty;
+            _isShowing = isShowing;
+            _isComplete = false;
+            _shouldStayOnScreen = false;
+            _textDisplayDuration = 0f;
             _currentTween = null;
             _callback = null;
         }
