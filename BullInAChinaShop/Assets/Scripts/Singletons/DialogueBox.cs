@@ -6,7 +6,7 @@ using DG.Tweening.Plugins.Options;
 using TMPro;
 using UnityEngine;
 
-namespace CharaGaming.BullInAChinaShop.UI
+namespace CharaGaming.BullInAChinaShop.Singletons
 {
     public class DialogueBox : Singleton<DialogueBox>
     {

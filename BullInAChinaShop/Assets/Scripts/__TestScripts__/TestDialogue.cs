@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.UI;
 using UnityEngine;
 

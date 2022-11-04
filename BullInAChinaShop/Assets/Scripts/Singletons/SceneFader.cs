@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace CharaGaming.BullInAChinaShop.UI.Utils
+namespace CharaGaming.BullInAChinaShop.Singletons
 {
     public class SceneFader : Singleton<SceneFader>
     {
