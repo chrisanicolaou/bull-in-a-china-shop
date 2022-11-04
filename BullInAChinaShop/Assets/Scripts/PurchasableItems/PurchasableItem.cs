@@ -20,7 +20,7 @@ namespace CharaGaming.BullInAChinaShop.PurchasableItems
             UpdatePurchasable(null);
         }
 
-        private void PurchaseItem()
+        protected void PurchaseItem()
         {
             if (Cost > GameManager.Instance.Cash) return;
 
