@@ -16,6 +16,7 @@ namespace CharaGaming.BullInAChinaShop.__TestScripts__
         {
             _cashText.text = GameManager.Instance.Cash.ToString();
             GameEventsManager.Instance.AddListener(GameEvent.ItemPurchased, UpdateCashText);
+            GameEventsManager.Instance.AddListener(GameEvent.ItemSold, UpdateCashText);
         }
 
         private void UpdateCashText(Dictionary<string, object> obj)

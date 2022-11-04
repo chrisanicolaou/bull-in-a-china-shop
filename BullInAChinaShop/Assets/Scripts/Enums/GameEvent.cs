@@ -5,5 +5,6 @@ namespace CharaGaming.BullInAChinaShop.Enums
     public enum GameEvent
     {
         ItemPurchased,
+        ItemSold,
     }
 }

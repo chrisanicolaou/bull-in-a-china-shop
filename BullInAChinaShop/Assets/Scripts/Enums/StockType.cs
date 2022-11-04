@@ -2,6 +2,6 @@
 {
     public enum StockType
     {
-        BasicPlate,
+        BasicPlate = 20,
     }
 }
