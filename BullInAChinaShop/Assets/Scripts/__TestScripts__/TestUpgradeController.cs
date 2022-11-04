@@ -1,5 +1,9 @@
 using System;
+using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +35,8 @@ namespace CharaGaming.BullInAChinaShop.TestScripts
         private Material _cashRegisterMat;
 
         private bool _shouldEnable = true;
+        
+        private TweenChain _pulsingTweens = new TweenChain();
 
         private void Start()
         {
@@ -62,7 +68,8 @@ namespace CharaGaming.BullInAChinaShop.TestScripts
 
         private void DisableRegister()
         {
-            DOTween.KillAll();
+            if (_pulsingTweens != null && _pulsingTweens.IsRunning()) _pulsingTweens.KillAll();
+            
             var btn = _cashRegister.GetComponent<Button>();
             if (btn != null) Destroy(btn);
             _cashRegisterMat.color = Color.black;
@@ -74,18 +81,8 @@ namespace CharaGaming.BullInAChinaShop.TestScripts
             btn.onClick.AddListener(() => _upgradeMenu.SetActive(true));
             btn.navigation = new Navigation();
             btn.transition = Selectable.Transition.None;
-            _cashRegisterMat.DOColor(_minGlowColor, _pulseDuration)
-                .OnComplete(() => PulseGlow(true));
-        }
-
-        private void PulseGlow(bool toMax)
-        {
-            var endColor = toMax ? _maxGlowColor : _minGlowColor;
-            _cashRegisterMat.DOColor(endColor, _pulseDuration)
-                .OnComplete(() =>
-                {
-                    PulseGlow(!toMax);
-                });
+            _pulsingTweens.AddToQueue(_cashRegisterMat.DOColor(_minGlowColor, _pulseDuration)
+                .OnComplete(() => _pulsingTweens = _cashRegisterMat.PulseColor(_minGlowColor, _maxGlowColor, _pulseDuration)));
         }
 
         private void OnDestroy()
