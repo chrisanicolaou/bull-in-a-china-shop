@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 {
     public class DayController : MonoBehaviour
     {
-        public Queue<Shopper> ShopperQueue { get; set; } = new Queue<Shopper>();
+        public List<Shopper> ShopperQueue { get; set; } = new List<Shopper>();
 
         public DayStats DayStats = new DayStats();
         
@@ -61,7 +62,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
             // Trigger animation for door opening
             // On complete:
-            ShopperQueue.Enqueue(shopper);
+            ShopperQueue.Add(shopper);
             shopper.JoinQueue();
         }
         
@@ -88,9 +89,10 @@ namespace CharaGaming.BullInAChinaShop.Day
             return true;
         }
 
-        public void OnShopperExit()
+        public void OnShopperExit(Shopper shopper)
         {
             StopCoroutine(nameof(MoveQueueAlong));
+            ShopperQueue.Remove(shopper);
             StartCoroutine(nameof(MoveQueueAlong));
         }
 
@@ -109,7 +111,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             yield return new WaitForSeconds(2f);
 
-            if ((GameManager.Instance.DayNum - 1) % GameManager.Instance.NumOfDaysBetweenBullEncounters == 0)
+            var bullChecker = GameManager.Instance.DayNum - 1;
+
+            if (bullChecker != 0 && bullChecker % GameManager.Instance.NumOfDaysBetweenBullEncounters == 0)
             {
                 gameObject.AddComponent<BullEncounter>();
                 yield break;
@@ -139,10 +143,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator MoveQueueAlong()
         {
-            var shoppers = ShopperQueue.ToArray();
-            for (var i = 0; i < shoppers.Length; i++)
+            for (var i = 0; i < ShopperQueue.Count; i++)
             {
-                shoppers[i].MoveAlong(i);
+                ShopperQueue[i].MoveAlong(i);
                 yield return new WaitForSeconds(0.5f);
             }
         }

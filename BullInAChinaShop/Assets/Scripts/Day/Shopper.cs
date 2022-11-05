@@ -89,12 +89,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             LeaveInAHuff();
         }
 
-        private void LeaveInAHuff(bool alreadyDequeued = false)
+        private void LeaveInAHuff()
         {
-            if (!alreadyDequeued)
-            {
-                Controller.ShopperQueue = new Queue<Shopper>(Controller.ShopperQueue.Where(s => s != this));
-            }
             Controller.DayStats.UnhappyShoppers.Add(new UnhappyShopper
             {
                 Sprite = GetComponent<Image>().sprite,
@@ -105,7 +101,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void WalkOutShop()
         {
-            Controller.OnShopperExit();
+            Controller.OnShopperExit(this);
             var siblingIndex = _rect.parent.childCount - (2 + Controller.ShopperQueue.Count + 1);
             _rect.SetSiblingIndex(siblingIndex);
             transform.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
@@ -120,14 +116,13 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void PurchaseStock()
         {
-            Controller.ShopperQueue.Dequeue();
             if (Controller.RequestStock(StockType.BasicPlate, 2))
             {
                 LeaveHappily();
                 return;
             }
 
-            LeaveInAHuff(true);
+            LeaveInAHuff();
         }
 
         private void LeaveHappily()

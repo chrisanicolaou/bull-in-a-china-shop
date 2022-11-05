@@ -101,7 +101,13 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
 
             _bullRect.SetSiblingIndex(1);
-            _bullRect.DOAnchorPos(_startPosition, _walkSpeed).SetEase(Ease.Linear);
+            _bullRect.DOAnchorPos(_startPosition, _walkSpeed).SetEase(Ease.Linear)
+                .OnComplete(OnEncounterFinish);
+        }
+
+        private void OnEncounterFinish()
+        {
+            Controller.EnableStartAndUpgradeButtons();
         }
 
         public void WalkToDoor()
