@@ -94,11 +94,11 @@ namespace CharaGaming.BullInAChinaShop.Day
             if (quantity < quantityToRequest) return false;
             
             GameManager.Instance.AvailableStock[stock] -= quantityToRequest;
-            var profit = (int)stock * quantityToRequest;
-            GameManager.Instance.Cash += profit;
+            var earnings = (int)stock * quantityToRequest;
+            GameManager.Instance.Cash += earnings;
             GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, null);
 
-            DayStats.CashEarned += profit;
+            DayStats.CashEarned += earnings;
             DayStats.ShoppersServed++;
             return true;
         }

@@ -16,13 +16,13 @@ namespace CharaGaming.BullInAChinaShop.Singletons
 
         public int DayNum { get; set; } = 1;
 
-        public int MinCustomers { get; set; } = 15;
+        public int MinCustomers { get; set; } = 30;
 
-        public float MinTimeBetweenSpawn { get; set; } = 1.5f;
+        public float MinTimeBetweenSpawn { get; set; } = 0.2f;
 
-        public float ShopperThinkTime { get; set; } = 5f;
+        public float ShopperThinkTime { get; set; } = 2f;
 
-        public float ShopperImpatienceTime { get; set; } = 12f;
+        public float ShopperImpatienceTime { get; set; } = 5f;
         
         public DayStats DayStats { get; set; }
 
