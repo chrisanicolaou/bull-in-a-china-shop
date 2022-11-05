@@ -36,7 +36,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
 
         private float _textDisplayDuration;
 
-        private TweenerCore<string, string, StringOptions> _currentTween;
+        public TweenerCore<string, string, StringOptions> CurrentTween { get; set; }
 
         private Action _callback;
 
@@ -70,7 +70,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             } 
             else if (_isShowing)
             {
-                _currentTween.Kill();
+                CurrentTween.Kill();
                 _dialogueBody.text = _bodyText;
                 _isComplete = true;
             }
@@ -99,9 +99,9 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             return this;
         }
 
-        public DialogueBox StayOnScreen()
+        public DialogueBox StayOnScreen(bool shouldStayOnScreen = true)
         {
-            _shouldStayOnScreen = true;
+            _shouldStayOnScreen = shouldStayOnScreen;
             return this;
         }
 
@@ -137,7 +137,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             PlayAudio();
             _isShowing = true;
             _dialogueBody.text = "";
-            _currentTween = _dialogueBody.DOText(_bodyText, _textDisplayDuration)
+            CurrentTween = _dialogueBody.DOText(_bodyText, _textDisplayDuration)
                 .OnComplete(() => _isComplete = true);
         }
 
@@ -156,7 +156,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             _isComplete = false;
             _shouldStayOnScreen = false;
             _textDisplayDuration = 0f;
-            _currentTween = null;
+            CurrentTween = null;
             _callback = null;
         }
         

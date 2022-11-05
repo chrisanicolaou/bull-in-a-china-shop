@@ -21,6 +21,9 @@ namespace CharaGaming.BullInAChinaShop.Day
         private GameObject _shopperPrefab;
 
         [SerializeField]
+        private GameObject _bullEncounterPrefab;
+
+        [SerializeField]
         private Sprite[] _shopperSprites;
 
         [SerializeField]
@@ -30,6 +33,17 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void Start()
         {
+            if (GameManager.Instance.DayNum == 1)
+            {
+                var bullEncounter = Instantiate(_bullEncounterPrefab).GetComponent<BullEncounter>();
+                bullEncounter.Controller = this;
+                return;
+            }
+            EnableStartAndUpgradeButtons();
+        }
+
+        public void EnableStartAndUpgradeButtons()
+        {
             _startDayButton.onClick.AddListener(() =>
             {
                 StartCoroutine(nameof(StartDay));
@@ -37,43 +51,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             });
             _remainingCustomers = Random.Range(GameManager.Instance.MinCustomers, GameManager.Instance.MinCustomers + 4);
         }
-
-        private IEnumerator StartDay()
-        {
-            while (_remainingCustomers > 0)
-            {
-                LoadShopper();
-                yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + 4f));
-            }
-
-            while (ShopperQueue.Count > 0)
-            {
-                yield return new WaitForSeconds(1f);
-            }
-
-            yield return new WaitForSeconds(2f);
-            EndDay();
-        }
-
-        private void EndDay()
-        {
-            GameManager.Instance.DayStats = DayStats;
-            SceneFader.Instance.FadeToScene("Night");
-        }
-
-        private void LoadShopper()
-        {
-            var shopperObj = Instantiate(_shopperPrefab, _shopperSpawnCanvas, false);
-            var img = shopperObj.GetComponent<Image>();
-            img.sprite = _shopperSprites[Random.Range(0, _shopperSprites.Length)];
-            img.SetNativeSize();
-            
-            var shopper = shopperObj.GetComponent<Shopper>();
-            shopper.Controller = this;
-            _remainingCustomers--;
-            shopper.WalkToDoor();
-        }
-
+        
         public void RequestShopEntry(Shopper shopper)
         {
             if (ShopperQueue.Count > 3)
@@ -85,6 +63,13 @@ namespace CharaGaming.BullInAChinaShop.Day
             // On complete:
             ShopperQueue.Enqueue(shopper);
             shopper.JoinQueue();
+        }
+        
+        public void RequestShopEntry(BullEncounter bullEncounter)
+        {
+            // Trigger animation for door opening
+            // On complete:
+            bullEncounter.PlayBullEncounter(GameManager.Instance.DayNum);
         }
 
         public bool RequestStock(StockType stock, int quantityToRequest)
@@ -107,6 +92,49 @@ namespace CharaGaming.BullInAChinaShop.Day
         {
             StopCoroutine(nameof(MoveQueueAlong));
             StartCoroutine(nameof(MoveQueueAlong));
+        }
+
+        private IEnumerator StartDay()
+        {
+            while (_remainingCustomers > 0)
+            {
+                LoadShopper();
+                yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + 4f));
+            }
+
+            while (ShopperQueue.Count > 0)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+
+            yield return new WaitForSeconds(2f);
+
+            if ((GameManager.Instance.DayNum - 1) % GameManager.Instance.NumOfDaysBetweenBullEncounters == 0)
+            {
+                gameObject.AddComponent<BullEncounter>();
+                yield break;
+            }
+            
+            EndDay();
+        }
+
+        public void EndDay()
+        {
+            GameManager.Instance.DayStats = DayStats;
+            SceneFader.Instance.FadeToScene("Night");
+        }
+
+        private void LoadShopper()
+        {
+            var shopperObj = Instantiate(_shopperPrefab, _shopperSpawnCanvas, false);
+            var img = shopperObj.GetComponent<Image>();
+            img.sprite = _shopperSprites[Random.Range(0, _shopperSprites.Length)];
+            img.SetNativeSize();
+            
+            var shopper = shopperObj.GetComponent<Shopper>();
+            shopper.Controller = this;
+            _remainingCustomers--;
+            shopper.WalkToDoor();
         }
 
         private IEnumerator MoveQueueAlong()
