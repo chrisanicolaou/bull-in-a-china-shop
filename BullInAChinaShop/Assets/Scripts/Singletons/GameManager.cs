@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CharaGaming.BullInAChinaShop.Day;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Utils;
 
@@ -22,6 +23,8 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         public float ShopperThinkTime { get; set; } = 5f;
 
         public float ShopperImpatienceTime { get; set; } = 12f;
+        
+        public DayStats DayStats { get; set; }
 
     }
 }

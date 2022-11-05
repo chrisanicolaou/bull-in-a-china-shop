@@ -11,6 +11,8 @@ namespace CharaGaming.BullInAChinaShop.Day
     public class DayController : MonoBehaviour
     {
         public Queue<Shopper> ShopperQueue { get; set; } = new Queue<Shopper>();
+
+        public DayStats DayStats = new DayStats();
         
         [SerializeField]
         private Button _startDayButton;
@@ -43,6 +45,20 @@ namespace CharaGaming.BullInAChinaShop.Day
                 LoadShopper();
                 yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + 4f));
             }
+
+            while (ShopperQueue.Count > 0)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+
+            yield return new WaitForSeconds(2f);
+            EndDay();
+        }
+
+        private void EndDay()
+        {
+            GameManager.Instance.DayStats = DayStats;
+            SceneFader.Instance.FadeToScene("Night");
         }
 
         private void LoadShopper()
@@ -68,7 +84,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public bool RequestStock(StockType stock, int quantityToRequest)
         {
-            if (!GameManager.Instance.AvailableStock.TryGetValue(stock, out int quantity)) return false;
+            if (!GameManager.Instance.AvailableStock.TryGetValue(stock, out var quantity)) return false;
 
             if (quantity < quantityToRequest) return false;
             
@@ -76,6 +92,9 @@ namespace CharaGaming.BullInAChinaShop.Day
             var profit = (int)stock * quantityToRequest;
             GameManager.Instance.Cash += profit;
             GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, null);
+
+            DayStats.CashEarned += profit;
+            DayStats.ShoppersServed++;
             return true;
         }
     }

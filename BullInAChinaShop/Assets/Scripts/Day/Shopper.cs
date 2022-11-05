@@ -6,6 +6,7 @@ using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CharaGaming.BullInAChinaShop.Day
 {
@@ -94,7 +95,11 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 Controller.ShopperQueue = new Queue<Shopper>(Controller.ShopperQueue.Where(s => s != this));
             }
-
+            Controller.DayStats.UnhappyShoppers.Add(new UnhappyShopper
+            {
+                Sprite = GetComponent<Image>().sprite,
+                Review = "I had a bad experience! :("
+            });
             WalkOutShop();
         }
 

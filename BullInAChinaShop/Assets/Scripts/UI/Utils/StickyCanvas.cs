@@ -28,6 +28,7 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
             StuckCanvas.renderMode = RenderMode.ScreenSpaceCamera;
             StuckCanvas.worldCamera = Camera.main;
             SceneManager.activeSceneChanged += ResetCanvasCamera;
+            DontDestroyOnLoad(StuckCanvas);
         }
 
         private void ResetCanvasCamera(Scene previous, Scene next)
