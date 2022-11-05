@@ -12,6 +12,11 @@ namespace CharaGaming.BullInAChinaShop.Day
     public class Shopper : MonoBehaviour
     {
         public DayController Controller { get; set; }
+        
+        public bool IsLeaving { get; set; }
+
+        [SerializeField]
+        private GameObject _thoughtBubble;
 
         [SerializeField]
         [Range(0.1f, 1f)]
@@ -33,6 +38,8 @@ namespace CharaGaming.BullInAChinaShop.Day
         private float _queuePositionXOffset;
 
         private RectTransform _rect;
+
+        private bool _isServed;
 
         private void Awake()
         {
@@ -91,6 +98,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void LeaveInAHuff()
         {
+            IsLeaving = true;
             Controller.DayStats.UnhappyShoppers.Add(new UnhappyShopper
             {
                 Sprite = GetComponent<Image>().sprite,
@@ -116,6 +124,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void PurchaseStock()
         {
+            _isServed = true;
+            IsLeaving = true;
             if (Controller.RequestStock(StockType.BasicPlate, 2))
             {
                 LeaveHappily();
@@ -132,8 +142,10 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator Think()
         {
-            // Animation for thinking, yada yada...
+            if (_isServed) yield break;
+            _thoughtBubble.SetActive(true);
             yield return new WaitForSeconds(GameManager.Instance.ShopperThinkTime);
+            _thoughtBubble.SetActive(false);
             PurchaseStock();
         }
     }

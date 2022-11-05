@@ -92,8 +92,9 @@ namespace CharaGaming.BullInAChinaShop.Day
         public void OnShopperExit(Shopper shopper)
         {
             StopCoroutine(nameof(MoveQueueAlong));
+            var index = ShopperQueue.IndexOf(shopper);
             ShopperQueue.Remove(shopper);
-            StartCoroutine(nameof(MoveQueueAlong));
+            StartCoroutine(MoveQueueAlong(index));
         }
 
         private IEnumerator StartDay()
@@ -141,10 +142,12 @@ namespace CharaGaming.BullInAChinaShop.Day
             shopper.WalkToDoor();
         }
 
-        private IEnumerator MoveQueueAlong()
+        private IEnumerator MoveQueueAlong(int index)
         {
-            for (var i = 0; i < ShopperQueue.Count; i++)
+            if (index > ShopperQueue.Count - 1) yield break;
+            for (var i = index; i < ShopperQueue.Count; i++)
             {
+                if (ShopperQueue[i].IsLeaving) continue;
                 ShopperQueue[i].MoveAlong(i);
                 yield return new WaitForSeconds(0.5f);
             }
