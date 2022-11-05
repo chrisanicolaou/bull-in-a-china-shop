@@ -76,10 +76,15 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public void RequestShopEntry(Shopper shopper)
         {
+            if (ShopperQueue.Count > 3)
+            {
+                shopper.OnRejectedEntry();
+                return;
+            }
             // Trigger animation for door opening
             // On complete:
             ShopperQueue.Enqueue(shopper);
-            shopper.WalkToTill(ShopperQueue.Count);
+            shopper.JoinQueue();
         }
 
         public bool RequestStock(StockType stock, int quantityToRequest)
@@ -96,6 +101,22 @@ namespace CharaGaming.BullInAChinaShop.Day
             DayStats.CashEarned += profit;
             DayStats.ShoppersServed++;
             return true;
+        }
+
+        public void OnShopperExit()
+        {
+            StopCoroutine(nameof(MoveQueueAlong));
+            StartCoroutine(nameof(MoveQueueAlong));
+        }
+
+        private IEnumerator MoveQueueAlong()
+        {
+            var shoppers = ShopperQueue.ToArray();
+            for (var i = 0; i < shoppers.Length; i++)
+            {
+                shoppers[i].MoveAlong(i);
+                yield return new WaitForSeconds(0.5f);
+            }
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,42 +49,43 @@ namespace CharaGaming.BullInAChinaShop.Day
                 .OnComplete(() => { Controller.RequestShopEntry(this); });
         }
 
-        public void WalkToTill(int positionInQueue)
+        public void OnRejectedEntry()
         {
-            _rect.SetSiblingIndex(6);
-            var posToWalkTo = new Vector3(_tillPosition.x - _queuePositionXOffset * (positionInQueue - 1), _tillPosition.y, _tillPosition.z);
+            var seq = DOTween.Sequence();
+            seq.AppendInterval(1.5f);
+            seq.Append(_rect.DOAnchorPos(_startPosition, _walkSpeed));
+            seq.OnComplete(() => Destroy(gameObject));
+        }
+
+        public void JoinQueue()
+        {
+            var siblingIndex = _rect.parent.childCount - (2 + Controller.ShopperQueue.Count);
+            _rect.SetSiblingIndex(siblingIndex);
+            var posToWalkTo = new Vector3(_tillPosition.x - _queuePositionXOffset * (Controller.ShopperQueue.Count - 1), _tillPosition.y, _tillPosition.z);
             transform.DOScale(1f, _walkSpeed).SetEase(Ease.Linear);
             _rect.DOAnchorPos(posToWalkTo, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(() => { StartCoroutine(positionInQueue == 1 ? nameof(Think) : nameof(Idle)); });
+                .OnComplete(() => { StartCoroutine(Controller.ShopperQueue.Count == 1 ? nameof(Think) : nameof(Idle)); });
+        }
+
+        public void MoveAlong(int index)
+        {
+            var posToWalkTo = new Vector3(_tillPosition.x - _queuePositionXOffset * (index), _tillPosition.y, _tillPosition.z);
+            _rect.DOAnchorPos(posToWalkTo, _walkSpeed).SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    if (index != 0) return;
+                    StopCoroutine(nameof(Idle));
+                    StartCoroutine(nameof(Think));
+                });
         }
 
         private IEnumerator Idle()
         {
             // Start idle animation
-            var checksToComplete = 12;
-            var waitTime = GameManager.Instance.ShopperImpatienceTime / 12f;
-            var startingQueuePos = Controller.ShopperQueue.ToList().IndexOf(this);
-            var shouldComplete = false;
-            while (checksToComplete > 0)
-            {
-                yield return new WaitForSeconds(waitTime);
-                if (shouldComplete) yield break;
-                checksToComplete--;
-                var currentQueuePos = Controller.ShopperQueue.ToList().IndexOf(this);
-                if (currentQueuePos != startingQueuePos)
-                {
-                    var posToWalkTo = new Vector3(_tillPosition.x - _queuePositionXOffset * (currentQueuePos), _tillPosition.y, _tillPosition.z);
-                    _rect.DOAnchorPos(posToWalkTo, _walkSpeed).SetEase(Ease.Linear)
-                        .OnComplete(() =>
-                        {
-                            if (this == Controller.ShopperQueue.Peek())
-                            {
-                                WalkToTill(1);
-                                shouldComplete = true;
-                            }
-                        });
-                }
-            }
+            var waitTime = GameManager.Instance.ShopperImpatienceTime;
+            
+            yield return new WaitForSeconds(waitTime);
+            
             LeaveInAHuff();
         }
 
@@ -105,6 +105,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void WalkOutShop()
         {
+            Controller.OnShopperExit();
+            var siblingIndex = _rect.parent.childCount - (2 + Controller.ShopperQueue.Count + 1);
+            _rect.SetSiblingIndex(siblingIndex);
             transform.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
 
             var seq = DOTween.Sequence();
