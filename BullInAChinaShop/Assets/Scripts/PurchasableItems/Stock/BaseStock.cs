@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.UI.Tooltip;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,8 @@ namespace CharaGaming.BullInAChinaShop.PurchasableItems.Stock
     public abstract class BaseStock : PurchasableItem, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
         public abstract StockType Type { get; set; }
+        
+        public abstract ToolTipInfo[] ToolTipInfos { get; set; }
 
         private TextMeshProUGUI _costText;
 
@@ -28,6 +31,8 @@ namespace CharaGaming.BullInAChinaShop.PurchasableItems.Stock
         public override void Start()
         {
             _costText = GetComponentInChildren<TextMeshProUGUI>();
+            var loader = GetComponent<ToolTipLoader>() ?? gameObject.AddComponent<ToolTipLoader>();
+            loader.ToolTipInfos = ToolTipInfos;
             base.Start();
         }
 
