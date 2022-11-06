@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CharaGaming.BullInAChinaShop.Day;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Utils;
 using UnityEngine;

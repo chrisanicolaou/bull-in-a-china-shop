@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace CharaGaming.BullInAChinaShop.Day
     public class Shopper : MonoBehaviour
     {
         public DayController Controller { get; set; }
-        
+
         public bool IsLeaving { get; set; }
 
         [SerializeField]
@@ -41,37 +42,55 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private bool _isServed;
 
+        private bool _forceStopIdle;
+
+        private Dictionary<string, object> _defaultEventMessage;
+
+    private Dictionary<string, object> DefaultEventMessage
+    {
+        get { return _defaultEventMessage ??= new Dictionary<string, object> { { "shopper", this } }; }
+    }
+
         private void Awake()
         {
             _rect = GetComponent<RectTransform>();
             _rect.anchoredPosition = _startPosition;
             _rect.localScale = new Vector3(_startScale, _startScale, _startScale);
             _rect.SetSiblingIndex(1);
+            GameEventsManager.Instance.AddListener(GameEvent.ShopperDeniedEntry, OnRejectedEntry);
+            GameEventsManager.Instance.AddListener(GameEvent.DoorOpened, JoinQueue);
         }
 
         public void WalkToDoor()
         {
             transform.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
             _rect.DOAnchorPos(_doorPosition, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(() => { Controller.RequestShopEntry(this); });
+                .OnComplete(() => GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperRequestingEntry, DefaultEventMessage));
         }
 
-        public void OnRejectedEntry()
+        public void OnRejectedEntry(Dictionary<string, object> message)
         {
+            if (!IsTargetedShopper(message)) return;
+            
             var seq = DOTween.Sequence();
             seq.AppendInterval(1.5f);
             seq.Append(_rect.DOAnchorPos(_startPosition, _walkSpeed));
             seq.OnComplete(() => Destroy(gameObject));
         }
 
-        public void JoinQueue()
+        public void JoinQueue(Dictionary<string, object> message)
         {
+            if (!IsTargetedShopper(message)) return;
+            
             var siblingIndex = _rect.parent.childCount - (2 + Controller.ShopperQueue.Count);
             _rect.SetSiblingIndex(siblingIndex);
+            
             var posToWalkTo = new Vector3(_tillPosition.x - _queuePositionXOffset * (Controller.ShopperQueue.Count - 1), _tillPosition.y, _tillPosition.z);
+            
             transform.DOScale(1f, _walkSpeed).SetEase(Ease.Linear);
             _rect.DOAnchorPos(posToWalkTo, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(() => { StartCoroutine(Controller.ShopperQueue.Count == 1 ? nameof(Think) : nameof(Idle)); });
+                .OnComplete(() => GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperQueued, DefaultEventMessage));
+            // .OnComplete(() => { StartCoroutine(Controller.ShopperQueue.Count == 1 ? nameof(Think) : nameof(Idle)); });
         }
 
         public void MoveAlong(int index)
@@ -81,24 +100,25 @@ namespace CharaGaming.BullInAChinaShop.Day
                 .OnComplete(() =>
                 {
                     if (index != 0) return;
-                    StopCoroutine(nameof(Idle));
+                    ForceStopCoroutines();
                     StartCoroutine(nameof(Think));
                 });
         }
 
-        private IEnumerator Idle()
+        public IEnumerator Idle()
         {
             // Start idle animation
             var waitTime = GameManager.Instance.ShopperImpatienceTime;
             
             yield return new WaitForSeconds(waitTime);
-            
-            LeaveInAHuff();
+            if (!IsLeaving && !_forceStopIdle) LeaveInAHuff();
         }
 
         private void LeaveInAHuff()
         {
             IsLeaving = true;
+            _thoughtBubble.SetActive(false);
+            ForceStopCoroutines();
             Controller.DayStats.UnhappyShoppers.Add(new UnhappyShopper
             {
                 Sprite = GetComponent<Image>().sprite,
@@ -109,7 +129,11 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void WalkOutShop()
         {
-            Controller.OnShopperExit(this);
+            IsLeaving = true;
+            _isServed = true;
+            GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperLeaving, DefaultEventMessage);
+            
+            // Controller.OnShopperExit(this);
             var siblingIndex = _rect.parent.childCount - (2 + Controller.ShopperQueue.Count + 1);
             _rect.SetSiblingIndex(siblingIndex);
             transform.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
@@ -119,20 +143,27 @@ namespace CharaGaming.BullInAChinaShop.Day
             seq.Append(_rect.DOAnchorPos(_doorPosition, _walkSpeed)
                 .OnComplete(() => _rect.SetSiblingIndex(1)));
             seq.Append(_rect.DOAnchorPos(_startPosition, _walkSpeed));
-            seq.OnComplete(() => Destroy(gameObject));
+            seq.OnComplete(() =>
+            {
+                DestroyImmediate(gameObject);
+            });
         }
 
         private void PurchaseStock()
         {
-            _isServed = true;
-            IsLeaving = true;
-            if (Controller.RequestStock(StockType.BasicPlate, 2))
+            if (!_isServed && Controller.RequestStock(StockType.BasicPlate, 2))
             {
+                _isServed = true;
                 LeaveHappily();
                 return;
             }
 
-            LeaveInAHuff();
+            if (!_isServed)
+            {
+                LeaveInAHuff();
+            }
+
+            _isServed = true;
         }
 
         private void LeaveHappily()
@@ -140,13 +171,31 @@ namespace CharaGaming.BullInAChinaShop.Day
             WalkOutShop();
         }
 
-        private IEnumerator Think()
+        public IEnumerator Think()
         {
             if (_isServed) yield break;
             _thoughtBubble.SetActive(true);
             yield return new WaitForSeconds(GameManager.Instance.ShopperThinkTime);
             _thoughtBubble.SetActive(false);
             PurchaseStock();
+        }
+
+        public void ForceStopCoroutines()
+        {
+            _forceStopIdle = true;
+            StopAllCoroutines();
+        }
+        
+        private bool IsTargetedShopper(Dictionary<string, object> message)
+        {
+            var shopper = ShopperUtils.GetShopperFromMessage(message);
+            return shopper != null && shopper.Equals(this);
+        }
+
+        private void OnDestroy()
+        {
+            GameEventsManager.Instance.RemoveListener(GameEvent.ShopperDeniedEntry, OnRejectedEntry);
+            GameEventsManager.Instance.RemoveListener(GameEvent.DoorOpened, JoinQueue);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 {
     public class DayController : MonoBehaviour
     {
+        private const int MAX_NUM_OF_SPAWNED_SHOPPERS = 5;
         public List<Shopper> ShopperQueue { get; set; } = new List<Shopper>();
 
         public DayStats DayStats = new DayStats();
@@ -34,6 +36,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void Start()
         {
+            SubscribeListeners();
             if (GameManager.Instance.DayNum == 1)
             {
                 var bullEncounter = Instantiate(_bullEncounterPrefab).GetComponent<BullEncounter>();
@@ -53,17 +56,21 @@ namespace CharaGaming.BullInAChinaShop.Day
             _remainingCustomers = Random.Range(GameManager.Instance.MinCustomers, GameManager.Instance.MinCustomers + 4);
         }
         
-        public void RequestShopEntry(Shopper shopper)
+        public void RequestShopEntry(Dictionary<string, object> message)
         {
+            var shopper = ShopperUtils.GetShopperFromMessage(message);
             if (ShopperQueue.Count > 3)
             {
-                shopper.OnRejectedEntry();
+                // shopper.OnRejectedEntry();
+                GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperDeniedEntry,
+                    new Dictionary<string, object> {{"shopper", shopper}});
                 return;
             }
             // Trigger animation for door opening
             // On complete:
             ShopperQueue.Add(shopper);
-            shopper.JoinQueue();
+            GameEventsManager.Instance.TriggerEvent(GameEvent.DoorOpened,
+                new Dictionary<string, object> {{"shopper", shopper}});
         }
         
         public void RequestShopEntry(BullEncounter bullEncounter)
@@ -83,26 +90,25 @@ namespace CharaGaming.BullInAChinaShop.Day
             var earnings = (int)stock * quantityToRequest;
             GameManager.Instance.Cash += earnings;
             GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, null);
+            GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperServed, null);
 
             DayStats.CashEarned += earnings;
             DayStats.ShoppersServed++;
             return true;
         }
 
-        public void OnShopperExit(Shopper shopper)
-        {
-            StopCoroutine(nameof(MoveQueueAlong));
-            var index = ShopperQueue.IndexOf(shopper);
-            ShopperQueue.Remove(shopper);
-            StartCoroutine(MoveQueueAlong(index));
-        }
-
         private IEnumerator StartDay()
         {
             while (_remainingCustomers > 0)
             {
+                var shoppers = GameObject.FindObjectsOfType<Shopper>();
                 LoadShopper();
-                yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + 4f));
+                // if (shoppers.Length < 5)
+                // {
+                //     LoadShopper();
+                // }
+                yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + 0.2f));
+                // yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + 4f));
             }
 
             while (ShopperQueue.Count > 0)
@@ -142,6 +148,30 @@ namespace CharaGaming.BullInAChinaShop.Day
             shopper.WalkToDoor();
         }
 
+        private void OnShopperQueued(Dictionary<string, object> message)
+        {
+            var shopper = ShopperUtils.GetShopperFromMessage(message);
+            
+            if (ShopperQueue.IndexOf(shopper) == 0)
+            {
+                StartCoroutine(shopper.Think());
+                return;
+            }
+
+            StartCoroutine(shopper.Idle());
+        }
+
+        public void OnShopperExit(Dictionary<string, object> message)
+        {
+            var shopper = ShopperUtils.GetShopperFromMessage(message);
+            var index = ShopperQueue.IndexOf(shopper);
+            if (index == -1) return;
+            
+            ShopperQueue.Remove(shopper);
+            StopCoroutine(nameof(MoveQueueAlong));
+            StartCoroutine(MoveQueueAlong(index));
+        }
+
         private IEnumerator MoveQueueAlong(int index)
         {
             if (index > ShopperQueue.Count - 1) yield break;
@@ -149,8 +179,27 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 if (ShopperQueue[i].IsLeaving) continue;
                 ShopperQueue[i].MoveAlong(i);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.3f);
             }
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeListeners();
+        }
+
+        private void UnsubscribeListeners()
+        {
+            GameEventsManager.Instance.RemoveListener(GameEvent.ShopperRequestingEntry, RequestShopEntry);
+            GameEventsManager.Instance.RemoveListener(GameEvent.ShopperLeaving, OnShopperExit);
+            GameEventsManager.Instance.RemoveListener(GameEvent.ShopperQueued, OnShopperQueued);
+        }
+
+        private void SubscribeListeners()
+        {
+            GameEventsManager.Instance.AddListener(GameEvent.ShopperRequestingEntry, RequestShopEntry);
+            GameEventsManager.Instance.AddListener(GameEvent.ShopperLeaving, OnShopperExit);
+            GameEventsManager.Instance.AddListener(GameEvent.ShopperQueued, OnShopperQueued);
         }
     }
 }

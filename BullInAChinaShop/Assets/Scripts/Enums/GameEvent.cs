@@ -6,5 +6,14 @@ namespace CharaGaming.BullInAChinaShop.Enums
     {
         ItemPurchased,
         ItemSold,
+        ShopperRequestingEntry,
+        ShopperDeniedEntry,
+        ShopperApprovedEntry,
+        DoorOpened,
+        DoorClosed,
+        ShopperQueued,
+        ShopperServed,
+        ShopperLeaving,
+        ShopperThinking,
     }
 }

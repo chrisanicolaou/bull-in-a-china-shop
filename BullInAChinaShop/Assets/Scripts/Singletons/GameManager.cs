@@ -16,19 +16,19 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             { StockType.BasicPlate, 10 }
         };
 
-        public int DayNum { get; set; } = 1;
+        public int DayNum { get; set; } = 2;
 
         [field: SerializeField]
-        public int MinCustomers { get; set; } = 30;
+        public int MinCustomers { get; set; } = 1000;
 
         [field: SerializeField]
-        public float MinTimeBetweenSpawn { get; set; } = 0.2f;
+        public float MinTimeBetweenSpawn { get; set; } = 0.1f;
 
         [field: SerializeField]
-        public float ShopperThinkTime { get; set; } = 2f;
+        public float ShopperThinkTime { get; set; } = 1f;
 
         [field: SerializeField]
-        public float ShopperImpatienceTime { get; set; } = 5f;
+        public float ShopperImpatienceTime { get; set; } = 3f;
 
         [field: SerializeField]
         public int NumOfDaysBetweenBullEncounters { get; set; } = 3;
