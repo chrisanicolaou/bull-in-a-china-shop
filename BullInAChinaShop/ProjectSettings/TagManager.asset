@@ -8,6 +8,13 @@ TagManager:
   - DialogueHeaderText
   - DialogueBox
   - SpawnCanvas
+  - ToolTipHeaderText
+  - ToolTipHeader
+  - ToolTipIcon
+  - ToolTipBody
+  - ToolTip
+  - ToolTipController
+  - StockImage
   layers:
   - Default
   - TransparentFX

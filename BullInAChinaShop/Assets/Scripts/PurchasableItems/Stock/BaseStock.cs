@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.UI.Tooltip;
+using CharaGaming.BullInAChinaShop.UI.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace CharaGaming.BullInAChinaShop.PurchasableItems.Stock
 {
@@ -15,6 +17,7 @@ namespace CharaGaming.BullInAChinaShop.PurchasableItems.Stock
         public abstract StockType Type { get; set; }
         
         public abstract ToolTipInfo[] ToolTipInfos { get; set; }
+        public abstract string SpriteFilePath { get; set; }
 
         private TextMeshProUGUI _costText;
 
@@ -32,6 +35,9 @@ namespace CharaGaming.BullInAChinaShop.PurchasableItems.Stock
         {
             _costText = GetComponentInChildren<TextMeshProUGUI>();
             var loader = GetComponent<ToolTipLoader>() ?? gameObject.AddComponent<ToolTipLoader>();
+            var stockImg = gameObject.FindComponentInChildWithTag<Image>("StockImage");
+            stockImg.sprite = Resources.Load<Sprite>(SpriteFilePath);
+            stockImg.SetNativeSize();
             loader.ToolTipInfos = ToolTipInfos;
             base.Start();
         }

@@ -13,7 +13,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
 
         public Dictionary<StockType, int> AvailableStock { get; set; } = new Dictionary<StockType, int>
         {
-            { StockType.BasicPlate, 10 }
+            { StockType.OldPlate, 10 }
         };
 
         public int DayNum { get; set; } = 2;

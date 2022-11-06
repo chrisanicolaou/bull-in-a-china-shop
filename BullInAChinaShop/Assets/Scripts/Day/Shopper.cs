@@ -151,7 +151,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void PurchaseStock()
         {
-            if (!_isServed && Controller.RequestStock(StockType.BasicPlate, 2))
+            if (!_isServed && Controller.RequestStock(StockType.OldPlate, 2))
             {
                 _isServed = true;
                 LeaveHappily();

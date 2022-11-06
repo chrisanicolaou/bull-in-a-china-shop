@@ -2,6 +2,8 @@
 {
     public enum StockType
     {
-        BasicPlate = 20,
+        OldPlate = 20,
+        ChinaPlate = 40,
+        Jug = 50,
     }
 }
