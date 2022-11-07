@@ -226,6 +226,7 @@ MonoBehaviour:
   _shopperSprites:
   - {fileID: 21300000, guid: 00e015dc480b47545a4fe8b9b5cc9ab7, type: 3}
   _shopperSpawnCanvas: {fileID: 1220248364}
+  _doorAnimator: {fileID: 1234552059}
 --- !u!4 &862326078
 Transform:
   m_ObjectHideFlags: 0
@@ -288,10 +289,10 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.21406251
+    x: 0
     y: 0
-    width: 0.26574075
-    height: 0.26574072
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -739,6 +740,11 @@ PrefabInstance:
       objectReference: {fileID: 909952680}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c2e58b453ed08c44bdbcc57a2c0ceef, type: 3}
+--- !u!95 &1234552059 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2224584847770628060, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+  m_PrefabInstance: {fileID: 944495415468064033}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1266982125
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,6 +977,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8592120161941535029, guid: af53c5ccfab0ae543b13bd2c537a1f9c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -22.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8592120162352657705, guid: af53c5ccfab0ae543b13bd2c537a1f9c, type: 3}
       propertyPath: m_Name
       value: DialogueCanvas

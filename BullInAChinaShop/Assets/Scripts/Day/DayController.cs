@@ -32,7 +32,12 @@ namespace CharaGaming.BullInAChinaShop.Day
         [SerializeField]
         private Transform _shopperSpawnCanvas;
 
+        [SerializeField]
+        private Animator _doorAnimator;
+
         private int _remainingCustomers;
+        
+        private static readonly int ShouldOpen = Animator.StringToHash("shouldOpen");
 
         private void Start()
         {
@@ -66,13 +71,31 @@ namespace CharaGaming.BullInAChinaShop.Day
                     new Dictionary<string, object> {{"shopper", shopper}});
                 return;
             }
+
+            StartCoroutine(OpenDoor(shopper));
+        }
+
+        private IEnumerator OpenDoor(Shopper shopper)
+        {
             // Trigger animation for door opening
+            
+            var isOpen = _doorAnimator.GetBool(ShouldOpen);
+
+            if (!isOpen)
+            {
+                _doorAnimator.SetBool(ShouldOpen, true);
+                
+                yield return new WaitForSeconds(0.6f);
+                
+                yield return new WaitUntil(() => AnimatorIsPlaying() == false);
+            }
+
             // On complete:
             ShopperQueue.Add(shopper);
             GameEventsManager.Instance.TriggerEvent(GameEvent.DoorOpened,
                 new Dictionary<string, object> {{"shopper", shopper}});
         }
-        
+
         public void RequestShopEntry(BullEncounter bullEncounter)
         {
             // Trigger animation for door opening
@@ -150,6 +173,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void OnShopperQueued(Dictionary<string, object> message)
         {
+            _doorAnimator.SetBool(ShouldOpen, false);
+            
             var shopper = ShopperUtils.GetShopperFromMessage(message);
             
             if (ShopperQueue.IndexOf(shopper) == 0)
@@ -181,6 +206,11 @@ namespace CharaGaming.BullInAChinaShop.Day
                 ShopperQueue[i].MoveAlong(i);
                 yield return new WaitForSeconds(0.3f);
             }
+        }
+        
+        private bool AnimatorIsPlaying(){
+            return _doorAnimator.GetCurrentAnimatorStateInfo(0).length >
+                   _doorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         }
 
         private void OnDestroy()
