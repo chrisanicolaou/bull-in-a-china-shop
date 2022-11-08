@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CharaGaming.BullInAChinaShop.Day;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Utils;
+using DG.Tweening;
 using UnityEngine;
 
 namespace CharaGaming.BullInAChinaShop.Singletons
@@ -35,5 +36,10 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         
         public DayStats DayStats { get; set; }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            DOTween.Init();
+        }
     }
 }

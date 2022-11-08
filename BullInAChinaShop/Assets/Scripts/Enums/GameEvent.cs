@@ -9,11 +9,12 @@ namespace CharaGaming.BullInAChinaShop.Enums
         ShopperRequestingEntry,
         ShopperDeniedEntry,
         ShopperApprovedEntry,
+        ShopperRequestingExit,
         DoorOpened,
         DoorClosed,
         ShopperQueued,
         ShopperServed,
-        ShopperLeaving,
+        ShopperLeavingQueue,
         ShopperThinking,
     }
 }

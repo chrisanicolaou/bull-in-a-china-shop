@@ -15,6 +15,7 @@ TagManager:
   - ToolTip
   - ToolTipController
   - StockImage
+  - Shopper
   layers:
   - Default
   - TransparentFX

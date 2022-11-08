@@ -4,198 +4,246 @@ using System.Collections.Generic;
 using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace CharaGaming.BullInAChinaShop.Day
 {
     public class Shopper : MonoBehaviour
     {
         public DayController Controller { get; set; }
-
-        public bool IsLeaving { get; set; }
+        
+        public CharacterMover Mover { get; set; }
 
         [SerializeField]
         private GameObject _thoughtBubble;
 
         [SerializeField]
-        [Range(0.1f, 1f)]
-        private float _startScale;
+        private float _minLoiterTime;
 
         [SerializeField]
-        private float _walkSpeed = 1f;
+        private float _maxLoiterTime;
+        
+        public RectTransform Rect { get; set; }
 
-        [SerializeField]
-        private Vector3 _startPosition;
+        private IEnumerator _impatienceCoroutine;
 
-        [SerializeField]
-        private Vector3 _doorPosition;
+        private IEnumerator _loiterCoroutine;
 
-        [SerializeField]
-        private Vector3 _tillPosition;
+        private IEnumerator _joiningQueueCoroutine;
 
-        [SerializeField]
-        private float _queuePositionXOffset;
-
-        private RectTransform _rect;
-
-        private bool _isServed;
-
-        private bool _forceStopIdle;
-
-        private Dictionary<string, object> _defaultEventMessage;
-
-    private Dictionary<string, object> DefaultEventMessage
-    {
-        get { return _defaultEventMessage ??= new Dictionary<string, object> { { "shopper", this } }; }
-    }
+        private bool _isInShop;
 
         private void Awake()
         {
-            _rect = GetComponent<RectTransform>();
-            _rect.anchoredPosition = _startPosition;
-            _rect.localScale = new Vector3(_startScale, _startScale, _startScale);
-            _rect.SetSiblingIndex(1);
-            GameEventsManager.Instance.AddListener(GameEvent.ShopperDeniedEntry, OnRejectedEntry);
-            GameEventsManager.Instance.AddListener(GameEvent.DoorOpened, JoinQueue);
+            Rect = GetComponent<RectTransform>();
+            Rect.SetSiblingIndex(1);
         }
 
-        public void WalkToDoor()
+        private void Update()
         {
-            transform.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
-            _rect.DOAnchorPos(_doorPosition, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(() => GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperRequestingEntry, DefaultEventMessage));
+            if (!_isInShop) return;
+
+            var siblingIndex = Rect.parent.childCount - 3;
+
+            for (int i = 0; i < Rect.parent.childCount; i++)
+            {
+                var sibling = Rect.parent.GetChild(i);
+                if (!sibling.CompareTag("Shopper")) continue;
+                if (sibling.localScale.x > Rect.localScale.x) siblingIndex--;
+            }
+            
+            Rect.SetSiblingIndex(siblingIndex);
+            
         }
 
-        public void OnRejectedEntry(Dictionary<string, object> message)
+        public IEnumerator ApproachShop()
         {
-            if (!IsTargetedShopper(message)) return;
+            var seq = Mover.MoveTo(Rect, ShopLocation.OutsideDoor);
+
+            yield return seq.WaitForCompletion();
+
+            var canEnter = Controller.RequestShopEntry();
             
-            var seq = DOTween.Sequence();
-            seq.AppendInterval(1.5f);
-            seq.Append(_rect.DOAnchorPos(_startPosition, _walkSpeed));
-            seq.OnComplete(() => Destroy(gameObject));
+            if (!canEnter) yield break;
+
+            yield return new WaitUntil(() => Controller.IsDoorOpen);
+
+            StartCoroutine(EnterShop());
         }
 
-        public void JoinQueue(Dictionary<string, object> message)
+        public IEnumerator EnterShop()
         {
-            if (!IsTargetedShopper(message)) return;
-            
-            var siblingIndex = _rect.parent.childCount - (2 + Controller.ShopperQueue.Count);
-            _rect.SetSiblingIndex(siblingIndex);
-            
-            var posToWalkTo = new Vector3(_tillPosition.x - _queuePositionXOffset * (Controller.ShopperQueue.Count - 1), _tillPosition.y, _tillPosition.z);
-            
-            transform.DOScale(1f, _walkSpeed).SetEase(Ease.Linear);
-            _rect.DOAnchorPos(posToWalkTo, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(() => GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperQueued, DefaultEventMessage));
-            // .OnComplete(() => { StartCoroutine(Controller.ShopperQueue.Count == 1 ? nameof(Think) : nameof(Idle)); });
+            _isInShop = true;
+            var seq = Mover.MoveTo(Rect, ShopLocation.InsideDoor);
+
+            yield return seq.WaitForCompletion();
+            yield return new WaitForSeconds(0.5f);
+
+            StartCoroutine(Controller.CloseDoor());
+
+            var shouldLoiter = Random.Range(1, 5) < 4;
+            if (shouldLoiter)
+            {
+                _loiterCoroutine = Loiter();
+                StartCoroutine(_loiterCoroutine);
+            }
+            else
+            {
+                _joiningQueueCoroutine = WalkToQueue();
+                StartCoroutine(_joiningQueueCoroutine);
+            }
         }
 
-        public void MoveAlong(int index)
+        public IEnumerator Loiter()
         {
-            var posToWalkTo = new Vector3(_tillPosition.x - _queuePositionXOffset * (index), _tillPosition.y, _tillPosition.z);
-            _rect.DOAnchorPos(posToWalkTo, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(() =>
+            var loiterPoints = new List<ShopLocation>() { ShopLocation.LoiterOne, ShopLocation.LoiterTwo, ShopLocation.LoiterThree };
+            var totalLoiterTime = Random.Range(_minLoiterTime, _maxLoiterTime);
+            var numOfPointsToVisit = Random.Range(1, 4);
+            var intervalLoiterTime = totalLoiterTime / numOfPointsToVisit;
+
+            for (int i = 0; i < numOfPointsToVisit; i++)
+            {
+                if (_impatienceCoroutine != null && Controller.CanJoinQueue())
                 {
-                    if (index != 0) return;
-                    ForceStopCoroutines();
-                    StartCoroutine(nameof(Think));
-                });
+                    StopCoroutine(_impatienceCoroutine);
+                    StartCoroutine(WalkToQueue());
+                    yield break;
+                }
+                var randomLoiterPoint = Random.Range(0, loiterPoints.Count);
+                var seq = Mover.MoveTo(Rect, loiterPoints[randomLoiterPoint]);
+                
+                yield return seq.WaitForCompletion();
+                yield return new WaitForSeconds(intervalLoiterTime);
+            }
+
+            if (Controller.CanJoinQueue())
+            {
+                StartCoroutine(WalkToQueue());
+            }
+            else
+            {
+                if (_impatienceCoroutine == null)
+                {
+                    _impatienceCoroutine = ImpatienceTimer();
+                    StartCoroutine(_impatienceCoroutine);
+                }
+                StartCoroutine(_loiterCoroutine);
+            }
         }
 
-        public IEnumerator Idle()
+        public IEnumerator WalkToQueue()
         {
-            // Start idle animation
+            Controller.ShopperQueue.Add(this);
+            var seq = Mover.JoinQueue(Rect);
+
+            yield return seq.WaitForCompletion();
+
+            var positionInQueue = Controller.ShopperQueue.IndexOf(this);
+
+            if (positionInQueue == 0)
+            {
+                StartCoroutine(Think());
+            }
+            else
+            {
+                if (_impatienceCoroutine == null)
+                {
+                    _impatienceCoroutine = ImpatienceTimer();
+                    StartCoroutine(_impatienceCoroutine);
+                }
+                // Play idle in queue animation
+            }
+        }
+
+        public IEnumerator ImpatienceTimer()
+        {
             var waitTime = GameManager.Instance.ShopperImpatienceTime;
-            
+
             yield return new WaitForSeconds(waitTime);
-            if (!IsLeaving && !_forceStopIdle) LeaveInAHuff();
-        }
-
-        private void LeaveInAHuff()
-        {
-            IsLeaving = true;
-            _thoughtBubble.SetActive(false);
-            ForceStopCoroutines();
-            Controller.DayStats.UnhappyShoppers.Add(new UnhappyShopper
-            {
-                Sprite = GetComponent<Image>().sprite,
-                Review = "I had a bad experience! :("
-            });
-            WalkOutShop();
-        }
-
-        private void WalkOutShop()
-        {
-            IsLeaving = true;
-            _isServed = true;
-            GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperLeaving, DefaultEventMessage);
             
-            // Controller.OnShopperExit(this);
-            var siblingIndex = _rect.parent.childCount - (2 + Controller.ShopperQueue.Count + 1);
-            _rect.SetSiblingIndex(siblingIndex);
-            transform.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
+            StopCoroutine(_loiterCoroutine);
 
-            var seq = DOTween.Sequence();
-
-            seq.Append(_rect.DOAnchorPos(_doorPosition, _walkSpeed)
-                .OnComplete(() => _rect.SetSiblingIndex(1)));
-            seq.Append(_rect.DOAnchorPos(_startPosition, _walkSpeed));
-            seq.OnComplete(() =>
-            {
-                DestroyImmediate(gameObject);
-            });
+            StartCoroutine(LeaveInAHuff());
         }
-
-        private void PurchaseStock()
-        {
-            if (!_isServed && Controller.RequestStock(StockType.OldPlate, 2))
-            {
-                _isServed = true;
-                LeaveHappily();
-                return;
-            }
-
-            if (!_isServed)
-            {
-                LeaveInAHuff();
-            }
-
-            _isServed = true;
-        }
-
-        private void LeaveHappily()
-        {
-            WalkOutShop();
-        }
-
+        
         public IEnumerator Think()
         {
-            if (_isServed) yield break;
+            if (_impatienceCoroutine != null)
+            {
+                StopCoroutine(_impatienceCoroutine);
+            }
             _thoughtBubble.SetActive(true);
             yield return new WaitForSeconds(GameManager.Instance.ShopperThinkTime);
             _thoughtBubble.SetActive(false);
             PurchaseStock();
         }
-
-        public void ForceStopCoroutines()
+        
+        private void PurchaseStock()
         {
-            _forceStopIdle = true;
-            StopAllCoroutines();
+            StartCoroutine(Controller.RequestStock(StockType.OldPlate, 2) ? LeaveHappily() : LeaveInAHuff());
+        }
+
+        private IEnumerator LeaveInAHuff()
+        {        
+            Controller.DayStats.UnhappyShoppers.Add(new UnhappyShopper
+            {
+                Sprite = GetComponent<Image>().sprite,
+                Review = "I had a bad experience! :("
+            });
+            if (Controller.ShopperQueue.Contains(this)) Controller.Remove(this);
+            StartCoroutine(ExitShop());
+            yield break;
+        }
+
+        private IEnumerator LeaveHappily()
+        {
+            Controller.Remove(this);
+            
+            StartCoroutine(ExitShop());
+            yield break;
+        }
+
+        private IEnumerator ExitShop()
+        {
+            var seq = Mover.MoveTo(Rect, ShopLocation.InsideDoor);
+            yield return seq.WaitForCompletion();
+
+            StartCoroutine(Controller.OpenDoor());
+
+            yield return new WaitUntil(() => Controller.IsDoorOpen);
+
+
+            _isInShop = false;
+            seq = Mover.MoveTo(Rect, ShopLocation.OutsideDoor);
+
+            yield return seq.WaitForCompletion();
+
+            Rect.SetSiblingIndex(1);
+            seq = Mover.MoveTo(Rect, ShopLocation.OutsideStart);
+            
+            yield return seq.WaitForCompletion();
+            
+            Destroy(gameObject);
         }
         
-        private bool IsTargetedShopper(Dictionary<string, object> message)
+        public void MoveAlong(int index)
         {
-            var shopper = ShopperUtils.GetShopperFromMessage(message);
-            return shopper != null && shopper.Equals(this);
-        }
+            if (_joiningQueueCoroutine != null) StopCoroutine(_joiningQueueCoroutine);
+            
+            var posToWalkTo = Mover.CalculateQueuePosition(index);
 
-        private void OnDestroy()
-        {
-            GameEventsManager.Instance.RemoveListener(GameEvent.ShopperDeniedEntry, OnRejectedEntry);
-            GameEventsManager.Instance.RemoveListener(GameEvent.DoorOpened, JoinQueue);
+            var seq = Mover.MoveTo(Rect, posToWalkTo);
+
+            seq.OnComplete(() =>
+            {
+                if (index != 0) return;
+                if (_impatienceCoroutine != null) StopCoroutine(_impatienceCoroutine);
+                StartCoroutine(Think());
+            });
         }
     }
 }

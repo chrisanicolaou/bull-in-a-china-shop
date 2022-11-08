@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 9134950650035191440}
   m_Layer: 5
   m_Name: Shopper
-  m_TagString: Untagged
+  m_TagString: Shopper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -188,9 +188,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _thoughtBubble: {fileID: 6144911571641086997}
-  _startScale: 0.4
-  _walkSpeed: 1
-  _startPosition: {x: -20.9, y: 40.5, z: 0}
-  _doorPosition: {x: -110.4, y: 40.5, z: 0}
-  _tillPosition: {x: 122.18, y: -22.9, z: 0}
-  _queuePositionXOffset: 110
+  _minLoiterTime: 6
+  _maxLoiterTime: 12

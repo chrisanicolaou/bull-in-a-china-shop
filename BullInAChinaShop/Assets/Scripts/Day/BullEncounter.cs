@@ -112,9 +112,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public void WalkToDoor()
         {
-            _bullRect.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
-            _bullRect.DOAnchorPos(_doorPosition, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(() => { Controller.RequestShopEntry(this); });
+            // _bullRect.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
+            // _bullRect.DOAnchorPos(_doorPosition, _walkSpeed).SetEase(Ease.Linear)
+            //     .OnComplete(() => { Controller.RequestShopEntry(this); });
         }
         
         public TweenerCore<Vector2, Vector2, VectorOptions> WalkBackToDoor()
