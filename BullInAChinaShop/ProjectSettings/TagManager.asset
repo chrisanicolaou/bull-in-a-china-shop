@@ -16,6 +16,8 @@ TagManager:
   - ToolTipController
   - StockImage
   - Shopper
+  - UpgradeBox
+  - Price
   layers:
   - Default
   - TransparentFX

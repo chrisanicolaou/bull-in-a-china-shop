@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using CharaGaming.BullInAChinaShop.Day;
 using CharaGaming.BullInAChinaShop.Enums;
+using CharaGaming.BullInAChinaShop.Stock;
 using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using UnityEngine;
@@ -12,12 +16,10 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         [field: SerializeField]
         public int Cash { get; set; } = 500;
 
-        public Dictionary<StockType, int> AvailableStock { get; set; } = new Dictionary<StockType, int>
-        {
-            { StockType.OldPlate, 10 }
-        };
+        public List<BaseStock> AvailableStock { get; set; }
 
-        public int DayNum { get; set; } = 2;
+        [field: SerializeField]
+        public int DayNum { get; set; } = 1;
 
         [field: SerializeField]
         public int MinCustomers { get; set; } = 20;
@@ -27,6 +29,9 @@ namespace CharaGaming.BullInAChinaShop.Singletons
 
         [field: SerializeField]
         public float ShopperThinkTime { get; set; } = 5f;
+
+        [field: SerializeField]
+        public float ShopperServeTime { get; set; } = 3f;
 
         [field: SerializeField]
         public float ShopperImpatienceTime { get; set; } = 15f;
@@ -40,6 +45,21 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         {
             base.Awake();
             DOTween.Init();
+            PopulateAvailableStock();
+        }
+
+        private void PopulateAvailableStock()
+        {
+            var type = typeof(BaseStock);
+            AvailableStock = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(c =>
+                    c != type &&
+                    c.IsClass &&
+                    type.IsAssignableFrom(c)).Select(t => (BaseStock)Activator.CreateInstance(t)).ToList();
+            AvailableStock.ForEach((s) =>
+            {
+                s.AvailableQuantity += 10;
+            });
         }
     }
 }

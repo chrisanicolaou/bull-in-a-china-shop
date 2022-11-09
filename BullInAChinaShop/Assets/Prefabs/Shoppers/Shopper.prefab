@@ -190,3 +190,8 @@ MonoBehaviour:
   _thoughtBubble: {fileID: 6144911571641086997}
   _minLoiterTime: 6
   _maxLoiterTime: 12
+  _animator: {fileID: 0}
+  _idleSprite: {fileID: 0}
+  _facingForwardSprite: {fileID: 0}
+  _facingAwaySprite: {fileID: 0}
+  _facingSideSprite: {fileID: 0}

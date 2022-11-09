@@ -46,40 +46,38 @@ namespace CharaGaming.BullInAChinaShop.Day
                 return null;
             }
 
-            var duration = CalculateNormalizedDuration(rect.anchoredPosition, shopPos.VectorPos);
+            var (targetPos, targetScale) = shopPos.PosAndScale;
+            RotateCharacter(rect, targetPos);
+
+            var duration = CalculateNormalizedDuration(rect.anchoredPosition, targetPos);
 
             var seq = DOTween.Sequence();
 
-            seq.Insert(0f, rect.DOAnchorPos(shopPos.VectorPos, duration));
-            seq.Insert(0f, rect.DOScale(shopPos.Scale, duration));
+            seq.Insert(0f, rect.DOAnchorPos(targetPos, duration));
+            seq.Insert(0f, rect.DOScale(targetScale, duration));
 
             return seq;
         }
 
         public Sequence JoinQueue(RectTransform rect)
         {
-            var shopPos = _shopPositions.FirstOrDefault(p => p.Location == ShopLocation.DeskTill);
-            
-            if (shopPos == null)
-            {
-                Debug.LogError("Shop position not found!");
-                return null;
-            }
+            var (targetPos, targetScale) = _tillPos.PosAndScale;
+            rect.rotation = Quaternion.Euler(0, 180, 0);
 
-            var queuePos = new Vector2(shopPos.VectorPos.x - _queuePosXOffset * (_dayController.ShopperQueue.Count - 1), shopPos.VectorPos.y);
+            var queuePos = new Vector2(targetPos.x - _queuePosXOffset * (_dayController.ShopperQueue.Count - 1), targetPos.y);
             var duration = CalculateNormalizedDuration(rect.anchoredPosition, queuePos);
 
             var seq = DOTween.Sequence();
 
             seq.Insert(0f, rect.DOAnchorPos(queuePos, duration));
-            seq.Insert(0f, rect.DOScale(shopPos.Scale, duration));
+            seq.Insert(0f, rect.DOScale(targetScale, duration));
 
             return seq;
         }
 
-        public Sequence MoveTo(RectTransform rect, Vector2 location, float scale = 1f)
+        public Sequence MoveTo(RectTransform rect, Vector2 location, float scale = 1f, bool reverseRotate = false)
         {
-
+            RotateCharacter(rect, location, reverseRotate);
             var duration = CalculateNormalizedDuration(rect.anchoredPosition, location);
 
             var seq = DOTween.Sequence();
@@ -90,9 +88,17 @@ namespace CharaGaming.BullInAChinaShop.Day
             return seq;
         }
 
+        private void RotateCharacter(RectTransform rect, Vector2 location, bool reverseRotate = false)
+        {
+            if (Mathf.Abs(location.x - rect.localPosition.x) < 0.0001f) return;
+            var leftRotate = !reverseRotate ? 0 : 180;
+            var rightRotate = !reverseRotate ? 180 : 0;
+            rect.rotation = Quaternion.Euler(0, rect.localPosition.x < location.x ? rightRotate : leftRotate, 0);
+        }
+
         public Vector2 CalculateQueuePosition(int index)
         {
-            return new Vector2(_tillPos.VectorPos.x - _queuePosXOffset * index, _tillPos.VectorPos.y);
+            return new Vector2(_tillPos.PosAndScale.pos.x - _queuePosXOffset * index, _tillPos.PosAndScale.pos.y);
         }
 
         private float CalculateNormalizedDuration(Vector3 currentPos, Vector3 targetPos)
@@ -102,42 +108,5 @@ namespace CharaGaming.BullInAChinaShop.Day
             var travelDist = xDist + yDist;
             return Math.Min(travelDist * _normalizedDurationMultiplier, 2);
         }
-
-        // private int CalculateSiblingIndex(ShopLocation location)
-        // {
-        //     var index = 0;
-        //
-        //     switch (location)
-        //     {
-        //         case ShopLocation.OutsideStart:
-        //             index = 1;
-        //             break;
-        //         case ShopLocation.OutsideDoor:
-        //             index = 1;
-        //             break;
-        //         case ShopLocation.InsideDoor:
-        //             index = _shopCanvas.childCount - (2 + _dayController.ShopperQueue.Count + 1);
-        //             break;
-        //         case ShopLocation.DeskCenter:
-        //             index = _shopCanvas.childCount - 2;
-        //             break;
-        //         case ShopLocation.DeskTill:
-        //             index = _shopCanvas.childCount - (2 + _dayController.ShopperQueue.Count + 1);
-        //             break;
-        //         case ShopLocation.LoiterOne:
-        //             index = _shopCanvas.childCount - (2 + _dayController.ShopperQueue.Count + 1);
-        //             break;
-        //         case ShopLocation.LoiterTwo:
-        //             index = _shopCanvas.childCount - (2 + _dayController.ShopperQueue.Count + 1);
-        //             break;
-        //         case ShopLocation.LoiterThree:
-        //             index = _shopCanvas.childCount - (2 + _dayController.ShopperQueue.Count + 1);
-        //             break;
-        //         default:
-        //             throw new ArgumentOutOfRangeException(nameof(location), location, null);
-        //     }
-        //
-        //     return index;
-        // }
     }
 }

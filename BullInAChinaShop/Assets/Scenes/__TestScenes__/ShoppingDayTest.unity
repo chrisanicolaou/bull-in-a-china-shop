@@ -224,8 +224,8 @@ MonoBehaviour:
   _startDayButton: {fileID: 1282599967}
   _shopperPrefab: {fileID: 9134950650035191444, guid: 3c5be71b20cf91144af5dfa33eb5459d, type: 3}
   _bullEncounterPrefab: {fileID: 3389166664834311676, guid: 41a6792dc1f74d54985f65f85e5c17f8, type: 3}
-  _shopperSprites:
-  - {fileID: 21300000, guid: 00e015dc480b47545a4fe8b9b5cc9ab7, type: 3}
+  _shoppers:
+  - {fileID: 2455142027325837898, guid: dc86305a92f246f4895a42d1d7664ca6, type: 3}
   _shopperSpawnCanvas: {fileID: 1220248364}
   _doorAnimator: {fileID: 1234552059}
   <Mover>k__BackingField: {fileID: 862326079}
@@ -258,26 +258,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shopPositions:
   - <Location>k__BackingField: 0
-    <VectorPos>k__BackingField: {x: -20.9, y: 40.5}
-    <Scale>k__BackingField: 0.4
+    _singleLocation: 1
+    _vectorPos: {x: -20.9, y: 40.5}
+    _scale: 0.4
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
   - <Location>k__BackingField: 1
-    <VectorPos>k__BackingField: {x: -110.4, y: 40.5}
-    <Scale>k__BackingField: 0.4
+    _singleLocation: 1
+    _vectorPos: {x: -110.4, y: 40.5}
+    _scale: 0.4
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
   - <Location>k__BackingField: 2
-    <VectorPos>k__BackingField: {x: -110.4, y: 30}
-    <Scale>k__BackingField: 0.5
+    _singleLocation: 1
+    _vectorPos: {x: -110.4, y: 30}
+    _scale: 0.5
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
   - <Location>k__BackingField: 3
-    <VectorPos>k__BackingField: {x: 121.8, y: 37.9}
-    <Scale>k__BackingField: 0.6
+    _singleLocation: 0
+    _vectorPos: {x: 86, y: 30}
+    _scale: 0.5
+    <MinVectorPos>k__BackingField: {x: -35.4, y: 30}
+    <MaxVectorPos>k__BackingField: {x: 86, y: 30}
+    <MinScale>k__BackingField: 0.5
+    <MaxScale>k__BackingField: 0.5
   - <Location>k__BackingField: 4
-    <VectorPos>k__BackingField: {x: 23.1, y: 40.9}
-    <Scale>k__BackingField: 0.6
+    _singleLocation: 0
+    _vectorPos: {x: 121.8, y: 30}
+    _scale: 0.5
+    <MinVectorPos>k__BackingField: {x: -35.4, y: 30}
+    <MaxVectorPos>k__BackingField: {x: 140, y: 7}
+    <MinScale>k__BackingField: 0.5
+    <MaxScale>k__BackingField: 0.7
   - <Location>k__BackingField: 5
-    <VectorPos>k__BackingField: {x: -155.2, y: 8.1}
-    <Scale>k__BackingField: 0.7
+    _singleLocation: 0
+    _vectorPos: {x: 121.8, y: 30}
+    _scale: 0.5
+    <MinVectorPos>k__BackingField: {x: -152, y: 28.8}
+    <MaxVectorPos>k__BackingField: {x: -170, y: 8.1}
+    <MinScale>k__BackingField: 0.55
+    <MaxScale>k__BackingField: 0.7
   - <Location>k__BackingField: 7
-    <VectorPos>k__BackingField: {x: 122.18, y: -22.9}
-    <Scale>k__BackingField: 1
+    _singleLocation: 1
+    _vectorPos: {x: 122.18, y: -22.9}
+    _scale: 1
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
   _normalizedDurationMultiplier: 0.012
   _yPerspectiveMultiplier: 1.8
   _queuePosXOffset: 110
@@ -425,6 +460,56 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
+--- !u!1 &929815182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 929815184}
+  - component: {fileID: 929815183}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &929815183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929815182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd2c6ec56a1dff348b6f0b45fabd1582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Cash>k__BackingField: 5000
+  <MinCustomers>k__BackingField: 100
+  <MinTimeBetweenSpawn>k__BackingField: 4
+  <ShopperThinkTime>k__BackingField: 10.66
+  <ShopperImpatienceTime>k__BackingField: 7.38
+  <NumOfDaysBetweenBullEncounters>k__BackingField: 3
+--- !u!4 &929815184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929815182}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.7462696, y: -0.08242886, z: -9.896817}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1015777309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1456,6 +1541,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 227479128215535622, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 227479128215535622, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 227479128215535622, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 227479128215535622, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -170
+      objectReference: {fileID: 0}
+    - target: {fileID: 227479128215535622, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 227479128215535622, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 944495416665112073, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
       propertyPath: m_Name
       value: EnvironmentCanvas
@@ -1599,6 +1708,10 @@ PrefabInstance:
     - target: {fileID: 5961177620856337940, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -22.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6648616831005792512, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6.5699997
       objectReference: {fileID: 0}
     - target: {fileID: 7491035508897921148, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
       propertyPath: m_LocalScale.x

@@ -46,7 +46,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startScale: 0.35
   _walkSpeed: 1
-  _startPosition: {x: 137.1, y: 54, z: 0}
-  _doorPosition: {x: -110.6, y: 54, z: 0}
-  _centerOfTillPosition: {x: 0, y: -16.54, z: 0}
+  _startPosition:
+    <Location>k__BackingField: 0
+    _singleLocation: 1
+    _vectorPos: {x: 127.9, y: 53.99997}
+    _scale: 0.35
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
+  _outsideDoorPosition:
+    <Location>k__BackingField: 1
+    _singleLocation: 1
+    _vectorPos: {x: -109.1, y: 53.99997}
+    _scale: 0.35
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
+  _insideDoorPosition:
+    <Location>k__BackingField: 2
+    _singleLocation: 1
+    _vectorPos: {x: -108, y: 47.8}
+    _scale: 0.45
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
+  _centerOfTillPosition:
+    <Location>k__BackingField: 6
+    _singleLocation: 1
+    _vectorPos: {x: -4.5, y: -17.4}
+    _scale: 1
+    <MinVectorPos>k__BackingField: {x: 0, y: 0}
+    <MaxVectorPos>k__BackingField: {x: 0, y: 0}
+    <MinScale>k__BackingField: 0
+    <MaxScale>k__BackingField: 0
   _bullPrefab: {fileID: 643485616154760620, guid: d912218ed1416754a93ea9b5359f8b56, type: 3}

@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.Stock;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -19,15 +21,21 @@ namespace CharaGaming.BullInAChinaShop.Day
         
         [SerializeField]
         private Button _startDayButton;
+        
+        [SerializeField]
+        private Button _purchaseMenuButton;
+        
+        [SerializeField]
+        private GameObject _purchaseMenuLight;
 
         [SerializeField]
-        private GameObject _shopperPrefab;
+        private GameObject _purchaseMenu;
 
         [SerializeField]
         private GameObject _bullEncounterPrefab;
 
         [SerializeField]
-        private Sprite[] _shopperSprites;
+        private GameObject[] _shoppers;
 
         [SerializeField]
         private Transform _shopperSpawnCanvas;
@@ -42,33 +50,59 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public bool IsDoorOpen { get; set; }
 
-        private IEnumerator _doorOpenCoroutine;
+        public IEnumerator OpenDoorCoroutine { get; set; }
         
+        public IEnumerator CloseDoorCoroutine { get; set; }
+
         private static readonly int ShouldOpen = Animator.StringToHash("shouldOpen");
 
         private void Start()
         {
+            OpenDoorCoroutine = OpenDoor();
+            CloseDoorCoroutine = CloseDoor();
+            _remainingCustomers = Random.Range(GameManager.Instance.MinCustomers, GameManager.Instance.MinCustomers + 4);
+            
             if (GameManager.Instance.DayNum == 1)
             {
                 var bullEncounter = Instantiate(_bullEncounterPrefab).GetComponent<BullEncounter>();
                 bullEncounter.Controller = this;
+                bullEncounter.Mover = Mover;
+                bullEncounter.PlayBullEncounter(GameManager.Instance.DayNum);
                 return;
             }
-            EnableStartAndUpgradeButtons();
+            ToggleStartAndUpgradeButtons();
         }
 
-        public void EnableStartAndUpgradeButtons()
+        public void ToggleStartAndUpgradeButtons(bool toggle = true)
         {
-            _startDayButton.onClick.AddListener(() =>
+            if (toggle)
             {
-                StartCoroutine(nameof(StartDay));
-                Destroy(_startDayButton.gameObject);
-            });
-            _remainingCustomers = Random.Range(GameManager.Instance.MinCustomers, GameManager.Instance.MinCustomers + 4);
+                _startDayButton.enabled = true;
+                _startDayButton.onClick.AddListener(() =>
+                {
+                    StartCoroutine(nameof(StartDay));
+                    Destroy(_startDayButton.gameObject);
+                });
+                _purchaseMenuButton.enabled = true;
+                _purchaseMenuButton.onClick.AddListener(() =>
+                {
+                    _purchaseMenu.SetActive(true);
+                });
+                _purchaseMenuLight.SetActive(true);
+            }
+            else
+            {
+                _startDayButton.onClick.RemoveAllListeners();
+                _startDayButton.enabled = false;
+                _purchaseMenuButton.onClick.RemoveAllListeners();
+                _purchaseMenuButton.enabled = false;
+                _purchaseMenuLight.SetActive(false);
+            }
         }
 
         private IEnumerator StartDay()
         {
+            ToggleStartAndUpgradeButtons(false);
             while (_remainingCustomers > 0)
             {
                 var shopper = LoadShopper();
@@ -96,9 +130,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private Shopper LoadShopper()
         {
-            var shopperObj = Instantiate(_shopperPrefab, _shopperSpawnCanvas, false);
+            var shopperObj = Instantiate(_shoppers[Random.Range(0, _shoppers.Length)], _shopperSpawnCanvas, false);
             var img = shopperObj.GetComponent<Image>();
-            img.sprite = _shopperSprites[Random.Range(0, _shopperSprites.Length)];
             img.SetNativeSize();
             
             var shopper = shopperObj.GetComponent<Shopper>();
@@ -114,11 +147,11 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 return false;
             }
-            if (_doorOpenCoroutine != null) StopCoroutine(_doorOpenCoroutine);
+            if (OpenDoorCoroutine != null) StopCoroutine(OpenDoorCoroutine);
             
-            _doorOpenCoroutine = OpenDoor();
+            OpenDoorCoroutine = OpenDoor();
 
-            StartCoroutine(_doorOpenCoroutine);
+            StartCoroutine(OpenDoorCoroutine);
 
             return true;
         }
@@ -175,16 +208,14 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
         }
         
-        public bool RequestStock(StockType stock, int quantityToRequest)
+        public bool RequestStock(BaseStock requestedStock, int quantityToRequest)
         {
-            if (!GameManager.Instance.AvailableStock.TryGetValue(stock, out var quantity)) return false;
-        
-            if (quantity < quantityToRequest) return false;
+            if (requestedStock.AvailableQuantity < quantityToRequest) return false;
             
-            GameManager.Instance.AvailableStock[stock] -= quantityToRequest;
-            var earnings = (int)stock * quantityToRequest;
+            requestedStock.AvailableQuantity -= quantityToRequest;
+            var earnings = requestedStock.SellValue * quantityToRequest;
             GameManager.Instance.Cash += earnings;
-            GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, null);
+            GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, new Dictionary<string, object> { { "stock", requestedStock }, { "quantity", quantityToRequest }});
             GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperServed, null);
         
             DayStats.CashEarned += earnings;

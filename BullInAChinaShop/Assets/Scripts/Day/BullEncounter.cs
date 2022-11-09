@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections;
+using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CharaGaming.BullInAChinaShop.Day
 {
     public class BullEncounter : MonoBehaviour
     {
         public DayController Controller { get; set; }
+        
+        public CharacterMover Mover { get; set; }
 
         [SerializeField]
-        [Range(0.1f, 1f)]
-        private float _startScale;
+        private ShopPosition _startPosition;
+
+        [FormerlySerializedAs("_doorPosition")]
+        [SerializeField]
+        private ShopPosition _outsideDoorPosition;
 
         [SerializeField]
-        private float _walkSpeed = 1f;
-
+        private ShopPosition _insideDoorPosition;
+        
         [SerializeField]
-        private Vector3 _startPosition;
-
-        [SerializeField]
-        private Vector3 _doorPosition;
-
-        [SerializeField]
-        private Vector3 _centerOfTillPosition;
+        private ShopPosition _centerOfTillPosition;
 
         [SerializeField]
         private GameObject _bullPrefab;
@@ -37,19 +39,18 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private GameObject _bull;
         
-        private void Start()
+        private void Awake()
         {
             _shopperSpawnCanvas = GameObject.FindWithTag("SpawnCanvas").GetComponent<Transform>();
-            var _bull = CreateBull();
-            WalkToDoor();
+            _bull = CreateBull();
         }
 
         private GameObject CreateBull()
         {
             var bullObj = Instantiate(_bullPrefab, _shopperSpawnCanvas, false);
             _bullRect = bullObj.GetComponent<RectTransform>();
-            _bullRect.anchoredPosition = _startPosition;
-            _bullRect.localScale = new Vector3(_startScale, _startScale, _startScale);
+            _bullRect.anchoredPosition = _startPosition.PosAndScale.pos;
+            _bullRect.localScale = new Vector3(_startPosition.PosAndScale.scale, _startPosition.PosAndScale.scale, _startPosition.PosAndScale.scale);
             _bullRect.SetSiblingIndex(1);
 
             return bullObj;
@@ -67,9 +68,11 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator FirstBullEncounter()
         {
-            var walkingToDesk = WalkToDesk();
-            
-            yield return new WaitUntil(() => !walkingToDesk.active);
+            yield return StartCoroutine(ApproachShop());
+
+            yield return StartCoroutine(WalkInsideDoor());
+
+            yield return StartCoroutine(WalkToDesk());
             
             PrepareDialogue("Wow - I love what you've done with the place!");
 
@@ -81,14 +84,12 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return new WaitForSeconds(0.3f);
             yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
             
-            PrepareDialogue("Say - you will do well here for sure.");
+            PrepareDialogue("Say - you will do well here for sure.", false);
 
             yield return new WaitForSeconds(0.3f);
             yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
 
-            var walkingBackToDoor = WalkBackToDoor();
-            
-            yield return new WaitUntil(() => !walkingBackToDoor.active);
+            yield return StartCoroutine(WalkInsideDoor());
             
             PrepareDialogue("Oh, that reminds me. Remember that teeny, tiny, <color=\"red\">15000</color> loan?");
 
@@ -100,35 +101,68 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return new WaitForSeconds(0.3f);
             yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
 
-            _bullRect.SetSiblingIndex(1);
-            _bullRect.DOAnchorPos(_startPosition, _walkSpeed).SetEase(Ease.Linear)
-                .OnComplete(OnEncounterFinish);
+            yield return StartCoroutine(ExitDoor());
+            var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
+
+            yield return seq.WaitForCompletion();
+            
+            OnEncounterFinish();
         }
 
         private void OnEncounterFinish()
         {
-            Controller.EnableStartAndUpgradeButtons();
+            Controller.ToggleStartAndUpgradeButtons();
+            Destroy(_bull);
+            Destroy(gameObject);
         }
 
-        public void WalkToDoor()
+        public IEnumerator ApproachShop()
         {
-            // _bullRect.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
-            // _bullRect.DOAnchorPos(_doorPosition, _walkSpeed).SetEase(Ease.Linear)
-            //     .OnComplete(() => { Controller.RequestShopEntry(this); });
+            var seq = Mover.MoveTo(_bullRect, _outsideDoorPosition.PosAndScale.pos, _outsideDoorPosition.PosAndScale.scale, true);
+
+            yield return seq.WaitForCompletion();
+
+            Controller.RequestShopEntry();
+
+            yield return new WaitUntil(() => Controller.IsDoorOpen);
         }
         
-        public TweenerCore<Vector2, Vector2, VectorOptions> WalkBackToDoor()
+        public IEnumerator WalkInsideDoor()
         {
-            _bullRect.DOScale(_startScale, _walkSpeed).SetEase(Ease.Linear);
-            return _bullRect.DOAnchorPos(_doorPosition, _walkSpeed).SetEase(Ease.Linear);
+            var seq = Mover.MoveTo(_bullRect, _insideDoorPosition.PosAndScale.pos, _insideDoorPosition.PosAndScale.scale, true);
+
+            yield return new WaitForSeconds(0.05f);
+
+            _bullRect.SetSiblingIndex(_bullRect.parent.childCount - 3);
+            
+            yield return seq.WaitForCompletion();
+        }
+        
+        public IEnumerator ExitDoor()
+        {
+            Controller.StartCoroutine(Controller.OpenDoorCoroutine);
+            
+            yield return new WaitUntil(() => Controller.IsDoorOpen);
+
+            var seq = Mover.MoveTo(_bullRect, _outsideDoorPosition.PosAndScale.pos, _outsideDoorPosition.PosAndScale.scale, true);
+
+            yield return new WaitForSeconds(0.05f);
+
+            _bullRect.SetSiblingIndex(1);
+            
+            yield return seq.WaitForCompletion();
+
+            Controller.StartCoroutine(Controller.CloseDoorCoroutine);
         }
 
-        public TweenerCore<Vector2, Vector2, VectorOptions> WalkToDesk()
+        public IEnumerator WalkToDesk()
         {
             var siblingIndex = _bullRect.parent.childCount - 3;
             _bullRect.SetSiblingIndex(siblingIndex);
-            _bullRect.DOScale(1f, _walkSpeed).SetEase(Ease.Linear);
-            return _bullRect.DOAnchorPos(_centerOfTillPosition, _walkSpeed).SetEase(Ease.Linear);
+
+            var seq = Mover.MoveTo(_bullRect, _centerOfTillPosition.PosAndScale.pos, _centerOfTillPosition.PosAndScale.scale, true);
+
+            yield return seq.WaitForCompletion();
         }
 
         private void PrepareDialogue(string body, bool stayOnScreen = true)

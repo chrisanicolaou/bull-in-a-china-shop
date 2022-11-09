@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using TMPro;
@@ -13,14 +14,14 @@ namespace CharaGaming.BullInAChinaShop.__TestScripts__
 
         private void Start()
         {
-            _stockText.text = GameManager.Instance.AvailableStock[StockType.OldPlate].ToString();
+            _stockText.text = GameManager.Instance.AvailableStock.FirstOrDefault(s => s.Type == StockType.OldPlate)!.AvailableQuantity.ToString();
             GameEventsManager.Instance.AddListener(GameEvent.ItemPurchased, UpdateStockText);
             GameEventsManager.Instance.AddListener(GameEvent.ItemSold, UpdateStockText);
         }
 
         private void UpdateStockText(Dictionary<string, object> obj)
         {
-            _stockText.text = GameManager.Instance.AvailableStock[StockType.OldPlate].ToString();
+            _stockText.text = GameManager.Instance.AvailableStock.FirstOrDefault(s => s.Type == StockType.OldPlate)!.AvailableQuantity.ToString();
         }
     }
 }
