@@ -53,8 +53,6 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator _joiningQueueCoroutine;
 
-        private IEnumerator _walkToQueueCoroutine;
-
         private bool _isInShop;
         
         private bool _isBeingServed;
@@ -88,7 +86,6 @@ namespace CharaGaming.BullInAChinaShop.Day
             _loiterCoroutine = Loiter();
             _joiningQueueCoroutine = WalkToQueue();
             _impatienceCoroutine = ImpatienceTimer();
-            _walkToQueueCoroutine = WalkToQueue();
             _thinkingCoroutine = Think();
 
             _animatorIds = new[] { IsIdle, IsAnnoyed, IsWalkingForward, IsWalkingAway, IsWalkingSide };
@@ -176,7 +173,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 if (Controller.CanJoinQueue() && _isGrowingImpatient)
                 {
-                    StartCoroutine(_walkToQueueCoroutine);
+                    StartCoroutine(_joiningQueueCoroutine);
                     yield break;
                 }
 
@@ -193,7 +190,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             if (Controller.CanJoinQueue())
             {
-                StartCoroutine(_walkToQueueCoroutine);
+                StartCoroutine(_joiningQueueCoroutine);
             }
             else
             {
@@ -246,6 +243,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public IEnumerator Think()
         {
+            if (_isLeaving) yield break;
             _isBeingServed = true;
             StopCoroutine(_impatienceCoroutine);
             StopCoroutine(_loiterCoroutine);
@@ -308,6 +306,8 @@ namespace CharaGaming.BullInAChinaShop.Day
         private IEnumerator ExitShop()
         {
             _isLeaving = true;
+            StopCoroutine(_thinkingCoroutine);
+            StopCoroutine(_joiningQueueCoroutine);
             Animate(IsWalkingAway);
             
             var seq = Mover.MoveTo(Rect, ShopLocation.InsideDoor);
@@ -318,6 +318,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             _img.SetNativeSize();
             
             StartCoroutine(Controller.OpenDoor());
+            
             yield return new WaitUntil(() => Controller.IsDoorOpen);
 
 
@@ -332,6 +333,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void WalkAway()
         {
+            StartCoroutine(Controller.CloseDoorCoroutine);
             Animate(IsWalkingSide);
             Rect.SetSiblingIndex(1);
             Mover.MoveTo(Rect, ShopLocation.OutsideStart)

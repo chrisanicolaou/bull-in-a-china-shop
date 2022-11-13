@@ -13,8 +13,19 @@ namespace CharaGaming.BullInAChinaShop.Singletons
 {
     public class GameManager : Singleton<GameManager>
     {
-        [field: SerializeField]
-        public int Cash { get; set; } = 500;
+        [SerializeField]
+        private int _cash = 500;
+
+        public int Cash
+        {
+            get => _cash;
+            set
+            {
+                if (_cash == value) return;
+                _cash = value;
+                GameEventsManager.Instance.TriggerEvent(GameEvent.CashChanged, null);
+            }
+        }
 
         public List<BaseStock> AvailableStock { get; set; }
 

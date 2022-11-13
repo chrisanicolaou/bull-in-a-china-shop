@@ -1,17 +1,23 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
 using CharaGaming.BullInAChinaShop.UI.Utils;
+using CharaGaming.BullInAChinaShop.Utils;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace CharaGaming.BullInAChinaShop.UI
+namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
 {
-    public class UpgradeMenu : MonoBehaviour
+    public class StockMenu : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject _gridNode;
+        
+        [SerializeField]
+        private GameObject _lockedGridNode;
+        
         [SerializeField]
         private Transform _stockContentArea;
 
@@ -23,18 +29,21 @@ namespace CharaGaming.BullInAChinaShop.UI
 
         [SerializeField]
         private TextMeshProUGUI _stockCostText;
-        
+
         [SerializeField]
         private TextMeshProUGUI _stockSellValueText;
-        
+
         [SerializeField]
         private TextMeshProUGUI _stockNameText;
-        
+
         [SerializeField]
         private TextMeshProUGUI _stockFlavourText;
 
         [SerializeField]
         private Slider _stockQuantitySlider;
+
+        [SerializeField]
+        private TextMeshProUGUI _quantityText;
 
         [SerializeField]
         private Button _stockPurchaseButton;
@@ -52,37 +61,27 @@ namespace CharaGaming.BullInAChinaShop.UI
 
         private bool _areUpgradesLoaded;
 
-        private Dictionary<BaseStock, GameObject> LoadedStock = new Dictionary<BaseStock, GameObject>();
+        private Dictionary<BaseStock, GameObject> _loadedStock = new Dictionary<BaseStock, GameObject>();
 
         private void Start()
         {
             if (!_isStockLoaded) LoadStock();
-            // _exitButton.onClick.AddListener(() => gameObject.SetActive(false));
-            // _stockMenuButton.onClick.AddListener(() =>
-            // {
-            //     _upgradeMenuObj.SetActive(false);
-            //     _stockMenuObj.SetActive(true);
-            // });
-            // _upgradeMenuButton.onClick.AddListener(() =>
-            // {
-            //     _stockMenuObj.SetActive(false);
-            //     _upgradeMenuObj.SetActive(true);
-            //     if (_areUpgradesLoaded) LoadUpgrades();
-            // });
+        }
+
+        private void OnDisable()
+        {
+            UnloadStock();
         }
 
         private void LoadStock()
         {
             GameManager.Instance.AvailableStock.ForEach((stock) =>
             {
-                var stockObj = new StockBuilder()
-                    .SetParent(_stockContentArea)
-                    .SetStock(stock)
-                    .AsPurchasable()
-                    .Build();
-                var btn = stockObj.AddComponent<Button>();
+                var gridNodeObj = Instantiate(_gridNode, _stockContentArea, false);
+                gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
+                var btn = gridNodeObj.AddComponent<Button>();
                 btn.onClick.AddListener(() => LoadStockPreview(stock));
-                LoadedStock[stock] = stockObj;
+                _loadedStock[stock] = gridNodeObj;
             });
         }
 
@@ -98,17 +97,11 @@ namespace CharaGaming.BullInAChinaShop.UI
 
             if (stock.IsUpgradable)
             {
-                if (stock.UpgradeCost > GameManager.Instance.Cash)
-                {
-                    _stockUpgradeButtonText.text = "Not enough moola";
-                    _stockUpgradeButton.interactable = false;
-                }
-                else
-                {
-                    _stockUpgradeButtonText.text = $"Upgrade <color=\"red\">-{stock.UpgradeCost}</color>";
-                    _stockUpgradeButton.onClick.RemoveAllListeners();
-                    _stockUpgradeButton.onClick.AddListener(() => UpgradeStock(stock));
-                }
+                _stockUpgradeButton.interactable = stock.UpgradeCost <= GameManager.Instance.Cash;
+
+                _stockUpgradeButtonText.text = $"Upgrade $ <color=\"red\">{stock.UpgradeCost}</color>";
+                _stockUpgradeButton.onClick.RemoveAllListeners();
+                _stockUpgradeButton.onClick.AddListener(() => UpgradeStock(stock));
             }
             else
             {
@@ -123,11 +116,10 @@ namespace CharaGaming.BullInAChinaShop.UI
                 _stockQuantitySlider.value = 0;
                 _stockQuantitySlider.minValue = 0;
                 _stockQuantitySlider.maxValue = 0;
-                _stockPurchaseButtonText.text = "Not enough moola";
                 _stockPurchaseButton.interactable = false;
                 return;
             }
-            
+
             _stockQuantitySlider.value = 1;
             _stockQuantitySlider.minValue = 1;
             _stockQuantitySlider.maxValue = Mathf.FloorToInt((float)(GameManager.Instance.Cash) / stock.PurchaseCost);
@@ -135,10 +127,12 @@ namespace CharaGaming.BullInAChinaShop.UI
             _stockQuantitySlider.onValueChanged.AddListener((value) =>
             {
                 var intVal = (int)value;
-                _stockPurchaseButtonText.text = $"Buy <color=\"red\">{value}";
+                _quantityText.text = $"<color=\"green\">{intVal.KiloFormat()}";
+                _stockPurchaseButtonText.text = $"Buy\n<color=\"red\">$ {(intVal * stock.PurchaseCost).KiloFormat()}";
             });
             
-            _stockPurchaseButtonText.text = $"Buy <color=\"red\">1";
+            _quantityText.text = "<color=\"green\">1";
+            _stockPurchaseButtonText.text = $"Buy\n<color=\"red\">$ {(1 * stock.PurchaseCost).KiloFormat()}";
             _stockPurchaseButton.onClick.RemoveAllListeners();
             _stockPurchaseButton.onClick.AddListener(() =>
             {
@@ -153,12 +147,18 @@ namespace CharaGaming.BullInAChinaShop.UI
 
         private void UpgradeStock(BaseStock stock)
         {
+            GameManager.Instance.Cash -= stock.UpgradeCost;
             stock.Upgrade();
-            
-            var stockImg = LoadedStock[stock].FindComponentInChildWithTag<Image>("StockImage");
+
+            var stockImg = _loadedStock[stock].FindComponentInChildWithTag<Image>("StockImage");
             stockImg.sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
 
             LoadStockPreview(stock);
+        }
+
+        private void UnloadStock()
+        {
+            _selectedStockArea.SetActive(false);
         }
     }
 }
