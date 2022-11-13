@@ -10,5 +10,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
         public override string[] FlavourTexts { get; set; } = new[] { "Often comes in pairs", "Often comes in pairs", "Often comes in pairs", "Often comes in pairs", "Often comes in pairs", "Often comes in pairs", };
         public override int[] SellValues { get; set; } = new[] { 35, 60, 110, 170, 250, 400 };
         public override int[] UpgradeCosts { get; set; } = new[] { 75, 180, 350, 650, 1000 };
+
+        public override int UnlockCost { get; protected set; } = 100;
     }
 }
