@@ -27,7 +27,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             }
         }
 
-        public List<BaseStock> AvailableStock { get; set; }
+        public List<BaseStock> AvailableStock { get; private set; }
 
         [field: SerializeField]
         public int DayNum { get; set; } = 1;
@@ -67,10 +67,6 @@ namespace CharaGaming.BullInAChinaShop.Singletons
                     c != type &&
                     c.IsClass &&
                     type.IsAssignableFrom(c)).Select(t => (BaseStock)Activator.CreateInstance(t)).ToList();
-            AvailableStock.ForEach((s) =>
-            {
-                s.AvailableQuantity += 10;
-            });
         }
     }
 }
