@@ -113,7 +113,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             }
             else if (!stock.IsUnlocked)
             {
-                _stockUpgradeButton.interactable = true;
+                _stockUpgradeButton.interactable = stock.UnlockCost <= GameManager.Instance.Cash;
 
                 _stockUpgradeButtonText.text = $"Unlock\n<color=\"red\">$ {stock.UnlockCost}</color>";
                 _stockUpgradeButton.onClick.RemoveAllListeners();
@@ -131,6 +131,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                 _stockUpgradeButtonText.text = "Max level reached";
                 _stockUpgradeButton.interactable = false;
                 _stockUpgradeHover.Clear();
+                _stockUpgradedSellValueText.gameObject.SetActive(false);
             }
 
             var canPurchase = stock.PurchaseCost <= GameManager.Instance.Cash;

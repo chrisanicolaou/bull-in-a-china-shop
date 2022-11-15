@@ -68,7 +68,8 @@ namespace CharaGaming.BullInAChinaShop.Singletons
                     c.IsClass &&
                     type.IsAssignableFrom(c))
                 .Select(t => (BaseStock)Activator.CreateInstance(t))
-                .OrderBy(s => !s.IsUnlocked).ToList();
+                .OrderByDescending(s => s.IsUnlocked)
+                .ThenBy(s => s.SellValue).ToList();
         }
     }
 }
