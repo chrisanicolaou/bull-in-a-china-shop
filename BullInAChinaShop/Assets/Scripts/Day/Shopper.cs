@@ -118,6 +118,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return seq.WaitForCompletion();
             
             Animate(null);
+            yield return null;
+            
             _img.sprite = _facingForwardSprite;
             _img.SetNativeSize();
 
@@ -147,7 +149,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             Animate(_defaultIdle);
             
             yield return new WaitForSeconds(0.5f);
-
+            
             StartCoroutine(Controller.CloseDoorCoroutine);
 
             var shouldLoiter = Random.Range(1, 5) < 4;
@@ -314,6 +316,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return seq.WaitForCompletion();
 
             Animate(null);
+            yield return null;
+            
             _img.sprite = _facingAwaySprite;
             _img.SetNativeSize();
             

@@ -226,6 +226,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
 
             IsDoorOpen = _doorAnimator.GetBool(ShouldOpen);
+            CloseDoorCoroutine = CloseDoor();
         }
 
         public bool CanJoinQueue()
