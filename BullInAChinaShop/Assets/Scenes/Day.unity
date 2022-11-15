@@ -489,6 +489,9 @@ MonoBehaviour:
   _bullEncounterPrefab: {fileID: 3389166664834311676, guid: 41a6792dc1f74d54985f65f85e5c17f8, type: 3}
   _shoppers:
   - {fileID: 2455142027325837898, guid: dc86305a92f246f4895a42d1d7664ca6, type: 3}
+  - {fileID: 2455142027325837898, guid: 033bff6014a86ea45b2dcdeace35d933, type: 3}
+  - {fileID: 2455142027325837898, guid: 7c93a9892b1a4bb4f93024a2d8e8cc0f, type: 3}
+  - {fileID: 2455142027325837898, guid: 271dbc30c43822e408c01997b240ecdd, type: 3}
   _shopperSpawnCanvas: {fileID: 1220248364}
   _doorAnimator: {fileID: 1234552059}
   <Mover>k__BackingField: {fileID: 862326079}
@@ -761,8 +764,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cash: 500
-  <DayNum>k__BackingField: 1
-  <MinCustomers>k__BackingField: 100
+  <DayNum>k__BackingField: 2
+  <MinCustomers>k__BackingField: 4
   <MinTimeBetweenSpawn>k__BackingField: 4
   <ShopperThinkTime>k__BackingField: 10.66
   <ShopperServeTime>k__BackingField: 3
