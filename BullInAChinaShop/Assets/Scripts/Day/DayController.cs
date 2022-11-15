@@ -18,6 +18,12 @@ namespace CharaGaming.BullInAChinaShop.Day
         public List<Shopper> ShopperQueue { get; set; } = new List<Shopper>();
 
         public DayStats DayStats { get; } = new DayStats();
+
+        [SerializeField]
+        private GameObject _stockMenuTutorialText;
+        
+        [SerializeField]
+        private GameObject _startDayTutorialText;
         
         [SerializeField]
         private Button _startDayButton;
@@ -70,19 +76,54 @@ namespace CharaGaming.BullInAChinaShop.Day
                 bullEncounter.PlayBullEncounter(GameManager.Instance.DayNum);
                 return;
             }
-            ToggleStartAndUpgradeButtons();
+            StartDay();
         }
 
-        public void ToggleStartAndUpgradeButtons(bool toggle = true)
+        public void StartDay()
+        {
+            if (GameManager.Instance.DayNum == 1)
+            {
+                TogglePurchaseMenuButton();
+                _stockMenuTutorialText.SetActive(true);
+                
+                GameEventsManager.Instance.AddListener(GameEvent.CashChanged, ToggleTutorialText);
+                return;
+            }
+            ToggleStartDayButton();
+            TogglePurchaseMenuButton();
+        }
+
+        private void ToggleTutorialText(Dictionary<string, object> message)
+        {
+            _stockMenuTutorialText.SetActive(false);
+            _startDayTutorialText.SetActive(true);
+            ToggleStartDayButton();
+            GameEventsManager.Instance.RemoveListener(GameEvent.CashChanged, ToggleTutorialText);
+        }
+
+        public void ToggleStartDayButton(bool toggle = true)
         {
             if (toggle)
             {
                 _startDayButton.enabled = true;
                 _startDayButton.onClick.AddListener(() =>
                 {
-                    StartCoroutine(nameof(StartDay));
+                    StartCoroutine(nameof(StartDayCoroutine));
+                    if (_startDayTutorialText.activeSelf) _startDayTutorialText.SetActive(false);
                     Destroy(_startDayButton.gameObject);
                 });
+            }
+            else
+            {
+                _startDayButton.onClick.RemoveAllListeners();
+                _startDayButton.enabled = false;
+            }
+        }
+
+        public void TogglePurchaseMenuButton(bool toggle = true)
+        {
+            if (toggle)
+            {
                 _purchaseMenuButton.enabled = true;
                 _purchaseMenuButton.onClick.AddListener(() =>
                 {
@@ -92,17 +133,16 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
             else
             {
-                _startDayButton.onClick.RemoveAllListeners();
-                _startDayButton.enabled = false;
                 _purchaseMenuButton.onClick.RemoveAllListeners();
                 _purchaseMenuButton.enabled = false;
                 _purchaseMenuLight.SetActive(false);
             }
         }
 
-        private IEnumerator StartDay()
+        private IEnumerator StartDayCoroutine()
         {
-            ToggleStartAndUpgradeButtons(false);
+            ToggleStartDayButton(false);
+            TogglePurchaseMenuButton(false);
             while (_remainingCustomers > 0)
             {
                 var shopper = LoadShopper();
@@ -222,8 +262,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             DayStats.ShoppersServed++;
             return true;
         }
-        
-        public void EndDay()
+
+        private void EndDay()
         {
             GameManager.Instance.DayStats = DayStats;
             SceneFader.Instance.FadeToScene("Night");

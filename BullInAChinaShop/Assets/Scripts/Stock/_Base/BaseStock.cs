@@ -53,7 +53,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
 
         public int UpgradeLevel => _upgradeLevel;
 
-        public bool IsUpgradable => _upgradeLevel < 5;
+        public bool IsUpgradable => _upgradeLevel < UpgradeCosts.Length;
 
         public bool IsUnlocked => UnlockCost == 0;
         

@@ -103,7 +103,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             {
                 _stockUpgradeButton.interactable = stock.UpgradeCost <= GameManager.Instance.Cash;
 
-                _stockUpgradeButtonText.text = $"Upgrade $ <color=\"red\">{stock.UpgradeCost}</color>";
+                _stockUpgradeButtonText.text = $"Upgrade\n<color=\"red\">$ {stock.UpgradeCost}</color>";
                 _stockUpgradeButton.onClick.RemoveAllListeners();
                 _stockUpgradeButton.onClick.AddListener(() => UpgradeStock(stock));
                 _stockUpgradeHover ??= _stockUpgradeButton.GetComponent<Hoverable>();
@@ -115,7 +115,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             {
                 _stockUpgradeButton.interactable = true;
 
-                _stockUpgradeButtonText.text = $"Unlock $ <color=\"red\">{stock.UnlockCost}</color>";
+                _stockUpgradeButtonText.text = $"Unlock\n<color=\"red\">$ {stock.UnlockCost}</color>";
                 _stockUpgradeButton.onClick.RemoveAllListeners();
                 _stockUpgradeButton.onClick.AddListener(() => UnlockStock(stock));
                 if (_stockUpgradeHover != null) _stockUpgradeHover.Clear();

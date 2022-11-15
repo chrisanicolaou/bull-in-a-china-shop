@@ -111,7 +111,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void OnEncounterFinish()
         {
-            Controller.ToggleStartAndUpgradeButtons();
+            Controller.StartDay();
             Destroy(_bull);
             Destroy(gameObject);
         }

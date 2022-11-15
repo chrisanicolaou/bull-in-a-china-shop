@@ -2,8 +2,9 @@
 {
     public enum StockType
     {
-        OldPlate = 20,
-        ChinaPlate = 40,
-        Jug = 50,
+        Plate,
+        Jug,
+        Teacup,
+        FruitBowl,
     }
 }
