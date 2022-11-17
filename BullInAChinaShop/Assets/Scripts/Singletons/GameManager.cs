@@ -5,6 +5,7 @@ using System.Reflection;
 using CharaGaming.BullInAChinaShop.Day;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Stock;
+using CharaGaming.BullInAChinaShop.Upgrades;
 using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using UnityEngine;
@@ -26,6 +27,8 @@ namespace CharaGaming.BullInAChinaShop.Singletons
                 GameEventsManager.Instance.TriggerEvent(GameEvent.CashChanged, null);
             }
         }
+        
+        public List<BaseUpgrade> Upgrades { get; private set; }
 
         public List<BaseStock> AvailableStock { get; private set; }
 
@@ -67,7 +70,20 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             base.Awake();
             DOTween.Init();
             PopulateAvailableStock();
+            PopulateUpgrades();
             CalculateBullEncounterDays();
+        }
+
+        private void PopulateUpgrades()
+        {
+            var type = typeof(BaseUpgrade);
+            Upgrades = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(c =>
+                    c != type &&
+                    c.IsClass &&
+                    type.IsAssignableFrom(c))
+                .Select(t => (BaseUpgrade)Activator.CreateInstance(t))
+                .OrderBy(s => s.UpgradeCost).ToList();
         }
 
         private void CalculateBullEncounterDays()

@@ -198,6 +198,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1266982129}
     m_Modifications:
+    - target: {fileID: 1954869604133497377, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2224254028506321966, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4088536845030396829, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4290822568967063609, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7068804845394126762, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
       propertyPath: m_Name
       value: PurchaseMenu
@@ -608,7 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 343d6b48a0e048f42a31036760e0715d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedUpButton: {fileID: 0}
+  _speedUpButton: {fileID: 1440748934}
   _musicController: {fileID: 807166509}
   _doorSfxController: {fileID: 2047029476}
   _stockMenuTutorialText: {fileID: 546097824}
@@ -1669,7 +1685,7 @@ GameObject:
   - component: {fileID: 1440748935}
   - component: {fileID: 1440748934}
   m_Layer: 5
-  m_Name: Button
+  m_Name: SpeedUpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2727,6 +2743,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5487628349943627043, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: _sfxClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487628349943627043, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: _sfxClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9d2ad4c4d0bb7ac458ee994e8fda6e72, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
 --- !u!114 &944495415468064034 stripped

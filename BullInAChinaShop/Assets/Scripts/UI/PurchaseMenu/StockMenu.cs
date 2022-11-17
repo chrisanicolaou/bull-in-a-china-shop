@@ -38,6 +38,15 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
         private Hoverable _stockUpgradeHover;
 
         [SerializeField]
+        private Transform _stockUpgradeBeanHolder;
+
+        [SerializeField]
+        private GameObject _stockUpgradeBeanFilled;
+
+        [SerializeField]
+        private GameObject _stockUpgradeBeanEmpty;
+
+        [SerializeField]
         private TextMeshProUGUI _stockNameText;
 
         [SerializeField]
@@ -132,6 +141,13 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                 _stockUpgradeButton.interactable = false;
                 _stockUpgradeHover.Clear();
                 _stockUpgradedSellValueText.gameObject.SetActive(false);
+            }
+            
+            _stockUpgradeBeanHolder.DestroyAllChildren();
+
+            for (var i = 0; i <= stock.UpgradeCosts.Length; i++)
+            {
+                Instantiate(stock.UpgradeLevel >= i ? _stockUpgradeBeanFilled : _stockUpgradeBeanEmpty, _stockUpgradeBeanHolder);
             }
 
             var canPurchase = stock.PurchaseCost <= GameManager.Instance.Cash;

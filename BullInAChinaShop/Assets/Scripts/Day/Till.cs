@@ -13,6 +13,12 @@ namespace CharaGaming.BullInAChinaShop.Day
     public class Till : MonoBehaviour
     {
         [SerializeField]
+        private AudioSource _sfxController;
+
+        [SerializeField]
+        private AudioClip[] _sfxClips;
+        
+        [SerializeField]
         private GameObject _sellTip;
 
         [SerializeField]
@@ -33,6 +39,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         {
             GameEventsManager.Instance.AddListener(GameEvent.ItemSold, OnItemSold);
             _startPos = _sellTipTransform.anchoredPosition;
+            _sfxController.loop = false;
         }
 
         private void OnItemSold(Dictionary<string, object> message)
@@ -59,6 +66,9 @@ namespace CharaGaming.BullInAChinaShop.Day
                 {
                     _sellTip.SetActive(false);
                 });
+
+            _sfxController.clip = _sfxClips[Random.Range(0, _sfxClips.Length)];
+            _sfxController.Play();
         }
 
         private void OnDestroy()
