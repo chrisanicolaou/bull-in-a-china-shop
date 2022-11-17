@@ -23,8 +23,8 @@ namespace CharaGaming.BullInAChinaShop.Day
         public DayStats DayStats { get; } = new DayStats();
 
         [SerializeField]
-        private Button _speedUpButton;
-        
+        private Image _speedUpImg;
+
         [SerializeField]
         private AudioSource _musicController;
 
@@ -33,16 +33,28 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         [SerializeField]
         private GameObject _stockMenuTutorialText;
-        
+
         [SerializeField]
         private GameObject _startDayTutorialText;
-        
+
         [SerializeField]
         private Button _startDayButton;
         
         [SerializeField]
+        private Animator _startDayButtonAnim;
+
+        [SerializeField]
+        private GameObject _startDayLight;
+
+        [SerializeField]
+        private Sprite[] _currentSpeedSprite;
+
+        [SerializeField]
+        private float[] _speedSettings;
+
+        [SerializeField]
         private Button _purchaseMenuButton;
-        
+
         [SerializeField]
         private GameObject _purchaseMenuLight;
 
@@ -60,7 +72,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         [SerializeField]
         private Animator _doorAnimator;
-        
+
         [field: SerializeField]
         public CharacterMover Mover { get; set; }
 
@@ -68,10 +80,10 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public bool IsDoorOpen { get; set; }
 
-        private bool _isSpedUp;
+        private int _speedIndex;
 
         public IEnumerator OpenDoorCoroutine { get; set; }
-        
+
         public IEnumerator CloseDoorCoroutine { get; set; }
 
         private static readonly int ShouldOpen = Animator.StringToHash("shouldOpen");
@@ -81,7 +93,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             OpenDoorCoroutine = OpenDoor();
             CloseDoorCoroutine = CloseDoor();
             _remainingCustomers = Random.Range(GameManager.Instance.MinCustomers, GameManager.Instance.MinCustomers + 4);
-            
+
             if (GameManager.Instance.BullEncounterDays.Contains(GameManager.Instance.DayNum))
             {
                 var bullEncounter = Instantiate(_bullEncounterPrefab).GetComponent<BullEncounter>();
@@ -90,20 +102,21 @@ namespace CharaGaming.BullInAChinaShop.Day
                 bullEncounter.PlayBullEncounter(GameManager.Instance.DayNum);
                 return;
             }
+
             StartDay();
         }
 
         public void StartDay()
         {
-            _speedUpButton.onClick.AddListener(ToggleSpeed);
             if (GameManager.Instance.DayNum == 1)
             {
                 TogglePurchaseMenuButton();
                 _stockMenuTutorialText.SetActive(true);
-                
+
                 GameEventsManager.Instance.AddListener(GameEvent.CashChanged, ToggleTutorialText);
                 return;
             }
+
             ToggleStartDayButton();
             TogglePurchaseMenuButton();
         }
@@ -117,9 +130,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void ToggleSpeed()
         {
-            _isSpedUp = !_isSpedUp;
-            _speedUpButton.GetComponentInChildren<TextMeshProUGUI>().text = _isSpedUp ? "Slow down" : "Speed up";
-            Time.timeScale = _isSpedUp ? 2f : 1f;
+            if (++_speedIndex >= _speedSettings.Length) _speedIndex = 0;
+            Time.timeScale = _speedSettings[_speedIndex];
+            _speedUpImg.sprite = _currentSpeedSprite[_speedIndex];
         }
 
         private void ToggleTutorialText(Dictionary<string, object> message)
@@ -135,13 +148,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             if (toggle)
             {
                 _startDayButton.enabled = true;
-                _startDayButton.onClick.AddListener(() =>
-                {
-                    StartCoroutine(nameof(StartDayCoroutine));
-                    if (_startDayTutorialText.activeSelf) _startDayTutorialText.SetActive(false);
-                    Destroy(_startDayButton.gameObject);
-                    _musicController.Play();
-                });
+                _startDayLight.SetActive(true);
+                _startDayButton.onClick.AddListener(() => StartCoroutine(OnStartDayButtonPress()));
             }
             else
             {
@@ -150,15 +158,36 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
         }
 
+        private IEnumerator OnStartDayButtonPress()
+        {
+            _startDayButton.enabled = false;
+            _startDayLight.SetActive(false);
+            _startDayButtonAnim.SetBool("shouldFlip", true);
+
+            yield return new WaitForSeconds(0.5f);
+            yield return new WaitUntil(() => AnimatorIsPlaying(_startDayButtonAnim) == false);
+
+            _startDayButtonAnim.SetBool("shouldFlip", false);
+            yield return null;
+
+            _startDayButtonAnim.enabled = false;
+            _speedUpImg.sprite = _currentSpeedSprite[0];
+
+            _startDayButton.enabled = true;
+            _startDayButton.onClick.RemoveAllListeners();
+            _startDayButton.onClick.AddListener(ToggleSpeed);
+            
+            StartCoroutine(nameof(StartDayCoroutine));
+            if (_startDayTutorialText.activeSelf) _startDayTutorialText.SetActive(false);
+            _musicController.Play();
+        }
+
         public void TogglePurchaseMenuButton(bool toggle = true)
         {
             if (toggle)
             {
                 _purchaseMenuButton.enabled = true;
-                _purchaseMenuButton.onClick.AddListener(() =>
-                {
-                    _purchaseMenu.SetActive(true);
-                });
+                _purchaseMenuButton.onClick.AddListener(() => { _purchaseMenu.SetActive(true); });
                 _purchaseMenuLight.SetActive(true);
             }
             else
@@ -171,7 +200,6 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator StartDayCoroutine()
         {
-            ToggleStartDayButton(false);
             TogglePurchaseMenuButton(false);
             while (_remainingCustomers > 0)
             {
@@ -186,7 +214,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
 
             yield return new WaitForSeconds(2f);
-            
+
             EndDay();
         }
 
@@ -195,7 +223,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             var shopperObj = Instantiate(_shoppers[Random.Range(0, _shoppers.Length)], _shopperSpawnCanvas, false);
             var img = shopperObj.GetComponent<Image>();
             img.SetNativeSize();
-            
+
             var shopper = shopperObj.GetComponent<Shopper>();
             shopper.Controller = this;
             shopper.Mover = Mover;
@@ -209,8 +237,9 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 return false;
             }
+
             if (OpenDoorCoroutine != null) StopCoroutine(OpenDoorCoroutine);
-            
+
             OpenDoorCoroutine = OpenDoor();
 
             StartCoroutine(OpenDoorCoroutine);
@@ -221,35 +250,35 @@ namespace CharaGaming.BullInAChinaShop.Day
         public IEnumerator OpenDoor()
         {
             var isOpen = _doorAnimator.GetBool(ShouldOpen);
-            
+
             if (!isOpen)
             {
                 _doorAnimator.SetBool(ShouldOpen, true);
-                
+
                 yield return new WaitForSeconds(0.3f);
 
                 _doorSfxController.Play();
-                
+
                 yield return new WaitForSeconds(0.3f);
-                
-                yield return new WaitUntil(() => AnimatorIsPlaying() == false);
+
+                yield return new WaitUntil(() => AnimatorIsPlaying(_doorAnimator) == false);
             }
 
             IsDoorOpen = _doorAnimator.GetBool(ShouldOpen);
             OpenDoorCoroutine = OpenDoor();
         }
-        
+
         public IEnumerator CloseDoor()
         {
             var isOpen = _doorAnimator.GetBool(ShouldOpen);
-            
+
             if (isOpen)
             {
                 _doorAnimator.SetBool(ShouldOpen, false);
-                
+
                 yield return new WaitForSeconds(0.6f);
-                
-                yield return new WaitUntil(() => AnimatorIsPlaying() == false);
+
+                yield return new WaitUntil(() => AnimatorIsPlaying(_doorAnimator) == false);
             }
 
             IsDoorOpen = _doorAnimator.GetBool(ShouldOpen);
@@ -275,17 +304,17 @@ namespace CharaGaming.BullInAChinaShop.Day
                 yield return new WaitForSeconds(0.3f);
             }
         }
-        
+
         public bool RequestStock(BaseStock requestedStock, int quantityToRequest)
         {
             if (requestedStock.AvailableQuantity < quantityToRequest) return false;
-            
+
             requestedStock.AvailableQuantity -= quantityToRequest;
             var earnings = requestedStock.SellValue * quantityToRequest;
             GameManager.Instance.Cash += earnings;
-            GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, new Dictionary<string, object> { { "stock", requestedStock }, { "quantity", quantityToRequest }});
+            GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, new Dictionary<string, object> { { "stock", requestedStock }, { "quantity", quantityToRequest } });
             GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperServed, null);
-        
+
             DayStats.CashEarned += earnings;
             DayStats.ShoppersServed++;
             return true;
@@ -297,9 +326,10 @@ namespace CharaGaming.BullInAChinaShop.Day
             SceneFader.Instance.FadeToScene("Night");
         }
 
-        private bool AnimatorIsPlaying(){
-            return _doorAnimator.GetCurrentAnimatorStateInfo(0).length >
-                   _doorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        private bool AnimatorIsPlaying(Animator animator)
+        {
+            return animator.GetCurrentAnimatorStateInfo(0).length >
+                   animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         }
     }
 }
