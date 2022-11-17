@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using CharaGaming.BullInAChinaShop.Day;
+using CharaGaming.BullInAChinaShop.Singletons;
+using UnityEngine;
 
 namespace CharaGaming.BullInAChinaShop.Upgrades
 {
@@ -13,7 +15,8 @@ namespace CharaGaming.BullInAChinaShop.Upgrades
 
         public override void UpgradeEffect()
         {
-            
+            GameObject.FindWithTag("Till").GetComponent<Till>().Upgrade();
+            GameManager.Instance.ShopperThinkTimeMultiplier = 1.0f - _thinkTimeIncrease[UpgradeLevel - 1];
         }
     }
 }

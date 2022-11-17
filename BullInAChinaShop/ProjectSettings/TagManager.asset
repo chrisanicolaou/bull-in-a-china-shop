@@ -18,6 +18,9 @@ TagManager:
   - Shopper
   - UpgradeBox
   - Price
+  - TillLight
+  - Till
+  - DayController
   layers:
   - Default
   - TransparentFX

@@ -45,13 +45,29 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         public float MinTimeBetweenSpawn { get; set; } = 5f;
 
         [field: SerializeField]
-        public float ShopperThinkTime { get; set; } = 5f;
-
-        [field: SerializeField]
         public float ShopperServeTime { get; set; } = 3f;
 
-        [field: SerializeField]
-        public float ShopperImpatienceTime { get; set; } = 15f;
+        [SerializeField]
+        private float _shopperImpatienceTime;
+
+        public float ShopperImpatienceTime
+        {
+            get => _shopperImpatienceTime * ShopperImpatienceTimeMultiplier;
+            set => _shopperImpatienceTime = value;
+        }
+
+        public float ShopperImpatienceTimeMultiplier { get; set; } = 1.0f;
+
+        [SerializeField]
+        private float _shopperThinkTime;
+
+        public float ShopperThinkTime
+        {
+            get => _shopperThinkTime * ShopperThinkTimeMultiplier;
+            set => _shopperThinkTime = value;
+        }
+
+        public float ShopperThinkTimeMultiplier { get; set; } = 1.0f;
 
         [field: SerializeField]
         public int NumOfDaysBetweenBullEncounters { get; set; } = 5;

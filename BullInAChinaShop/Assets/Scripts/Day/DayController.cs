@@ -5,6 +5,7 @@ using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
+using CharaGaming.BullInAChinaShop.UI.Utils;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -104,6 +105,13 @@ namespace CharaGaming.BullInAChinaShop.Day
                 return;
             }
             ToggleStartDayButton();
+            TogglePurchaseMenuButton();
+        }
+
+        public void ReassignTill(GameObject tillObj)
+        {
+            _purchaseMenuButton = tillObj.GetComponent<Button>();
+            _purchaseMenuLight = tillObj.FindComponentInChildWithTag<Light2D>("TillLight").gameObject;
             TogglePurchaseMenuButton();
         }
 

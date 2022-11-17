@@ -13,6 +13,9 @@ namespace CharaGaming.BullInAChinaShop.Day
     public class Till : MonoBehaviour
     {
         [SerializeField]
+        private GameObject _upgradeTill;
+        
+        [SerializeField]
         private AudioSource _sfxController;
 
         [SerializeField]
@@ -40,6 +43,13 @@ namespace CharaGaming.BullInAChinaShop.Day
             GameEventsManager.Instance.AddListener(GameEvent.ItemSold, OnItemSold);
             _startPos = _sellTipTransform.anchoredPosition;
             _sfxController.loop = false;
+        }
+
+        public void Upgrade()
+        {
+            var newTill = Instantiate(_upgradeTill, transform.parent, false);
+            GameObject.FindWithTag("DayController").GetComponent<DayController>().ReassignTill(newTill);
+            Destroy(gameObject);
         }
 
         private void OnItemSold(Dictionary<string, object> message)
