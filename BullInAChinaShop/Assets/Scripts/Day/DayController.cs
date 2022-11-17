@@ -6,7 +6,9 @@ using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -18,6 +20,15 @@ namespace CharaGaming.BullInAChinaShop.Day
         public List<Shopper> ShopperQueue { get; set; } = new List<Shopper>();
 
         public DayStats DayStats { get; } = new DayStats();
+
+        [SerializeField]
+        private Button _speedUpButton;
+        
+        [SerializeField]
+        private AudioSource _musicController;
+
+        [SerializeField]
+        private AudioSource _doorSfxController;
 
         [SerializeField]
         private GameObject _stockMenuTutorialText;
@@ -56,6 +67,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public bool IsDoorOpen { get; set; }
 
+        private bool _isSpedUp;
+
         public IEnumerator OpenDoorCoroutine { get; set; }
         
         public IEnumerator CloseDoorCoroutine { get; set; }
@@ -81,6 +94,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public void StartDay()
         {
+            _speedUpButton.onClick.AddListener(ToggleSpeed);
             if (GameManager.Instance.DayNum == 1)
             {
                 TogglePurchaseMenuButton();
@@ -91,6 +105,13 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
             ToggleStartDayButton();
             TogglePurchaseMenuButton();
+        }
+
+        private void ToggleSpeed()
+        {
+            _isSpedUp = !_isSpedUp;
+            _speedUpButton.GetComponentInChildren<TextMeshProUGUI>().text = _isSpedUp ? "Slow down" : "Speed up";
+            Time.timeScale = _isSpedUp ? 2f : 1f;
         }
 
         private void ToggleTutorialText(Dictionary<string, object> message)
@@ -111,6 +132,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                     StartCoroutine(nameof(StartDayCoroutine));
                     if (_startDayTutorialText.activeSelf) _startDayTutorialText.SetActive(false);
                     Destroy(_startDayButton.gameObject);
+                    _musicController.Play();
                 });
             }
             else
@@ -196,7 +218,11 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 _doorAnimator.SetBool(ShouldOpen, true);
                 
-                yield return new WaitForSeconds(0.6f);
+                yield return new WaitForSeconds(0.3f);
+
+                _doorSfxController.Play();
+                
+                yield return new WaitForSeconds(0.3f);
                 
                 yield return new WaitUntil(() => AnimatorIsPlaying() == false);
             }
