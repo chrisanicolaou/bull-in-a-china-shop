@@ -62,6 +62,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
             if (PurchaseCost > GameManager.Instance.Cash) return;
 
             GameManager.Instance.Cash -= PurchaseCost;
+            GameManager.Instance.AvailableStock.FirstOrDefault(s => s == this)!.AvailableQuantity++;
             
             GameEventsManager.Instance.TriggerEvent(GameEvent.ItemPurchased, new Dictionary<string, object>{{ "item", this }});
         }

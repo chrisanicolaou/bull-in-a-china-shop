@@ -30,6 +30,9 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         public List<BaseStock> AvailableStock { get; private set; }
 
         [field: SerializeField]
+        public int LoanAmount { get; set; } = 50000;
+
+        [field: SerializeField]
         public int DayNum { get; set; } = 1;
 
         [field: SerializeField]
@@ -48,15 +51,33 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         public float ShopperImpatienceTime { get; set; } = 15f;
 
         [field: SerializeField]
-        public int NumOfDaysBetweenBullEncounters { get; set; } = 3;
+        public int NumOfDaysBetweenBullEncounters { get; set; } = 5;
+
+        [field: SerializeField]
+        public int TotalNumOfDays { get; set; } = 30;
+
+        public int DaysUntilNextBullEncounter => BullEncounterDays.FirstOrDefault(d => d > DayNum) - DayNum;
         
         public DayStats DayStats { get; set; }
+
+        public List<int> BullEncounterDays { get; set; }
 
         protected override void Awake()
         {
             base.Awake();
             DOTween.Init();
             PopulateAvailableStock();
+            CalculateBullEncounterDays();
+        }
+
+        private void CalculateBullEncounterDays()
+        {
+            BullEncounterDays = new List<int> { 1 };
+
+            for (var i = NumOfDaysBetweenBullEncounters; i <= TotalNumOfDays; i += NumOfDaysBetweenBullEncounters)
+            {
+                BullEncounterDays.Add(i);
+            }
         }
 
         private void PopulateAvailableStock()

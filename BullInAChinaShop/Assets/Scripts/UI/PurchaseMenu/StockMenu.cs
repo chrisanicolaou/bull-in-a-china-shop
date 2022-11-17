@@ -103,11 +103,11 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             {
                 _stockUpgradeButton.interactable = stock.UpgradeCost <= GameManager.Instance.Cash;
 
-                _stockUpgradeButtonText.text = $"Upgrade\n<color=\"red\">$ {stock.UpgradeCost}</color>";
+                _stockUpgradeButtonText.text = $"Upgrade\n{$"$ {stock.UpgradeCost}".ToTMProColor(Color.red)}";
                 _stockUpgradeButton.onClick.RemoveAllListeners();
                 _stockUpgradeButton.onClick.AddListener(() => UpgradeStock(stock));
                 _stockUpgradeHover ??= _stockUpgradeButton.GetComponent<Hoverable>();
-                _stockUpgradedSellValueText.text = $"<color=\"green\">+{stock.SellValueUpgradeIncrease}</color>";
+                _stockUpgradedSellValueText.text = $"{$"+ {stock.SellValueUpgradeIncrease}".ToTMProColor(Color.green)}";
                 _stockUpgradeHover.OnHover(() => _stockUpgradedSellValueText.gameObject.SetActive(true));
                 _stockUpgradeHover.OnExit(() => _stockUpgradedSellValueText.gameObject.SetActive(false));
             }
@@ -115,7 +115,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             {
                 _stockUpgradeButton.interactable = stock.UnlockCost <= GameManager.Instance.Cash;
 
-                _stockUpgradeButtonText.text = $"Unlock\n<color=\"red\">$ {stock.UnlockCost}</color>";
+                _stockUpgradeButtonText.text = $"Unlock\n{$"$ {stock.UnlockCost}".ToTMProColor(Color.red)}";
                 _stockUpgradeButton.onClick.RemoveAllListeners();
                 _stockUpgradeButton.onClick.AddListener(() => UnlockStock(stock));
                 if (_stockUpgradeHover != null) _stockUpgradeHover.Clear();

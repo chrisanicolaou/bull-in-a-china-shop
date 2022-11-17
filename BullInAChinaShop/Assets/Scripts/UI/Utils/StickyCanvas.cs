@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CharaGaming.BullInAChinaShop.Utils;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CharaGaming.BullInAChinaShop.UI.Utils
@@ -8,9 +9,8 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
         [field: SerializeField]
         public Canvas StuckCanvas { get; set; }
 
-        protected void Awake()
+        private void Start()
         {
-            DontDestroyOnLoad(gameObject);
             SetupCanvas();
         }
 
@@ -28,7 +28,6 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
             StuckCanvas.renderMode = RenderMode.ScreenSpaceCamera;
             StuckCanvas.worldCamera = Camera.main;
             SceneManager.activeSceneChanged += ResetCanvasCamera;
-            DontDestroyOnLoad(StuckCanvas);
         }
 
         private void ResetCanvasCamera(Scene previous, Scene next)

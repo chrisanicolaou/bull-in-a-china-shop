@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.UI.Utils;
 using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -13,6 +16,14 @@ namespace CharaGaming.BullInAChinaShop.Day
 {
     public class BullEncounter : MonoBehaviour
     {
+        // Be nice to do this with some sort of severity flag to change how pissed off his prompts are!
+        //
+        // private readonly List<string> _randomAngryPrompts = new List<string>()
+        // {
+        //     "You know what I'm here for...",
+        //     "I'm getting real tired of this.",
+        //     "You are <color=\"red\">REALLY starting to test my patience.</b> "
+        // }
         public DayController Controller { get; set; }
         
         public CharacterMover Mover { get; set; }
@@ -58,12 +69,32 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public void PlayBullEncounter(int dayNum)
         {
-            if (dayNum == 1)
+            var bullEncounterIndex = GameManager.Instance.BullEncounterDays.IndexOf(dayNum);
+
+            if (bullEncounterIndex == -1)
             {
-                StartCoroutine(nameof(FirstBullEncounter));
+                Debug.LogError("Bull encounter does not exist in BullEncounterDays!");
+                return;
+            }
+            
+            if (bullEncounterIndex == GameManager.Instance.BullEncounterDays.Count - 1)
+            {
+                StartCoroutine(nameof(LastBullEncounter));
                 return;
             }
 
+            switch (bullEncounterIndex)
+            {
+                case 0:
+                    StartCoroutine(nameof(FirstBullEncounter));
+                    break;
+                case 1:
+                    StartCoroutine(nameof(SecondBullEncounter));
+                    break;
+                default:
+                    StartCoroutine(nameof(AngryBullEncounter));
+                    break;
+            }
         }
 
         private IEnumerator FirstBullEncounter()
@@ -73,33 +104,18 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return StartCoroutine(WalkInsideDoor());
 
             yield return StartCoroutine(WalkToDesk());
-            
-            PrepareDialogue("Wow - I love what you've done with the place!");
 
-            yield return new WaitForSeconds(0.3f);
-            yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
+            yield return StartCoroutine(PrepareDialogue("Wow - I love what you've done with the place!"));
             
-            PrepareDialogue("I tell you somethin', this be the best china shop I ever did see in my life.");
-
-            yield return new WaitForSeconds(0.3f);
-            yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
+            yield return StartCoroutine(PrepareDialogue("I tell you somethin', this be the best china shop I ever did see in my life."));
             
-            PrepareDialogue("Say - you will do well here for sure.", false);
-
-            yield return new WaitForSeconds(0.3f);
-            yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
+            yield return StartCoroutine(PrepareDialogue("Say - you will do well here for sure.", false));
 
             yield return StartCoroutine(WalkInsideDoor());
             
-            PrepareDialogue("Oh, that reminds me. Remember that teeny, tiny, <color=\"red\">15000</color> loan?");
-
-            yield return new WaitForSeconds(0.3f);
-            yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
+            yield return StartCoroutine(PrepareDialogue($"Oh, that reminds me. Remember that teeny, tiny, {$"$ {GameManager.Instance.LoanAmount.KiloFormat()}".ToTMProColor(Color.red)} loan?"));
             
-            PrepareDialogue("Well, I'll be back in 3 days to collect.", false);
-
-            yield return new WaitForSeconds(0.3f);
-            yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
+            yield return StartCoroutine(PrepareDialogue($"Well, I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter} days to collect.", false));
 
             yield return StartCoroutine(ExitDoor());
             var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
@@ -108,12 +124,64 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             OnEncounterFinish();
         }
+        
+        private IEnumerator SecondBullEncounter()
+        {
+            yield return StartCoroutine(ApproachShop());
+
+            yield return StartCoroutine(WalkInsideDoor());
+
+            yield return StartCoroutine(WalkToDesk());
+
+            yield return StartCoroutine(PrepareDialogue("Well, well. The day has come."));
+            
+            yield return StartCoroutine(PrepareDialogue("Do you have my money?"));
+            
+            yield return StartCoroutine(PrepareDialogue("..."));
+            
+            yield return StartCoroutine(PrepareDialogue("I see."));
+            
+            yield return StartCoroutine(PrepareDialogue("So it has come to this."));
+            
+            // Some sort of animation
+            
+            yield return StartCoroutine(PrepareDialogue($"Mr. Shopkeeper, you are now {"LATE.".ToTMProColor(Color.red)}"));
+            
+            yield return StartCoroutine(PrepareDialogue($"You have {(GameManager.Instance.TotalNumOfDays - GameManager.Instance.DayNum).ToString().ToTMProColor(Color.red)} days to get me my money."));
+
+            yield return StartCoroutine(PrepareDialogue("If you don't have it by then I'll..."));
+            
+            yield return StartCoroutine(PrepareDialogue("...I'll get reaaal clumsy.", false));
+            
+            yield return StartCoroutine(WalkInsideDoor());
+            
+            yield return StartCoroutine(PrepareDialogue($"I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter} days..."));
+            
+            yield return StartCoroutine(PrepareDialogue($"You know, to...check up on you.", false));
+            
+            yield return StartCoroutine(ExitDoor());
+            var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
+
+            yield return seq.WaitForCompletion();
+            
+            OnEncounterFinish();
+        }
+
+        private IEnumerator AngryBullEncounter()
+        {
+            throw new NotImplementedException();
+        }
+
+        private IEnumerator LastBullEncounter()
+        {
+            yield break;
+        }
 
         private void OnEncounterFinish()
         {
             Controller.StartDay();
             Destroy(_bull);
-            Destroy(gameObject);
+            Destroy(this);
         }
 
         public IEnumerator ApproachShop()
@@ -165,12 +233,15 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return seq.WaitForCompletion();
         }
 
-        private void PrepareDialogue(string body, bool stayOnScreen = true)
+        private IEnumerator PrepareDialogue(string body, bool stayOnScreen = true)
         {
             DialogueBox.Instance.SetHeader("Mr. Bull")
                 .SetBody(body)
                 .StayOnScreen(stayOnScreen)
                 .Show();
+
+            yield return new WaitForSeconds(0.3f);
+            yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
         }
     }
 }

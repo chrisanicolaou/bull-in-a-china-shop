@@ -61,5 +61,11 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
         {
             return corners[2].y - corners[0].y;
         }
+
+        public static string ToTMProColor(this string inputStr, Color color)
+        {
+            var htmlColor = ColorUtility.ToHtmlStringRGBA(color);
+            return $"<color=#{htmlColor}>{inputStr}</color>";
+        }
     }
 }

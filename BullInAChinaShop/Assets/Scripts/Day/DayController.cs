@@ -68,7 +68,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             CloseDoorCoroutine = CloseDoor();
             _remainingCustomers = Random.Range(GameManager.Instance.MinCustomers, GameManager.Instance.MinCustomers + 4);
             
-            if (GameManager.Instance.DayNum == 1)
+            if (GameManager.Instance.BullEncounterDays.Contains(GameManager.Instance.DayNum))
             {
                 var bullEncounter = Instantiate(_bullEncounterPrefab).GetComponent<BullEncounter>();
                 bullEncounter.Controller = this;
@@ -155,15 +155,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 yield return new WaitForSeconds(1f);
             }
 
-            yield return new WaitForSeconds(2f);
-
-            var bullChecker = GameManager.Instance.DayNum - 1;
-
-            if (bullChecker != 0 && bullChecker % GameManager.Instance.NumOfDaysBetweenBullEncounters == 0)
-            {
-                gameObject.AddComponent<BullEncounter>();
-                yield break;
-            }
+            yield return new WaitForSeconds(4f);
             
             EndDay();
         }
@@ -210,6 +202,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
 
             IsDoorOpen = _doorAnimator.GetBool(ShouldOpen);
+            OpenDoorCoroutine = OpenDoor();
         }
         
         public IEnumerator CloseDoor()
