@@ -1962,6 +1962,7 @@ MonoBehaviour:
   - {fileID: 2455142027325837898, guid: 033bff6014a86ea45b2dcdeace35d933, type: 3}
   - {fileID: 2455142027325837898, guid: 7c93a9892b1a4bb4f93024a2d8e8cc0f, type: 3}
   - {fileID: 2455142027325837898, guid: 271dbc30c43822e408c01997b240ecdd, type: 3}
+  - {fileID: 915570154861790355, guid: e18813117cda3714799266c10ca33514, type: 3}
   _shopperSpawnCanvas: {fileID: 1220248364}
   _doorAnimator: {fileID: 1234552059}
   <Mover>k__BackingField: {fileID: 862326079}
