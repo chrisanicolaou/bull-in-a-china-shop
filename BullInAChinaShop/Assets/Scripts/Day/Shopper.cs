@@ -75,6 +75,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private int _defaultIdle;
 
+        private Sequence _moveAlongSeq;
+
         private void Awake()
         {
             Rect = GetComponent<RectTransform>();
@@ -153,7 +155,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             StartCoroutine(Controller.CloseDoorCoroutine);
 
             var shouldLoiter = Random.Range(1, 5) < 4;
-            if (shouldLoiter)
+            if (shouldLoiter || !Controller.CanJoinQueue())
             {
                 StartCoroutine(_loiterCoroutine);
             }
@@ -350,6 +352,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public void MoveAlong(int index)
         {
+            _moveAlongSeq?.Kill();
+
             if (_isLeaving) return;
             StopCoroutine(_joiningQueueCoroutine);
             
@@ -357,14 +361,20 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 StartCoroutine(_impatienceCoroutine);
             }
+
+            if (index == 0)
+            {
+                StopCoroutine(_impatienceCoroutine);
+                _defaultIdle = IsIdle;
+            }
             
             Animate(IsWalkingSide);
 
             var posToWalkTo = Mover.CalculateQueuePosition(index);
 
-            var seq = Mover.MoveTo(Rect, posToWalkTo);
+            _moveAlongSeq = Mover.MoveTo(Rect, posToWalkTo);
 
-            seq.OnComplete(() =>
+            _moveAlongSeq.OnComplete(() =>
             {
                 if (_isLeaving) return;
                 Animate(_defaultIdle);
