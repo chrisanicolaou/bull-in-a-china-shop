@@ -90,7 +90,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             _impatienceCoroutine = ImpatienceTimer();
             _thinkingCoroutine = Think();
 
-            _animatorIds = new[] { IsIdle, IsAnnoyed, IsWalkingForward, IsWalkingAway, IsWalkingSide };
+            _animatorIds = new[] { IsIdle, IsAnnoyed, IsWalkingSide, IsWalkingAway, IsWalkingForward };
             _defaultIdle = IsIdle;
         }
 
@@ -144,6 +144,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             _isInShop = true;
             
             Animate(IsWalkingForward);
+            yield return null;
+            
             var seq = Mover.MoveTo(Rect, ShopLocation.InsideDoor);
 
             yield return seq.WaitForCompletion();
@@ -385,19 +387,20 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void Animate(int? id)
         {
-            foreach (var animatorId in _animatorIds)
-            {
-                _animator.SetBool(animatorId, false);
-            }
-
             if (id == null)
             {
                 _animator.enabled = false;
                 return;
             }
 
-            _animator.enabled = true;
-            _animator.SetBool((int)id, true);
+            var animId = (int)id;
+            
+            foreach (var animatorId in _animatorIds)
+            {
+                _animator.SetBool(animatorId, animatorId == animId);
+            }
+
+            if (!_animator.enabled) _animator.enabled = true;
         }
     }
 }
