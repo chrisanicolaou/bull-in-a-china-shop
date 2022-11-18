@@ -1938,6 +1938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedUpImg: {fileID: 1282599968}
+  _dayEndMusic: {fileID: 8300000, guid: 9d214f4d905800d48bfd6ac072e12ee6, type: 3}
   _musicController: {fileID: 807166509}
   _doorSfxController: {fileID: 2047029476}
   _stockMenuTutorialText: {fileID: 546097824}
@@ -2237,8 +2238,8 @@ MonoBehaviour:
   _cash: 2389
   <LoanAmount>k__BackingField: 161950
   <DayNum>k__BackingField: 3
-  <MinCustomers>k__BackingField: 12
-  <MinTimeBetweenSpawn>k__BackingField: 1.02
+  <MinCustomers>k__BackingField: 2
+  <MinTimeBetweenSpawn>k__BackingField: 0.75
   <ShopperServeTime>k__BackingField: 3
   _shopperImpatienceTime: 10
   _shopperThinkTime: 10
@@ -3413,6 +3414,22 @@ PrefabInstance:
     - target: {fileID: 944495416665112077, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 944495417247373903, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 944495417247373903, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 944495417247373903, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 944495417247373903, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}

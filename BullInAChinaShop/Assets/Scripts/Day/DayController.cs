@@ -24,6 +24,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         [SerializeField]
         private Image _speedUpImg;
+        
+        [SerializeField]
+        private AudioClip _dayEndMusic;
 
         [SerializeField]
         private AudioSource _musicController;
@@ -214,6 +217,11 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 yield return new WaitForSeconds(1f);
             }
+            
+            _musicController.Pause();
+            _musicController.clip = _dayEndMusic;
+            _musicController.loop = false;
+            _musicController.Play();
 
             yield return new WaitForSeconds(2f);
 
