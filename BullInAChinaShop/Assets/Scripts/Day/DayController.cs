@@ -82,6 +82,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private int _speedIndex;
 
+        private IEnumerator _moveAlongCoroutine;
+
         public IEnumerator OpenDoorCoroutine { get; set; }
 
         public IEnumerator CloseDoorCoroutine { get; set; }
@@ -294,7 +296,9 @@ namespace CharaGaming.BullInAChinaShop.Day
         public void Remove(Shopper shopper)
         {
             ShopperQueue.Remove(shopper);
-            StartCoroutine(MoveQueueAlong());
+            if (_moveAlongCoroutine != null) StopCoroutine(_moveAlongCoroutine);
+            _moveAlongCoroutine = MoveQueueAlong();
+            StartCoroutine(_moveAlongCoroutine);
         }
 
         private IEnumerator MoveQueueAlong()
@@ -304,6 +308,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 ShopperQueue[i].MoveAlong(i);
                 yield return new WaitForSeconds(0.3f);
             }
+            _moveAlongCoroutine = null;
         }
 
         public bool RequestStock(BaseStock requestedStock, int quantityToRequest)

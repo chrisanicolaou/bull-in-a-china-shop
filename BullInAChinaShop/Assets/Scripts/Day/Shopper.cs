@@ -355,6 +355,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         public void MoveAlong(int index)
         {
             _moveAlongSeq?.Kill();
+            _moveAlongSeq = null;
 
             if (_isLeaving) return;
             StopCoroutine(_joiningQueueCoroutine);
