@@ -26,6 +26,12 @@ namespace CharaGaming.BullInAChinaShop.Day
         private Image _speedUpImg;
         
         [SerializeField]
+        private AudioClip _preDayMusic;
+        
+        [SerializeField]
+        private AudioClip _dayMusic;
+        
+        [SerializeField]
         private AudioClip _dayEndMusic;
 
         [SerializeField]
@@ -113,6 +119,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public void StartDay()
         {
+            ChangeMusic(_preDayMusic);
             if (GameManager.Instance.DayNum == 1)
             {
                 TogglePurchaseMenuButton();
@@ -184,7 +191,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             StartCoroutine(nameof(StartDayCoroutine));
             if (_startDayTutorialText.activeSelf) _startDayTutorialText.SetActive(false);
-            _musicController.Play();
+            ChangeMusic(_dayMusic);
         }
 
         public void TogglePurchaseMenuButton(bool toggle = true)
@@ -194,6 +201,8 @@ namespace CharaGaming.BullInAChinaShop.Day
                 _purchaseMenuButton.enabled = true;
                 _purchaseMenuButton.onClick.AddListener(() => { _purchaseMenu.SetActive(true); });
                 _purchaseMenuLight.SetActive(true);
+                
+                ChangeMusic(_preDayMusic);
             }
             else
             {
@@ -218,10 +227,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 yield return new WaitForSeconds(1f);
             }
             
-            _musicController.Pause();
-            _musicController.clip = _dayEndMusic;
-            _musicController.loop = false;
-            _musicController.Play();
+            ChangeMusic(_dayEndMusic, false);
 
             yield return new WaitForSeconds(2f);
 
@@ -344,6 +350,14 @@ namespace CharaGaming.BullInAChinaShop.Day
         {
             return animator.GetCurrentAnimatorStateInfo(0).length >
                    animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        }
+
+        private void ChangeMusic(AudioClip targetClip, bool loop = true)
+        {
+            _musicController.Pause();
+            _musicController.clip = targetClip;
+            _musicController.loop = loop;
+            _musicController.Play();
         }
     }
 }
