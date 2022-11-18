@@ -378,6 +378,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             _moveAlongSeq.OnComplete(() =>
             {
+                _moveAlongSeq = null;
                 if (_isLeaving) return;
                 Animate(_defaultIdle);
                 if (index != 0 || _isBeingServed) return;
