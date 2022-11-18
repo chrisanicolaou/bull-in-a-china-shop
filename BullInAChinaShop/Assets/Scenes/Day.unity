@@ -2236,8 +2236,8 @@ MonoBehaviour:
   _cash: 2389
   <LoanAmount>k__BackingField: 161950
   <DayNum>k__BackingField: 3
-  <MinCustomers>k__BackingField: 4
-  <MinTimeBetweenSpawn>k__BackingField: 4
+  <MinCustomers>k__BackingField: 12
+  <MinTimeBetweenSpawn>k__BackingField: 1.02
   <ShopperServeTime>k__BackingField: 3
   _shopperImpatienceTime: 10
   _shopperThinkTime: 10

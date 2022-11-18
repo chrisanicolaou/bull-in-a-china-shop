@@ -233,6 +233,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             yield return new WaitForSeconds(waitTime / 2);
             
+            if (_isLeaving) yield break;
+
             _defaultIdle = IsAnnoyed;
             Animate(_defaultIdle);
 
@@ -310,7 +312,9 @@ namespace CharaGaming.BullInAChinaShop.Day
             _isLeaving = true;
             StopCoroutine(_thinkingCoroutine);
             StopCoroutine(_joiningQueueCoroutine);
+            
             Animate(IsWalkingAway);
+            yield return null;
             
             var seq = Mover.MoveTo(Rect, ShopLocation.InsideDoor);
             yield return seq.WaitForCompletion();
@@ -362,6 +366,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             seq.OnComplete(() =>
             {
+                if (_isLeaving) return;
                 Animate(_defaultIdle);
                 if (index != 0 || _isBeingServed) return;
                 StartCoroutine(_thinkingCoroutine);
@@ -375,8 +380,13 @@ namespace CharaGaming.BullInAChinaShop.Day
                 _animator.SetBool(animatorId, false);
             }
 
-            if (id == null) return;
-            
+            if (id == null)
+            {
+                _animator.enabled = false;
+                return;
+            }
+
+            _animator.enabled = true;
             _animator.SetBool((int)id, true);
         }
     }
