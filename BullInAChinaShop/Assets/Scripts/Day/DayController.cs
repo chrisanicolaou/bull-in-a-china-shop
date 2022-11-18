@@ -262,9 +262,10 @@ namespace CharaGaming.BullInAChinaShop.Day
                 yield return new WaitForSeconds(0.3f);
 
                 yield return new WaitUntil(() => AnimatorIsPlaying(_doorAnimator) == false);
+                
+                IsDoorOpen = _doorAnimator.GetBool(ShouldOpen);
             }
-
-            IsDoorOpen = _doorAnimator.GetBool(ShouldOpen);
+            
             OpenDoorCoroutine = OpenDoor();
         }
 
@@ -274,6 +275,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             if (isOpen)
             {
+                IsDoorOpen = false;
                 _doorAnimator.SetBool(ShouldOpen, false);
 
                 yield return new WaitForSeconds(0.6f);
@@ -281,7 +283,6 @@ namespace CharaGaming.BullInAChinaShop.Day
                 yield return new WaitUntil(() => AnimatorIsPlaying(_doorAnimator) == false);
             }
 
-            IsDoorOpen = _doorAnimator.GetBool(ShouldOpen);
             CloseDoorCoroutine = CloseDoor();
         }
 
