@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
 using CharaGaming.BullInAChinaShop.UI.Utils;
@@ -65,7 +66,11 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             GameManager.Instance.Upgrades.ForEach((upgrade) =>
             {
                 var gridNodeObj = Instantiate(_gridNode, _upgradeContentArea, false);
-                gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = Resources.Load<Sprite>(upgrade.SpriteFilePath);
+                
+                var upgradeSprite = Resources.Load<Sprite>(upgrade.SpriteFilePath) ??
+                                    SpriteHelpers.LoadFromSheet("Upgrades/UpgradesSheet", new string(upgrade.Name.Where(c => !char.IsWhiteSpace(c)).ToArray()));
+                
+                gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = upgradeSprite;
                 var btn = gridNodeObj.AddComponent<Button>();
                 btn.onClick.AddListener(() => LoadUpgradePreview(upgrade));
                 _loadedUpgrades[upgrade] = gridNodeObj;
@@ -75,8 +80,11 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
         private void LoadUpgradePreview(BaseUpgrade upgrade)
         {
             if (!_selectedUpgradeArea.activeSelf) _selectedUpgradeArea.SetActive(true);
+                
+            var upgradeSprite = Resources.Load<Sprite>(upgrade.SpriteFilePath) ??
+                                SpriteHelpers.LoadFromSheet("Upgrades/UpgradesSheet", new string(upgrade.Name.Where(c => !char.IsWhiteSpace(c)).ToArray()));
 
-            _upgradePreviewImage.sprite = Resources.Load<Sprite>(upgrade.SpriteFilePath);
+            _upgradePreviewImage.sprite = upgradeSprite;
             _upgradeNameText.text = upgrade.Name;
             _upgradeDescription.text = upgrade.Description;
 
@@ -107,8 +115,10 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             GameManager.Instance.Cash -= upgrade.UpgradeCost;
             upgrade.Upgrade();
 
-            var stockImg = _loadedUpgrades[upgrade].FindComponentInChildWithTag<Image>("StockImage");
-            stockImg.sprite = Resources.Load<Sprite>(upgrade.SpriteFilePath);
+            var upgradeSprite = Resources.Load<Sprite>(upgrade.SpriteFilePath) ??
+                                SpriteHelpers.LoadFromSheet("Upgrades/UpgradesSheet", new string(upgrade.Name.Where(c => !char.IsWhiteSpace(c)).ToArray()));
+            var img = _loadedUpgrades[upgrade].FindComponentInChildWithTag<Image>("StockImage");
+            img.sprite = upgradeSprite;
 
             LoadUpgradePreview(upgrade);
         }

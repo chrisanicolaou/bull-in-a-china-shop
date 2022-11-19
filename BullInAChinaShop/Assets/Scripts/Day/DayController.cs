@@ -216,7 +216,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 var shopper = LoadShopper();
                 StartCoroutine(shopper.ApproachShop());
-                yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + GameManager.Instance.SpawnTimeVariance));
+                yield return new WaitForSeconds(Random.Range(GameManager.Instance.SpawnTime, GameManager.Instance.SpawnTime + GameManager.Instance.SpawnTimeVariance));
             }
 
             while (_shopperSpawnCanvas.childCount > 6)

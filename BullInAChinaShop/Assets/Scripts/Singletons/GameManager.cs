@@ -41,8 +41,16 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         [field: SerializeField]
         public int DayDuration { get; set; } = 45;
 
-        [field: SerializeField]
-        public float MinTimeBetweenSpawn { get; set; } = 5f;
+        [SerializeField]
+        private float _spawnTime { get; set; } = 5f;
+
+        public float SpawnTime
+        {
+            get => _spawnTime * SpawnTimeMultiplier;
+            set => _spawnTime = value;
+        }
+
+        public float SpawnTimeMultiplier { get; set; } = 1.0f;
 
         [field: SerializeField]
         public float SpawnTimeVariance { get; set; } = 4f;
