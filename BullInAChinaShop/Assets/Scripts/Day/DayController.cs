@@ -1,15 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
 using CharaGaming.BullInAChinaShop.UI.Utils;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -85,7 +80,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         [field: SerializeField]
         public CharacterMover Mover { get; set; }
 
-        private int _remainingCustomers;
+        private bool _dayShouldEnd;
 
         public bool IsDoorOpen { get; set; }
 
@@ -98,12 +93,12 @@ namespace CharaGaming.BullInAChinaShop.Day
         public IEnumerator CloseDoorCoroutine { get; set; }
 
         private static readonly int ShouldOpen = Animator.StringToHash("shouldOpen");
+        private static readonly int ShouldFlipStartSign = Animator.StringToHash("shouldFlip");
 
         private void Start()
         {
             OpenDoorCoroutine = OpenDoor();
             CloseDoorCoroutine = CloseDoor();
-            _remainingCustomers = Random.Range(GameManager.Instance.MinCustomers, GameManager.Instance.MinCustomers + 4);
 
             if (GameManager.Instance.BullEncounterDays.Contains(GameManager.Instance.DayNum))
             {
@@ -172,14 +167,15 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator OnStartDayButtonPress()
         {
+            TogglePurchaseMenuButton(false);
             _startDayButton.enabled = false;
             _startDayLight.SetActive(false);
-            _startDayButtonAnim.SetBool("shouldFlip", true);
+            _startDayButtonAnim.SetBool(ShouldFlipStartSign, true);
 
             yield return new WaitForSeconds(0.5f);
             yield return new WaitUntil(() => AnimatorIsPlaying(_startDayButtonAnim) == false);
 
-            _startDayButtonAnim.SetBool("shouldFlip", false);
+            _startDayButtonAnim.SetBool(ShouldFlipStartSign, false);
             yield return null;
 
             _startDayButtonAnim.enabled = false;
@@ -214,12 +210,13 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator StartDayCoroutine()
         {
-            TogglePurchaseMenuButton(false);
-            while (_remainingCustomers > 0)
+            StartCoroutine(DayTimer());
+            
+            while (!_dayShouldEnd)
             {
                 var shopper = LoadShopper();
                 StartCoroutine(shopper.ApproachShop());
-                yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + 4f));
+                yield return new WaitForSeconds(Random.Range(GameManager.Instance.MinTimeBetweenSpawn, GameManager.Instance.MinTimeBetweenSpawn + GameManager.Instance.SpawnTimeVariance));
             }
 
             while (_shopperSpawnCanvas.childCount > 6)
@@ -234,6 +231,15 @@ namespace CharaGaming.BullInAChinaShop.Day
             EndDay();
         }
 
+        private IEnumerator DayTimer()
+        {
+            _dayShouldEnd = false;
+
+            yield return new WaitForSeconds(GameManager.Instance.DayDuration);
+
+            _dayShouldEnd = true;
+        }
+
         private Shopper LoadShopper()
         {
             var shopperObj = Instantiate(_shoppers[Random.Range(0, _shoppers.Length)], _shopperSpawnCanvas, false);
@@ -243,7 +249,6 @@ namespace CharaGaming.BullInAChinaShop.Day
             var shopper = shopperObj.GetComponent<Shopper>();
             shopper.Controller = this;
             shopper.Mover = Mover;
-            _remainingCustomers--;
             return shopper;
         }
 
