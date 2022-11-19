@@ -45,11 +45,21 @@ namespace CharaGaming.BullInAChinaShop.Day
             _sfxController.loop = false;
         }
 
-        public void Upgrade()
+        public void Upgrade(int numOfTimes = 1)
         {
-            var newTill = Instantiate(_upgradeTill, transform.parent, false);
-            GameObject.FindWithTag("DayController").GetComponent<DayController>().ReassignTill(newTill);
-            Destroy(gameObject);
+            if (numOfTimes > 1)
+            {
+                var newTill = Instantiate(_upgradeTill, transform.parent, false);
+                var nextTill = newTill.GetComponent<Till>();
+                Destroy(gameObject);
+                nextTill.Upgrade(numOfTimes - 1);
+            }
+            else
+            {
+                var newTill = Instantiate(_upgradeTill, transform.parent, false);
+                GameObject.FindWithTag("DayController").GetComponent<DayController>().ReassignTill(newTill);
+                Destroy(gameObject);
+            }
         }
 
         private void OnItemSold(Dictionary<string, object> message)

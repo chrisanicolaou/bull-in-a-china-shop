@@ -70,6 +70,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
         public void Upgrade()
         {
             _upgradeLevel++;
+            GameEventsManager.Instance.TriggerEvent(GameEvent.StockUpgraded, new Dictionary<string, object>{{ "item", this }});
         }
 
         public void Unlock()

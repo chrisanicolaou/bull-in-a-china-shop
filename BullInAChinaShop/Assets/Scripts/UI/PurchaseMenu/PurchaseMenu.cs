@@ -58,6 +58,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
         private void OnDisable()
         {
             GameEventsManager.Instance.RemoveListener(GameEvent.CashChanged, UpdateCash);
+            GameEventsManager.Instance.TriggerEvent(GameEvent.PurchaseMenuClosed, null);
         }
     }
 }

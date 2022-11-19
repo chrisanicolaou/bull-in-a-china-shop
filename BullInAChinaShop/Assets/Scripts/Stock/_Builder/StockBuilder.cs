@@ -11,6 +11,10 @@ namespace CharaGaming.BullInAChinaShop.Stock
 
         private float _scale = 1f;
 
+        private float _rotation;
+
+        private bool _shouldClean;
+
         private Transform _parent;
 
         private BaseStock _stock;
@@ -37,10 +41,22 @@ namespace CharaGaming.BullInAChinaShop.Stock
             _scale = scale;
             return this;
         }
+        
+        public StockBuilder SetYRotation(float rotation)
+        {
+            _rotation = rotation;
+            return this;
+        }
 
         public StockBuilder AsPurchasable(bool purchasable = true)
         {
             _isPurchasable = purchasable;
+            return this;
+        }
+
+        public StockBuilder CleanOnBuild(bool shouldClean = true)
+        {
+            _shouldClean = shouldClean;
             return this;
         }
 
@@ -49,6 +65,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
             var stockObj = Object.Instantiate(Resources.Load<GameObject>("Stock"), Vector3.zero, Quaternion.identity);
             stockObj.transform.SetParent(_parent);
             stockObj.transform.localScale = new Vector3(_scale, _scale, _scale);
+            stockObj.transform.rotation = Quaternion.Euler(0f, _rotation, 0f);
 
             var stockImg = stockObj.FindComponentInChildWithTag<Image>("StockImage");
             stockImg.sprite = Resources.Load<Sprite>(_stock.SpriteFilePath);
@@ -57,6 +74,15 @@ namespace CharaGaming.BullInAChinaShop.Stock
             {
                 var upgradeBox = stockObj.FindComponentInChildWithTag<Image>("UpgradeBox");
                 upgradeBox.enabled = true;
+            }
+
+            if (_shouldClean)
+            {
+                _stock = null;
+                _parent = null;
+                _scale = default;
+                _rotation = default;
+                _isPurchasable = default;
             }
 
             return stockObj;
