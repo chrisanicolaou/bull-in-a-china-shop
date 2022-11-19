@@ -204,5 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecfdd52a1ae870740a57e6a60ad15418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultDuration: 0.5
+  _defaultDuration: 1.5
   _fadeImage: {fileID: 5314623364182255423}
+  _masterMixer: {fileID: 24100000, guid: ba27d95a8bd45214880a72acce0f3481, type: 2}

@@ -224,12 +224,12 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             while (_shopperSpawnCanvas.childCount > 6)
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.1f);
             }
             
             ChangeMusic(_dayEndMusic, false);
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3.5f);
 
             EndDay();
         }
