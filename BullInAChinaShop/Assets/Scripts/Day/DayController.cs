@@ -337,7 +337,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             requestedStock.AvailableQuantity -= quantityToRequest;
             var earnings = requestedStock.SellValue * quantityToRequest;
             GameManager.Instance.Cash += earnings;
-            GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, new Dictionary<string, object> { { "stock", requestedStock }, { "quantity", quantityToRequest } });
+            GameEventsManager.Instance.TriggerEvent(GameEvent.ItemSold, new Dictionary<string, object> { { "item", requestedStock }, { "quantity", quantityToRequest } });
             GameEventsManager.Instance.TriggerEvent(GameEvent.ShopperServed, null);
 
             DayStats.CashEarned += earnings;

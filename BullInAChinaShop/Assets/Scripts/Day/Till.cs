@@ -14,13 +14,13 @@ namespace CharaGaming.BullInAChinaShop.Day
     {
         [SerializeField]
         private GameObject _upgradeTill;
-        
+
         [SerializeField]
         private AudioSource _sfxController;
 
         [SerializeField]
         private AudioClip[] _sfxClips;
-        
+
         [SerializeField]
         private GameObject _sellTip;
 
@@ -56,17 +56,21 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
             else
             {
-                var newTill = Instantiate(_upgradeTill, transform.parent, false);
-                GameObject.FindWithTag("DayController").GetComponent<DayController>().ReassignTill(newTill);
                 Destroy(gameObject);
+                var newTill = Instantiate(_upgradeTill, transform.parent, false);
+                newTill.transform.localScale = new Vector3(0f, 0f, 0f);
+                var seq = DOTween.Sequence();
+                seq.PrependInterval(0.5f);
+                seq.Append(newTill.transform.DOScale(1f, 0.5f));
+                seq.OnComplete(() => GameObject.FindWithTag("DayController").GetComponent<DayController>().ReassignTill(newTill));
             }
         }
 
         private void OnItemSold(Dictionary<string, object> message)
         {
-            if (!message.TryGetValue("stock", out object stockObj) || !message.TryGetValue("quantity", out object quantityObj))
+            if (!message.TryGetValue("item", out object stockObj) || !message.TryGetValue("quantity", out object quantityObj))
             {
-                Debug.LogError("Stock or quantity key missing!");
+                Debug.LogError("Item or quantity key missing!");
                 return;
             }
 
@@ -78,14 +82,11 @@ namespace CharaGaming.BullInAChinaShop.Day
             _stockImg.sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
             _profit.text = $"+<color=\"green\">{profitText} $</color>";
             _quantitySold.text = $"-<color=\"red\">{quantityText}</color>";
-            
+
             _sellTip.SetActive(true);
             _sellTipTransform.DOAnchorPos(new Vector2(_startPos.x, _startPos.y + 20), 1.5f)
                 .From(_startPos).SetEase(Ease.OutQuad)
-                .OnComplete(() =>
-                {
-                    _sellTip.SetActive(false);
-                });
+                .OnComplete(() => { _sellTip.SetActive(false); });
 
             _sfxController.clip = _sfxClips[Random.Range(0, _sfxClips.Length)];
             _sfxController.Play();
