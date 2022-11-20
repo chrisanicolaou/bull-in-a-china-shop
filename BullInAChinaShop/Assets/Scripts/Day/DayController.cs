@@ -99,6 +99,8 @@ namespace CharaGaming.BullInAChinaShop.Day
         {
             OpenDoorCoroutine = OpenDoor();
             CloseDoorCoroutine = CloseDoor();
+            ToggleStartDayButton(false);
+            TogglePurchaseMenuButton(false);
 
             if (GameManager.Instance.BullEncounterDays.Contains(GameManager.Instance.DayNum))
             {
@@ -162,6 +164,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 _startDayButton.onClick.RemoveAllListeners();
                 _startDayButton.enabled = false;
+                _startDayLight.SetActive(false);
             }
         }
 

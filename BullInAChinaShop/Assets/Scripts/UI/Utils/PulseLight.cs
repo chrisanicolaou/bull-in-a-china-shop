@@ -29,7 +29,7 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
         {
             _pulseCoroutine ??= Pulse();
             _light ??= GetComponent<Light2D>();
-            _light.intensity = 0;
+            _light.intensity = _maxIntensity;
             StartCoroutine(_pulseCoroutine);
         }
 
