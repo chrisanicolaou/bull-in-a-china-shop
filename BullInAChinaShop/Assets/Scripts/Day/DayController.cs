@@ -77,6 +77,9 @@ namespace CharaGaming.BullInAChinaShop.Day
         [SerializeField]
         private Animator _doorAnimator;
 
+        [SerializeField]
+        private OutsideFader _outsideFader;
+
         [field: SerializeField]
         public CharacterMover Mover { get; set; }
 
@@ -216,6 +219,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         private IEnumerator StartDayCoroutine()
         {
             StartCoroutine(DayTimer());
+            _outsideFader.StartFade(GameManager.Instance.DayDuration);
             
             while (!_dayShouldEnd)
             {
