@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
+using CharaGaming.BullInAChinaShop.UI.Utils;
 using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using TMPro;
@@ -85,8 +86,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             var quantityText = quantity.KiloFormat();
 
             _stockImg.sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
-            _profit.text = $"+<color=\"green\">{profitText} $</color>";
-            _quantitySold.text = $"-<color=\"red\">{quantityText}</color>";
+            _profit.text = $"+{(profitText + " $").ToTMProColor(Color.green)}";
+            _quantitySold.text = $"-{quantityText.ToTMProColor(Color.red)}";
 
             _sellTip.SetActive(true);
             _sellTipTransform.DOAnchorPos(new Vector2(_startPos.x, _startPos.y + 20), 1.5f)
