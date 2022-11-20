@@ -97,6 +97,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void Start()
         {
+            var tillObj = Instantiate(GameManager.Instance.CurrentTill, _shopperSpawnCanvas, false);
+            ReassignTill(tillObj);
             OpenDoorCoroutine = OpenDoor();
             CloseDoorCoroutine = CloseDoor();
             ToggleStartDayButton(false);

@@ -85,6 +85,9 @@ namespace CharaGaming.BullInAChinaShop.Singletons
 
         [field: SerializeField]
         public int TotalNumOfDays { get; set; } = 30;
+        
+        [field: SerializeField]
+        public GameObject CurrentTill { get; set; }
 
         public int DaysUntilNextBullEncounter => BullEncounterDays.FirstOrDefault(d => d > DayNum) - DayNum;
         

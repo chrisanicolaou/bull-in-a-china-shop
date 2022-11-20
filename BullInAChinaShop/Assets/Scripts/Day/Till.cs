@@ -62,7 +62,12 @@ namespace CharaGaming.BullInAChinaShop.Day
                 var seq = DOTween.Sequence();
                 seq.PrependInterval(0.5f);
                 seq.Append(newTill.transform.DOScale(1f, 0.5f));
-                seq.OnComplete(() => GameObject.FindWithTag("DayController").GetComponent<DayController>().ReassignTill(newTill));
+                seq.OnComplete(() =>
+                {
+                    GameManager.Instance.CurrentTill = _upgradeTill;
+                    var controller = GameObject.FindWithTag("DayController").GetComponent<DayController>();
+                    controller.ReassignTill(newTill);
+                });
             }
         }
 

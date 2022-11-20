@@ -2008,8 +2008,8 @@ MonoBehaviour:
   - 1
   - 1.5
   - 2
-  _purchaseMenuButton: {fileID: 944495415468064034}
-  _purchaseMenuLight: {fileID: 1224912699}
+  _purchaseMenuButton: {fileID: 8764461402557218886, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
+  _purchaseMenuLight: {fileID: 0}
   _purchaseMenu: {fileID: 430206805}
   _bullEncounterPrefab: {fileID: 3389166664834311676, guid: 41a6792dc1f74d54985f65f85e5c17f8, type: 3}
   _shoppers:
@@ -2165,10 +2165,10 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.23854168
+    x: 0
     y: 0
-    width: 0.23425926
-    height: 0.23425925
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -2300,6 +2300,7 @@ MonoBehaviour:
   _shopperThinkTime: 10
   <NumOfDaysBetweenBullEncounters>k__BackingField: 2
   <TotalNumOfDays>k__BackingField: 30
+  <CurrentTill>k__BackingField: {fileID: 7149246821796268895, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
 --- !u!4 &929815184
 Transform:
   m_ObjectHideFlags: 0
@@ -2582,11 +2583,6 @@ PrefabInstance:
       objectReference: {fileID: 909952680}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c2e58b453ed08c44bdbcc57a2c0ceef, type: 3}
---- !u!1 &1224912699 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7264419069733187852, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
-  m_PrefabInstance: {fileID: 944495415468064033}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1234552059 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2224584847770628060, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
@@ -3536,7 +3532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4804798524240106519, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5184577719988413817, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3612,14 +3608,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
---- !u!114 &944495415468064034 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1697048630821748888, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
-  m_PrefabInstance: {fileID: 944495415468064033}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
