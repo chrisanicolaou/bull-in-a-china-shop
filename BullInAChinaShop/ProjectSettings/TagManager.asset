@@ -22,6 +22,7 @@ TagManager:
   - Till
   - DayController
   - QuantityText
+  - QuantityNode
   layers:
   - Default
   - TransparentFX
