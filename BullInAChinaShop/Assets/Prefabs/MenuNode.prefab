@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4883846099648643637}
   m_Layer: 5
   m_Name: QuantityText
-  m_TagString: Untagged
+  m_TagString: QuantityText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 4582367476385036576}
   m_Layer: 5
   m_Name: Quantity
-  m_TagString: Untagged
+  m_TagString: QuantityNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

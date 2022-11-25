@@ -73,6 +73,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                 gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = upgradeSprite;
                 var btn = gridNodeObj.AddComponent<Button>();
                 btn.onClick.AddListener(() => LoadUpgradePreview(upgrade));
+                gridNodeObj.FindComponentInChildWithTag<Image>("QuantityNode").gameObject.SetActive(false);
                 _loadedUpgrades[upgrade] = gridNodeObj;
             });
         }

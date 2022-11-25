@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using CharaGaming.BullInAChinaShop.__TestScripts__;
+using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
 using CharaGaming.BullInAChinaShop.UI.Utils;
@@ -94,6 +96,12 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                 gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
                 var btn = gridNodeObj.AddComponent<Button>();
                 btn.onClick.AddListener(() => LoadStockPreview(stock));
+
+                if (stock.IsUnlocked)
+                {
+                    UpdateStockNodeQuantityText(gridNodeObj, stock);
+                }
+                
                 _loadedStock[stock] = gridNodeObj;
             });
         }
@@ -183,6 +191,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                     stock.PurchaseItem();
                 }
 
+                UpdateStockNodeQuantityText(_loadedStock[stock], stock);
                 LoadStockPreview(stock);
             });
         }
@@ -210,6 +219,8 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             var btn = gridNodeObj.AddComponent<Button>();
             btn.onClick.AddListener(() => LoadStockPreview(stock));
             gridNodeObj.GetComponent<RectTransform>().SetSiblingIndex(siblingIndex);
+            UpdateStockNodeQuantityText(gridNodeObj, stock);
+            
             _loadedStock[stock] = gridNodeObj;
             
             LoadStockPreview(stock);
@@ -218,6 +229,11 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
         private void UnloadStock()
         {
             _selectedStockArea.SetActive(false);
+        }
+
+        private void UpdateStockNodeQuantityText(GameObject gridNodeObj, BaseStock stock)
+        {
+            gridNodeObj.FindComponentInChildWithTag<TextMeshProUGUI>("QuantityText").text = stock.AvailableQuantity.KiloFormat().ToString().ToTMProColor(stock.AvailableQuantity > 0 ? Color.green : Color.red);
         }
     }
 }

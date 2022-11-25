@@ -250,22 +250,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1266982129}
     m_Modifications:
-    - target: {fileID: 1954869604133497377, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2224254028506321966, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088536845030396829, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4290822568967063609, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7068804845394126762, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
       propertyPath: m_Name
       value: PurchaseMenu
