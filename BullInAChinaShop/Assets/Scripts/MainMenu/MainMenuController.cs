@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +25,7 @@ namespace CharaGaming.BullInAChinaShop
         private void Start()
         {
             _playBtn.onClick.AddListener(OnPlayButtonPress);
-            _exitBtn.onClick.AddListener(Application.Quit);
+            _exitBtn.onClick.AddListener(OnQuitButtonPress);
             _settingsBtn.onClick.AddListener(OnSettingsButtonPress);
         }
 
@@ -36,6 +37,11 @@ namespace CharaGaming.BullInAChinaShop
         private void OnSettingsButtonPress()
         {
             throw new NotImplementedException();
+        }
+
+        private void OnQuitButtonPress()
+        {
+            WebGLHelpers.Quit();
         }
     }
 }
