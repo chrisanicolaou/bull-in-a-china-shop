@@ -47,6 +47,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private Image _img;
 
+        private ImpatienceBar _impatienceBar;
+
         private IEnumerator _impatienceCoroutine;
 
         private IEnumerator _loiterCoroutine;
@@ -54,17 +56,17 @@ namespace CharaGaming.BullInAChinaShop.Day
         private IEnumerator _joiningQueueCoroutine;
 
         private bool _isInShop;
-        
+
         private bool _isBeingServed;
 
         private bool _isGrowingImpatient;
-        
+
         private bool _isLeaving;
 
         private IEnumerator _enterShopCoroutine;
 
         private IEnumerator _thinkingCoroutine;
-        
+
         private static readonly int IsIdle = Animator.StringToHash("isIdle");
         private static readonly int IsAnnoyed = Animator.StringToHash("isAnnoyed");
         private static readonly int IsWalkingForward = Animator.StringToHash("isWalkingForward");
@@ -83,7 +85,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             Rect.SetSiblingIndex(1);
 
             _img = GetComponent<Image>();
-            
+
             _enterShopCoroutine = EnterShop();
             _loiterCoroutine = Loiter();
             _joiningQueueCoroutine = WalkToQueue();
@@ -118,10 +120,10 @@ namespace CharaGaming.BullInAChinaShop.Day
             var seq = Mover.MoveTo(Rect, ShopLocation.OutsideDoor);
 
             yield return seq.WaitForCompletion();
-            
+
             Animate(null);
             yield return null;
-            
+
             _img.sprite = _facingForwardSprite;
             _img.SetNativeSize();
 
@@ -142,18 +144,18 @@ namespace CharaGaming.BullInAChinaShop.Day
         public IEnumerator EnterShop()
         {
             _isInShop = true;
-            
+
             Animate(IsWalkingForward);
             yield return null;
-            
+
             var seq = Mover.MoveTo(Rect, ShopLocation.InsideDoor);
 
             yield return seq.WaitForCompletion();
-            
+
             Animate(_defaultIdle);
-            
+
             yield return new WaitForSeconds(0.5f);
-            
+
             StartCoroutine(Controller.CloseDoorCoroutine);
 
             var shouldLoiter = Random.Range(1, 5) < 4;
@@ -184,12 +186,12 @@ namespace CharaGaming.BullInAChinaShop.Day
                 }
 
                 var randomLoiterPoint = Random.Range(0, loiterPoints.Count);
-                
+
                 Animate(IsWalkingSide);
                 var seq = Mover.MoveTo(Rect, loiterPoints[randomLoiterPoint]);
 
                 yield return seq.WaitForCompletion();
-                
+
                 Animate(_defaultIdle);
                 yield return new WaitForSeconds(intervalLoiterTime);
             }
@@ -208,7 +210,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         public IEnumerator WalkToQueue()
         {
             Controller.ShopperQueue.Add(this);
-            
+
             Animate(IsWalkingForward);
             var seq = Mover.JoinQueue(Rect);
             yield return seq.WaitForCompletion();
@@ -225,22 +227,24 @@ namespace CharaGaming.BullInAChinaShop.Day
                     StartCoroutine(_impatienceCoroutine);
                 }
             }
-            
+
             Animate(_defaultIdle);
         }
 
         public IEnumerator ImpatienceTimer()
         {
             _isGrowingImpatient = true;
-            
+
             var waitTime = GameManager.Instance.ShopperImpatienceTime;
-            
+
             yield return new WaitForSeconds(waitTime / 2);
-            
+
             if (_isLeaving) yield break;
 
             _defaultIdle = IsAnnoyed;
             Animate(_defaultIdle);
+            _impatienceBar = GetComponentInChildren<ImpatienceBar>();
+            _impatienceBar.GetImpatient(waitTime / 2);
 
             yield return new WaitForSeconds(waitTime / 2);
 
@@ -252,10 +256,11 @@ namespace CharaGaming.BullInAChinaShop.Day
         public IEnumerator Think()
         {
             if (_isLeaving) yield break;
+            if (_impatienceBar != null) _impatienceBar.StopImpatienceBar();
             _isBeingServed = true;
             StopCoroutine(_impatienceCoroutine);
             StopCoroutine(_loiterCoroutine);
-            
+
             _defaultIdle = IsIdle;
             Animate(_defaultIdle);
             _thoughtBubble.SetActive(true);
@@ -273,7 +278,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             stockRect.anchoredPosition = stockRect.anchorMin;
 
             yield return new WaitForSeconds(GameManager.Instance.ShopperServeTime);
-            
+
             thoughtBubbleAnim.SetBool("hasRequestedStock", true);
 
             yield return new WaitForSeconds(0.3f);
@@ -313,24 +318,25 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator ExitShop()
         {
+            if (_impatienceBar != null) _impatienceBar.StopImpatienceBar();
             _isLeaving = true;
             StopCoroutine(_thinkingCoroutine);
             StopCoroutine(_joiningQueueCoroutine);
-            
+
             Animate(IsWalkingAway);
             yield return null;
-            
+
             var seq = Mover.MoveTo(Rect, ShopLocation.InsideDoor);
             yield return seq.WaitForCompletion();
 
             Animate(null);
             yield return null;
-            
+
             _img.sprite = _facingAwaySprite;
             _img.SetNativeSize();
-            
+
             StartCoroutine(Controller.OpenDoor());
-            
+
             yield return new WaitUntil(() => Controller.IsDoorOpen);
 
 
@@ -359,7 +365,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             if (_isLeaving) return;
             StopCoroutine(_joiningQueueCoroutine);
-            
+
             if (!_isGrowingImpatient)
             {
                 StartCoroutine(_impatienceCoroutine);
@@ -370,7 +376,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 StopCoroutine(_impatienceCoroutine);
                 _defaultIdle = IsIdle;
             }
-            
+
             Animate(IsWalkingSide);
 
             var posToWalkTo = Mover.CalculateQueuePosition(index);
@@ -396,7 +402,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             }
 
             var animId = (int)id;
-            
+
             foreach (var animatorId in _animatorIds)
             {
                 _animator.SetBool(animatorId, animatorId == animId);
