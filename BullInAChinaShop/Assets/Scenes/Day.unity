@@ -2340,7 +2340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cash: 2389
   <LoanAmount>k__BackingField: 161950
-  <DayNum>k__BackingField: 2
+  <DayNum>k__BackingField: 3
   <DayDuration>k__BackingField: 45
   <SpawnTimeVariance>k__BackingField: 4
   <ShopperServeTime>k__BackingField: 3
@@ -3165,7 +3165,6 @@ MonoBehaviour:
   - {fileID: 944495415468064037}
   - {fileID: 944495415468064036}
   - {fileID: 944495415468064035}
-  - {fileID: 944495415468064034}
 --- !u!4 &1449323778
 Transform:
   m_ObjectHideFlags: 0
@@ -3692,17 +3691,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
---- !u!114 &944495415468064034 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6670838532083584439, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
-  m_PrefabInstance: {fileID: 944495415468064033}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &944495415468064035 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2051884942847603033, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
