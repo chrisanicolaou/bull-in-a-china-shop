@@ -11,7 +11,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
 
         private float _scale = 1f;
 
-        private float _rotation;
+        private Vector3 _rotation;
 
         private bool _shouldClean;
 
@@ -42,7 +42,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
             return this;
         }
         
-        public StockBuilder SetYRotation(float rotation)
+        public StockBuilder SetRotation(Vector3 rotation)
         {
             _rotation = rotation;
             return this;
@@ -65,7 +65,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
             var stockObj = Object.Instantiate(Resources.Load<GameObject>("Stock"), Vector3.zero, Quaternion.identity);
             stockObj.transform.SetParent(_parent);
             stockObj.transform.localScale = new Vector3(_scale, _scale, _scale);
-            stockObj.transform.rotation = Quaternion.Euler(0f, _rotation, 0f);
+            stockObj.transform.rotation = Quaternion.Euler(_rotation);
 
             var stockImg = stockObj.FindComponentInChildWithTag<Image>("StockImage");
             stockImg.sprite = Resources.Load<Sprite>(_stock.SpriteFilePath);

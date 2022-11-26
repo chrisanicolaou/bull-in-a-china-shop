@@ -89,7 +89,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                     _stockBuilder.SetParent(_plateShelf)
                         .SetScale(_plateScale)
                         .SetStock(stock)
-                        .SetYRotation(55f)
+                        .SetRotation(new Vector3(-20f, 55f, 0f))
                         .Build();
                 }
             }
