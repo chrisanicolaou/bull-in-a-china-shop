@@ -26,7 +26,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             _slider = GetComponent<Slider>();
             _img = GetComponent<Image>();
             _img.enabled = false;
-            _slider.value = 0;
+            _slider.value = _slider.minValue;
         }
 
         private void Update()
@@ -37,9 +37,9 @@ namespace CharaGaming.BullInAChinaShop.Day
         public void GetImpatient(float time)
         {
             _img.enabled = true;
-            _slider.maxValue = time;
-            _slider.value = time;
-            _slideTween = _slider.DOValue(0, time);
+            _slider.maxValue = 100;
+            _slider.value = 100;
+            _slideTween = _slider.DOValue(_slider.minValue + 10, time - time * 0.1f);
         }
 
         public void StopImpatienceBar()
