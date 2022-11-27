@@ -294,9 +294,11 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             yield return StartCoroutine(PrepareDialogue("Your time has come."));
 
-            yield return StartCoroutine(PrepareDialogue("I should have NEVER believed in you!"));
+            yield return StartCoroutine(PrepareDialogue("I should have NEVER believed in you!", false));
 
-            StartCoroutine(Tornado());
+            var routine = Tornado();
+
+            StartCoroutine(routine);
 
             yield return new WaitForSeconds(1f);
 
@@ -307,8 +309,12 @@ namespace CharaGaming.BullInAChinaShop.Day
             DOTween.To(() => bloom.threshold.value, (x) => bloom.threshold.value = x, 0f, 1f).SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
-                    DOTween.To(() => bloom.intensity.value, (x) => bloom.intensity.value = x, 15f, 5f).SetEase(Ease.OutQuad)
-                        .OnComplete(() => { SceneManager.LoadScene("Defeat"); });
+                    DOTween.To(() => bloom.intensity.value, (x) => bloom.intensity.value = x, 12f, 4f).SetEase(Ease.OutQuad)
+                        .OnComplete(() =>
+                        {
+                            StopCoroutine(routine);
+                            SceneManager.LoadScene("Defeat");
+                        });
                 });
         }
 

@@ -25,6 +25,7 @@ TagManager:
   - QuantityNode
   - ReviewShopperIcon
   - ReviewBackgroundIcon
+  - GlobalVolume
   layers:
   - Default
   - TransparentFX
