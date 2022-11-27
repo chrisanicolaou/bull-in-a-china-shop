@@ -19,5 +19,6 @@ namespace CharaGaming.BullInAChinaShop.Enums
         ShopperThinking,
         PurchaseMenuClosed,
         StockUpgraded,
+        StockDestroyed,
     }
 }

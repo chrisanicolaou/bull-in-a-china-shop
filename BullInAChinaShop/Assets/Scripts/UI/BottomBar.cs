@@ -41,8 +41,24 @@ namespace CharaGaming.BullInAChinaShop.UI
                 };
             });
             GameEventsManager.Instance.AddListener(GameEvent.StockUpgraded, OnStockUpgrade);
+            GameEventsManager.Instance.AddListener(GameEvent.StockDestroyed, OnStockDestroyed);
             GameEventsManager.Instance.AddListener(GameEvent.ItemPurchased, OnStockPurchaseOrSold);
             GameEventsManager.Instance.AddListener(GameEvent.ItemSold, OnStockPurchaseOrSold);
+            GameEventsManager.Instance.AddListener(GameEvent.CashChanged, OnCashChange);
+        }
+
+        private void OnStockDestroyed(Dictionary<string, object> message)
+        {
+            var stock = GetStockFromMessage(message);
+            foreach (var kvp in _stockLookup[stock])
+            {
+                kvp.Value.text = stock.AvailableQuantity.KiloFormat().ToTMProColor(stock.AvailableQuantity > 0 ? Color.green : Color.red);
+            }
+        }
+
+        private void OnCashChange(Dictionary<string, object> obj)
+        {
+            _cashText.text = GameManager.Instance.Cash.KiloFormat();
         }
 
         private void OnStockPurchaseOrSold(Dictionary<string, object> message)
@@ -75,8 +91,10 @@ namespace CharaGaming.BullInAChinaShop.UI
         private void OnDestroy()
         {
             GameEventsManager.Instance.RemoveListener(GameEvent.StockUpgraded, OnStockUpgrade);
+            GameEventsManager.Instance.RemoveListener(GameEvent.StockDestroyed, OnStockDestroyed);
             GameEventsManager.Instance.RemoveListener(GameEvent.ItemPurchased, OnStockPurchaseOrSold);
             GameEventsManager.Instance.RemoveListener(GameEvent.ItemSold, OnStockPurchaseOrSold);
+            GameEventsManager.Instance.RemoveListener(GameEvent.CashChanged, OnCashChange);
         }
     }
 }

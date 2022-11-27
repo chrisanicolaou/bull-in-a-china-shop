@@ -11,6 +11,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace CharaGaming.BullInAChinaShop.Day
 {
@@ -46,6 +47,14 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         [SerializeField]
         private int _numberOfBounces;
+
+        [SerializeField]
+        [Range(0.01f, 0.3f)]
+        private float _percentCashToLosePerBounce = 0.02f;
+
+        [SerializeField]
+        [Range(0.01f, 0.3f)]
+        private float _percentStockToLosePerBounce = 0.02f;
         
         private Transform _shopperSpawnCanvas;
 
@@ -224,11 +233,11 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             Animate(IsBlowingSmoke);
             
-            yield return StartCoroutine(PrepareDialogue("That's it - <color=\"red\">YOU'LL PAY</color> for this!"));
+            yield return StartCoroutine(PrepareDialogue("That's it - <color=\"red\">YOU'LL PAY</color> for this!", false));
 
             yield return StartCoroutine(Tornado());
             
-            yield return StartCoroutine(PrepareDialogue("I warned you this would happen."));
+            yield return StartCoroutine(PrepareDialogue("I warned you this would happen.", false));
             
             Animate(IsWalkingAway);
             
@@ -341,11 +350,33 @@ namespace CharaGaming.BullInAChinaShop.Day
                 var seq = Mover.MoveTo(_bullRect, location, durationMultiplier: 0.25f);
 
                 yield return seq.WaitForCompletion();
+                DestroyStockAndCash();
             }
 
             yield return StartCoroutine(WalkToDesk());
             
             Animate(IsBlowingSmoke);
+        }
+
+        private void DestroyStockAndCash()
+        {
+            var minCashLoss = Mathf.CeilToInt(GameManager.Instance.Cash * _percentCashToLosePerBounce);
+            if (minCashLoss != 0)
+            {
+                var randomLoss = Mathf.CeilToInt(Random.Range(minCashLoss, minCashLoss + minCashLoss * 0.2f));
+                GameManager.Instance.Cash -= randomLoss > GameManager.Instance.Cash ? minCashLoss : randomLoss;
+            }
+            
+            var availableStock = GameManager.Instance.AvailableStock.Where(s => s.AvailableQuantity > 0).ToList();
+
+            if (availableStock.Count > 0)
+            {
+                var stockToLose = availableStock[Random.Range(0, availableStock.Count)];
+                var minQuantityToLose = Mathf.CeilToInt(stockToLose.AvailableQuantity * _percentStockToLosePerBounce);
+                var randomQuantityToLose = Mathf.CeilToInt(Random.Range(minQuantityToLose, minQuantityToLose + minQuantityToLose * 0.2f));
+                stockToLose.AvailableQuantity -= randomQuantityToLose > stockToLose.AvailableQuantity ? minQuantityToLose : randomQuantityToLose;
+                GameEventsManager.Instance.TriggerEvent(GameEvent.StockDestroyed, new Dictionary<string, object> { { "item", stockToLose } });
+            }
         }
 
         private void Animate(int? id)

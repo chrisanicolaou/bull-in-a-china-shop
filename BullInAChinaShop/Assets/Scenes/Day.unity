@@ -2347,8 +2347,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cash: 2389
   <LoanAmount>k__BackingField: 161950
-  <DayNum>k__BackingField: 3
-  <DayDuration>k__BackingField: 45
+  <DayNum>k__BackingField: 4
+  <DayDuration>k__BackingField: 0
   <ShopperPurchaseAmount>k__BackingField: 1
   _spawnTime: 5
   <SpawnTimeVariance>k__BackingField: 4
