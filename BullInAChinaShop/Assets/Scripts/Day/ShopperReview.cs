@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Stock;
+using CharaGaming.BullInAChinaShop.UI.Utils;
 using UnityEngine;
 
 namespace CharaGaming.BullInAChinaShop.Day
@@ -111,7 +112,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             ReviewText = prompts[Random.Range(0, prompts.Count)];
             if (ReviewText.Contains("{0}"))
             {
-                ReviewText = string.Format(ReviewText, isShopperSpecific ? ShopperName : RequestedStock!.Name);
+                ReviewText = string.Format(ReviewText, isShopperSpecific ? ShopperName.ToTMProColor(Color.yellow) : RequestedStock!.Name.ToTMProColor(Color.yellow));
             }
         }
     }
