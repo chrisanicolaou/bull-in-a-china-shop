@@ -43,17 +43,33 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         [SerializeField]
         private GameObject _bullPrefab;
+
+        [SerializeField]
+        private int _numberOfBounces;
         
         private Transform _shopperSpawnCanvas;
 
         private RectTransform _bullRect;
 
         private GameObject _bull;
+
+        private Animator _animator;
+
+        private static readonly int IsIdle = Animator.StringToHash("isIdle");
+        private static readonly int IsAnnoyed = Animator.StringToHash("isBlowingSmoke");
+        private static readonly int IsWalkingForward = Animator.StringToHash("isWalkingForward");
+        private static readonly int IsWalkingAway = Animator.StringToHash("isWalkingAway");
+        private static readonly int IsWalkingSide = Animator.StringToHash("isWalkingSide");
+        private static readonly int IsTornado = Animator.StringToHash("isTornado");
+        private static readonly int IsBlowingSmoke = Animator.StringToHash("isBlowingSmoke");
+
+        private List<int> _animatorIds;
         
         private void Awake()
         {
             _shopperSpawnCanvas = GameObject.FindWithTag("SpawnCanvas").GetComponent<Transform>();
             _bull = CreateBull();
+            _animatorIds = new List<int> { IsIdle, IsAnnoyed, IsWalkingAway, IsWalkingForward, IsWalkingSide, IsTornado, IsBlowingSmoke };
         }
 
         private GameObject CreateBull()
@@ -63,6 +79,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             _bullRect.anchoredPosition = _startPosition.PosAndScale.pos;
             _bullRect.localScale = new Vector3(_startPosition.PosAndScale.scale, _startPosition.PosAndScale.scale, _startPosition.PosAndScale.scale);
             _bullRect.SetSiblingIndex(1);
+            _animator = bullObj.GetComponent<Animator>();
 
             return bullObj;
         }
@@ -100,24 +117,35 @@ namespace CharaGaming.BullInAChinaShop.Day
         private IEnumerator FirstBullEncounter()
         {
             yield return StartCoroutine(ApproachShop());
+            
+            Animate(IsWalkingForward);
 
             yield return StartCoroutine(WalkInsideDoor());
 
             yield return StartCoroutine(WalkToDesk());
+            
+            Animate(IsIdle);
 
             yield return StartCoroutine(PrepareDialogue("Wow - I love what you've done with the place!"));
             
             yield return StartCoroutine(PrepareDialogue("I tell you somethin', this be the best china shop I ever did see in my life."));
             
             yield return StartCoroutine(PrepareDialogue("Say - you will do well here for sure.", false));
+            
+            Animate(IsWalkingAway);
 
             yield return StartCoroutine(WalkInsideDoor());
+            
+            Animate(IsIdle);
             
             yield return StartCoroutine(PrepareDialogue($"Oh, that reminds me. Remember that teeny, tiny, {$"$ {GameManager.Instance.LoanAmount.KiloFormat()}".ToTMProColor(Color.red)} loan?"));
             
             yield return StartCoroutine(PrepareDialogue($"Well, I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter} days to collect.", false));
 
             yield return StartCoroutine(ExitDoor());
+            
+            Animate(IsWalkingSide);
+            
             var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
 
             yield return seq.WaitForCompletion();
@@ -128,10 +156,14 @@ namespace CharaGaming.BullInAChinaShop.Day
         private IEnumerator SecondBullEncounter()
         {
             yield return StartCoroutine(ApproachShop());
+            
+            Animate(IsWalkingForward);
 
             yield return StartCoroutine(WalkInsideDoor());
 
             yield return StartCoroutine(WalkToDesk());
+            
+            Animate(IsIdle);
 
             yield return StartCoroutine(PrepareDialogue("Well, well. The day has come."));
             
@@ -143,7 +175,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             yield return StartCoroutine(PrepareDialogue("So it has come to this."));
             
-            // Some sort of animation
+            Animate(IsBlowingSmoke);
             
             yield return StartCoroutine(PrepareDialogue($"Mr. Shopkeeper, you are now {"LATE.".ToTMProColor(Color.red)}"));
             
@@ -153,13 +185,20 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             yield return StartCoroutine(PrepareDialogue("...I'll get reaaal clumsy.", false));
             
+            Animate(IsWalkingAway);
+            
             yield return StartCoroutine(WalkInsideDoor());
+            
+            Animate(IsIdle);
             
             yield return StartCoroutine(PrepareDialogue($"I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter} days..."));
             
             yield return StartCoroutine(PrepareDialogue($"You know, to...check up on you.", false));
             
             yield return StartCoroutine(ExitDoor());
+            
+            Animate(IsWalkingSide);
+            
             var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
 
             yield return seq.WaitForCompletion();
@@ -169,7 +208,47 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator AngryBullEncounter()
         {
-            throw new NotImplementedException();
+            yield return StartCoroutine(ApproachShop());
+            
+            Animate(IsWalkingForward);
+
+            yield return StartCoroutine(WalkInsideDoor());
+
+            yield return StartCoroutine(WalkToDesk());
+            
+            Animate(IsIdle);
+            
+            yield return StartCoroutine(PrepareDialogue("You know what I'm here for."));
+            
+            yield return StartCoroutine(PrepareDialogue("Do you have my money?"));
+            
+            Animate(IsBlowingSmoke);
+            
+            yield return StartCoroutine(PrepareDialogue("That's it - <color=\"red\">YOU'LL PAY</color> for this!"));
+
+            yield return StartCoroutine(Tornado());
+            
+            yield return StartCoroutine(PrepareDialogue("I warned you this would happen."));
+            
+            Animate(IsWalkingAway);
+            
+            yield return StartCoroutine(WalkInsideDoor());
+            
+            Animate(IsIdle);
+            
+            yield return StartCoroutine(PrepareDialogue($"I'll be back again in {GameManager.Instance.DaysUntilNextBullEncounter} days."));
+            
+            yield return StartCoroutine(PrepareDialogue($"You better have my money.", false));
+            
+            yield return StartCoroutine(ExitDoor());
+            
+            Animate(IsWalkingSide);
+            
+            var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
+
+            yield return seq.WaitForCompletion();
+            
+            OnEncounterFinish();
         }
 
         private IEnumerator LastBullEncounter()
@@ -186,10 +265,13 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public IEnumerator ApproachShop()
         {
+            Animate(IsWalkingSide);
             var seq = Mover.MoveTo(_bullRect, _outsideDoorPosition.PosAndScale.pos, _outsideDoorPosition.PosAndScale.scale, true);
 
             yield return seq.WaitForCompletion();
 
+            Animate(IsIdle);
+            
             Controller.RequestShopEntry();
 
             yield return new WaitUntil(() => Controller.IsDoorOpen);
@@ -211,6 +293,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             Controller.StartCoroutine(Controller.OpenDoorCoroutine);
             
             yield return new WaitUntil(() => Controller.IsDoorOpen);
+            
+            Animate(IsWalkingAway);
 
             var seq = Mover.MoveTo(_bullRect, _outsideDoorPosition.PosAndScale.pos, _outsideDoorPosition.PosAndScale.scale, true);
 
@@ -242,6 +326,44 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             yield return new WaitForSeconds(0.3f);
             yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
+        }
+
+        private IEnumerator Tornado()
+        {
+            Animate(IsTornado);
+
+            List<ShopLocation> locations = new List<ShopLocation> { ShopLocation.LoiterOne, ShopLocation.LoiterTwo, ShopLocation.LoiterThree };
+
+            for (int i = 0; i < _numberOfBounces; i++)
+            {
+                var location = locations[i % locations.Count];
+
+                var seq = Mover.MoveTo(_bullRect, location, durationMultiplier: 0.25f);
+
+                yield return seq.WaitForCompletion();
+            }
+
+            yield return StartCoroutine(WalkToDesk());
+            
+            Animate(IsBlowingSmoke);
+        }
+
+        private void Animate(int? id)
+        {
+            if (id == null)
+            {
+                _animator.enabled = false;
+                return;
+            }
+
+            var animId = (int)id;
+
+            foreach (var animatorId in _animatorIds)
+            {
+                _animator.SetBool(animatorId, animatorId == animId);
+            }
+
+            if (!_animator.enabled) _animator.enabled = true;
         }
     }
 }

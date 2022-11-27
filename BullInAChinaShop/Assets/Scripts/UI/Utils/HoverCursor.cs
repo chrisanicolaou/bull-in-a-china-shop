@@ -1,4 +1,5 @@
 using System;
+using CharaGaming.BullInAChinaShop.Singletons;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -31,12 +32,12 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
         }
         public void OnPointerExit(PointerEventData eventData)
         {
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+            Cursor.SetCursor(GameManager.Instance.DefaultCursor, Vector2.zero, CursorMode.ForceSoftware);
         }
 
         private void OnDestroy()
         {
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+            Cursor.SetCursor(GameManager.Instance.DefaultCursor, Vector2.zero, CursorMode.ForceSoftware);
         }
     }
 }

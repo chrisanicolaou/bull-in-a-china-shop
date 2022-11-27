@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: efda1eb5a5199ea4e853c02dd04d897f
+guid: 5bf2ecc12b12ac44ebcdcc1211baeb66
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 12
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -63,11 +63,10 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
-  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -115,7 +114,868 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: BullSheet_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 1517
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33917e25906b9f54bb2a6b956cf4a8a6
+      internalID: 616558431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 1517
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24be1b1e53b906f4e8038ad5cdb8f266
+      internalID: -1990263403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_2
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 1517
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f8605152e93b3442ad5fc2cee68227f
+      internalID: -587010075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_3
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 1517
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e36736d2e1e3b64ead3b43f93399713
+      internalID: 860854448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_4
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 956ea7549834a4542934459e45380422
+      internalID: -2016348062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_5
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3afbec19cf871a947912ab56c5c4747b
+      internalID: -972329324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_6
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8fc80a9faed7484d8c306ff2988754e
+      internalID: 158746214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_7
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d9b9e5f70347c645845814cf371eb7d
+      internalID: 2013357338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_8
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fb74b8a0dc560442bc2f05cedcdbb97
+      internalID: -771365236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_9
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b175580eadf32df4682c81a4ce266f7e
+      internalID: 1260794103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_10
+      rect:
+        serializedVersion: 2
+        x: 1159
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d08d90fd35a82db44a48c166abc746c5
+      internalID: 881219364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_11
+      rect:
+        serializedVersion: 2
+        x: 1351
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e52f55a539905749a3c64b29dcb5b14
+      internalID: 1484904336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_12
+      rect:
+        serializedVersion: 2
+        x: 1543
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b224ec684e6da364abbdf9178a15f426
+      internalID: -883403431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_13
+      rect:
+        serializedVersion: 2
+        x: 1735
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac6983d6d212f054eaa40031999a5f29
+      internalID: 369890096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_14
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 1213
+        width: 181
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1871106424c06e941bdffcf64db3d1ed
+      internalID: -1446009250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_15
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 910
+        width: 181
+        height: 290
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 265f523736b5e944f91423afe15bd871
+      internalID: 2048607756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_16
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 910
+        width: 235
+        height: 290
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71e2248df81c1c84a821bcd9a24a6489
+      internalID: 854896364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_17
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 910
+        width: 215
+        height: 290
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38adda71035875f40b66f95189eaf064
+      internalID: -1404556217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_19
+      rect:
+        serializedVersion: 2
+        x: 655
+        y: 887
+        width: 359
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46fec0169d7a2974a9ee5163f3140830
+      internalID: 1458728808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_22
+      rect:
+        serializedVersion: 2
+        x: 1027
+        y: 887
+        width: 392
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e58aab204b73d514db8e3cec892980ea
+      internalID: -1903272941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_25
+      rect:
+        serializedVersion: 2
+        x: 1435
+        y: 887
+        width: 390
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b757b51afa132d64dbeae82feadf15b5
+      internalID: -369630041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_28
+      rect:
+        serializedVersion: 2
+        x: 1832
+        y: 887
+        width: 377
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ae1f70a00cd9a64fa9cd5f0cbd2abc1
+      internalID: -1549417498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_31
+      rect:
+        serializedVersion: 2
+        x: 2221
+        y: 887
+        width: 371
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 963df37f08ede9c4792737ce55ff8a4f
+      internalID: -1888987173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_33
+      rect:
+        serializedVersion: 2
+        x: 2592
+        y: 887
+        width: 363
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f16d8ca1acb02048bce0cee6a0e3cfa
+      internalID: -1080371910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_35
+      rect:
+        serializedVersion: 2
+        x: 2973
+        y: 887
+        width: 369
+        height: 310
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0688b4730706ac044b27212bab0cf0ec
+      internalID: -133691858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_39
+      rect:
+        serializedVersion: 2
+        x: 3300
+        y: 1153
+        width: 42
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a83e7703d47bb694e9a6dcdd3640bdd2
+      internalID: -1313575270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_49
+      rect:
+        serializedVersion: 2
+        x: 2973
+        y: 1132
+        width: 43
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddc78ce795230bc40905ca623b80196d
+      internalID: -1473594493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_62
+      rect:
+        serializedVersion: 2
+        x: 3298
+        y: 1107
+        width: 33
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee36ed65a4ff05044a246fd48c0af589
+      internalID: -483124320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_64
+      rect:
+        serializedVersion: 2
+        x: 2978
+        y: 1099
+        width: 35
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eadbab23fe282a543aaa835e8ba60132
+      internalID: 1680010166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_65
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 593
+        width: 170
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 589fb99d6edd14a4eab45e2d74058b5d
+      internalID: 1837017750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_66
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 593
+        width: 170
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 965c673feed0e044d87aecbd792902e9
+      internalID: -20314147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_67
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 593
+        width: 171
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f2e32aae4660b940bcbb2a2f8635012
+      internalID: 1176460018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_68
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 593
+        width: 172
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e467751ae5b7efc46ab0814cf98a248b
+      internalID: -226320951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_69
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 13
+        width: 108
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3f647c9ba4520a41894c8195a822e47
+      internalID: 2127184657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_70
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 15
+        width: 144
+        height: 284
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf0012965e0caa848a97c91d7580615a
+      internalID: -354923995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_71
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 13
+        width: 110
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: defe7f2e4fd3e704f82572b9d40ce2b6
+      internalID: 1410712339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_72
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 13
+        width: 119
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b14bccd7f1310a349924658970ba3f05
+      internalID: 661420034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_18
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 305
+        width: 170
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86dec0a018a6f7f48b447d7285e3207f
+      internalID: -1579638386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_20
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 305
+        width: 170
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3e5a4c21480d624fa834e4be36122ca
+      internalID: 1117816981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_21
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 305
+        width: 169
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed9797970125a3949beeaeac205c4fb9
+      internalID: -1764553206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullSheet_23
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 306
+        width: 169
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae76567ccaaa5504296e10953e341fda
+      internalID: 154770556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -126,7 +986,80 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BullSheet_20: 1117816981
+      BullSheet_45: 810161837
+      BullSheet_71: 1410712339
+      BullSheet_23: 154770556
+      BullSheet_35: -133691858
+      BullSheet_38: 672064487
+      BullSheet_28: -1549417498
+      BullSheet_59: -462941487
+      BullSheet_49: -1473594493
+      BullSheet_58: 110880010
+      BullSheet_19: 1458728808
+      BullSheet_42: -1085223053
+      BullSheet_3: 860854448
+      BullSheet_11: 1484904336
+      BullSheet_29: 763619714
+      BullSheet_37: 1066234015
+      BullSheet_56: -1822256290
+      BullSheet_8: -771365236
+      BullSheet_30: -1867514219
+      BullSheet_70: -354923995
+      BullSheet_43: 1103924005
+      BullSheet_65: 1837017750
+      BullSheet_6: 158746214
+      BullSheet_67: 1176460018
+      BullSheet_46: -1947327432
+      BullSheet_72: 661420034
+      BullSheet_18: -1579638386
+      BullSheet_7: 2013357338
+      BullSheet_40: -1529409595
+      BullSheet_14: -1446009250
+      BullSheet_39: -1313575270
+      BullSheet_13: 369890096
+      BullSheet_5: -972329324
+      BullSheet_10: 881219364
+      BullSheet_21: -1764553206
+      BullSheet_51: -46922790
+      BullSheet_52: 842578728
+      BullSheet_34: -1155616989
+      BullSheet_4: -2016348062
+      BullSheet_55: 359243819
+      BullSheet_60: 1640099429
+      BullSheet_48: 844411356
+      BullSheet_17: -1404556217
+      BullSheet_25: -369630041
+      BullSheet_44: 1590572051
+      BullSheet_31: -1888987173
+      BullSheet_47: 288435321
+      BullSheet_32: 2067859977
+      BullSheet_9: 1260794103
+      BullSheet_27: -1784822497
+      BullSheet_24: 469660919
+      BullSheet_69: 2127184657
+      BullSheet_61: -2102329834
+      BullSheet_57: 817023460
+      BullSheet_64: 1680010166
+      BullSheet_50: 111961716
+      BullSheet_22: -1903272941
+      BullSheet_26: -1896618583
+      BullSheet_1: -1990263403
+      BullSheet_53: 2100002536
+      BullSheet_41: -1358232903
+      BullSheet_15: 2048607756
+      BullSheet_16: 854896364
+      BullSheet_2: -587010075
+      BullSheet_0: 616558431
+      BullSheet_33: -1080371910
+      BullSheet_12: -883403431
+      BullSheet_68: -226320951
+      BullSheet_36: 581965689
+      BullSheet_66: -20314147
+      BullSheet_54: -67338181
+      BullSheet_63: -335804157
+      BullSheet_62: -483124320
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

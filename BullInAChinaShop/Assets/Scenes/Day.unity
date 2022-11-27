@@ -153,7 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -589,7 +588,6 @@ MonoBehaviour:
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
@@ -2360,6 +2358,7 @@ MonoBehaviour:
   <NumOfDaysBetweenBullEncounters>k__BackingField: 2
   <TotalNumOfDays>k__BackingField: 30
   <CurrentTill>k__BackingField: {fileID: 7149246821796268895, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
+  <DefaultCursor>k__BackingField: {fileID: 0}
 --- !u!4 &929815184
 Transform:
   m_ObjectHideFlags: 0
@@ -3087,7 +3086,6 @@ MonoBehaviour:
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
@@ -3214,6 +3212,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8592120161941535029, guid: af53c5ccfab0ae543b13bd2c537a1f9c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -22.499939
+      objectReference: {fileID: 0}
     - target: {fileID: 8592120162352657705, guid: af53c5ccfab0ae543b13bd2c537a1f9c, type: 3}
       propertyPath: m_Name
       value: DialogueCanvas
@@ -3337,7 +3339,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -7633155749595153665, guid: ba27d95a8bd45214880a72acce0f3481, type: 2}
   m_audioClip: {fileID: 8300000, guid: 6c3bf9599538e174d89de0faed8d9c87, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.384
+  m_Volume: 0.349
   m_Pitch: 1
   Loop: 0
   Mute: 0

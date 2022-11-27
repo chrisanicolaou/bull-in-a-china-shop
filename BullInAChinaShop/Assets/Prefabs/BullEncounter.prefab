@@ -44,8 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca75ce6ccd934fea953542678b1d8424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startScale: 0.35
-  _walkSpeed: 1
   _startPosition:
     <Location>k__BackingField: 0
     _singleLocation: 1
@@ -83,3 +81,4 @@ MonoBehaviour:
     <MinScale>k__BackingField: 0
     <MaxScale>k__BackingField: 0
   _bullPrefab: {fileID: 643485616154760620, guid: d912218ed1416754a93ea9b5359f8b56, type: 3}
+  _numberOfBounces: 12

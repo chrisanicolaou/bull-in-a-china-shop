@@ -97,6 +97,9 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         public DayStats DayStats { get; set; }
 
         public List<int> BullEncounterDays { get; set; }
+        
+        [field: SerializeField]
+        public Texture2D DefaultCursor { get; private set; }
 
         protected override void Awake()
         {
@@ -105,7 +108,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             PopulateAvailableStock();
             PopulateUpgrades();
             CalculateBullEncounterDays();
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+            Cursor.SetCursor(DefaultCursor, Vector2.zero, CursorMode.ForceSoftware);
         }
 
         private void PopulateUpgrades()

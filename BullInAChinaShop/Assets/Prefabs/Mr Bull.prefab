@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 643485616154760619}
   - component: {fileID: 643485616154760617}
   - component: {fileID: 643485616154760618}
+  - component: {fileID: 7961395270846581456}
   m_Layer: 5
   m_Name: Mr Bull
   m_TagString: Untagged
@@ -35,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 137.1, y: 53.99997}
-  m_SizeDelta: {x: 179, y: 288}
+  m_AnchoredPosition: {x: 167.51932, y: 53.87497}
+  m_SizeDelta: {x: 171.682, y: 268.7301}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &643485616154760617
 CanvasRenderer:
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5f385b32d964a7c4583e8fc8b571e4d5, type: 3}
+  m_Sprite: {fileID: 616558431, guid: 5bf2ecc12b12ac44ebcdcc1211baeb66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76,3 +77,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &7961395270846581456
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643485616154760620}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e5bbc9fcdf362242933b544ea86d56b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

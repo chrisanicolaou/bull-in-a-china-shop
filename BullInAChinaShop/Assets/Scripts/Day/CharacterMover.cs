@@ -37,7 +37,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             _tillPos = _shopPositions.FirstOrDefault(p => p.Location == ShopLocation.DeskTill);
         }
 
-        public Sequence MoveTo(RectTransform rect, ShopLocation location)
+        public Sequence MoveTo(RectTransform rect, ShopLocation location, float durationMultiplier = 1.0f)
         {
             var shopPos = _shopPositions.FirstOrDefault(p => p.Location == location);
             if (shopPos == null)
@@ -50,6 +50,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             RotateCharacter(rect, targetPos);
 
             var duration = CalculateNormalizedDuration(rect.anchoredPosition, targetPos);
+            duration *= durationMultiplier;
 
             var seq = DOTween.Sequence();
 
