@@ -21,12 +21,16 @@ namespace CharaGaming.BullInAChinaShop.UI
         
         [SerializeField] 
         private GameObject _stockUIPrefab;
+        
+        [SerializeField]
+        private TextMeshProUGUI _daysRemainingText;
 
         private readonly Dictionary<BaseStock, Dictionary<Image, TextMeshProUGUI>> _stockLookup = new();
 
         private void Start()
         {
             _cashText.text = GameManager.Instance.Cash.KiloFormat();
+            _daysRemainingText.text = (GameManager.Instance.TotalNumOfDays - GameManager.Instance.DayNum).ToString().ToTMProColor(Color.red);
             
             GameManager.Instance.AvailableStock.ForEach(s =>
             {
