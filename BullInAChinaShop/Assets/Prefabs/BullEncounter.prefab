@@ -91,3 +91,5 @@ MonoBehaviour:
   _numberOfBounces: 12
   _percentCashToLosePerBounce: 0.02
   _percentStockToLosePerBounce: 0.02
+  _screenShakeMagnitude: 0.02
+  _screenShakeDuration: 0.5

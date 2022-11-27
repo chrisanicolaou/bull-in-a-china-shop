@@ -60,6 +60,14 @@ namespace CharaGaming.BullInAChinaShop.Day
         [SerializeField]
         [Range(0.01f, 0.3f)]
         private float _percentStockToLosePerBounce = 0.02f;
+
+        [SerializeField]
+        [Range(0.01f, 1f)]
+        private float _screenShakeMagnitude = 1f;
+
+        [SerializeField]
+        [Range(0.1f, 1f)]
+        private float _screenShakeDuration = 1f;
         
         private Transform _shopperSpawnCanvas;
 
@@ -68,6 +76,8 @@ namespace CharaGaming.BullInAChinaShop.Day
         private GameObject _bull;
 
         private Animator _animator;
+
+        private Camera _cam;
 
         private static readonly int IsIdle = Animator.StringToHash("isIdle");
         private static readonly int IsAnnoyed = Animator.StringToHash("isBlowingSmoke");
@@ -205,7 +215,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             Animate(IsIdle);
             
-            yield return StartCoroutine(PrepareDialogue($"I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter} days..."));
+            yield return StartCoroutine(PrepareDialogue($"I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter.ToString().ToTMProColor(Color.red)} days..."));
             
             yield return StartCoroutine(PrepareDialogue($"You know, to...check up on you.", false));
             
@@ -250,7 +260,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             Animate(IsIdle);
             
-            yield return StartCoroutine(PrepareDialogue($"I'll be back again in {GameManager.Instance.DaysUntilNextBullEncounter} days."));
+            yield return StartCoroutine(PrepareDialogue($"I'll be back again in {GameManager.Instance.DaysUntilNextBullEncounter.ToString().ToTMProColor(Color.red)} days."));
             
             yield return StartCoroutine(PrepareDialogue($"You better have my money.", false));
             
@@ -355,8 +365,11 @@ namespace CharaGaming.BullInAChinaShop.Day
                 var seq = Mover.MoveTo(_bullRect, location, durationMultiplier: 0.25f);
 
                 yield return seq.WaitForCompletion();
+                ShakeScreen(_screenShakeDuration, _screenShakeMagnitude);
                 DestroyStockAndCash();
             }
+
+            _cam.transform.DOScale(new Vector3(1, 1, 1), _screenShakeDuration);
 
             yield return StartCoroutine(WalkToDesk());
             
@@ -384,6 +397,12 @@ namespace CharaGaming.BullInAChinaShop.Day
                 stockToLose.AvailableQuantity -= randomQuantityToLose > stockToLose.AvailableQuantity ? minQuantityToLose : randomQuantityToLose;
                 GameEventsManager.Instance.TriggerEvent(GameEvent.StockDestroyed, new Dictionary<string, object> { { "item", stockToLose } });
             }
+        }
+        public void ShakeScreen (float duration, float magnitude)
+        {
+            _cam ??= Camera.main;
+            _cam.backgroundColor = Color.black;
+            _cam.transform.DOShakeScale(_screenShakeDuration, _screenShakeMagnitude);
         }
 
         private void Animate(int? id)
