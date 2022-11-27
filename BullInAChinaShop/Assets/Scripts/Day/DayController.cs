@@ -231,7 +231,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 yield return new WaitForSeconds(Random.Range(GameManager.Instance.SpawnTime, GameManager.Instance.SpawnTime + GameManager.Instance.SpawnTimeVariance));
             }
 
-            while (_shopperSpawnCanvas.childCount > 6)
+            while (_shopperSpawnCanvas.childCount > 5)
             {
                 yield return new WaitForSeconds(0.1f);
             }
