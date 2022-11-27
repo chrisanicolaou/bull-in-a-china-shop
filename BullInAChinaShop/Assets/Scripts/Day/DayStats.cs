@@ -8,6 +8,6 @@ namespace CharaGaming.BullInAChinaShop.Day
         
         public int ShoppersServed { get; set; }
 
-        public List<UnhappyShopper> UnhappyShoppers { get; set; } = new List<UnhappyShopper>();
+        public List<ShopperReview> Reviews { get; set; } = new List<ShopperReview>();
     }
 }

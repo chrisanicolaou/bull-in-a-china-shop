@@ -1,6 +1,8 @@
 using System;
 using CharaGaming.BullInAChinaShop.Day;
+using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.UI.Utils;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -32,6 +34,12 @@ namespace CharaGaming.BullInAChinaShop.Night
         private GameObject _reviewPrefab;
 
         [SerializeField]
+        private Sprite _badReviewBackground;
+
+        [SerializeField]
+        private Sprite _goodReviewBackground;
+
+        [SerializeField]
         private CanvasGroup _continueButtonCanvasGroup;
 
         [SerializeField]
@@ -50,19 +58,21 @@ namespace CharaGaming.BullInAChinaShop.Night
 
             var reviewCount = 0;
 
-            foreach (var shopper in stats.UnhappyShoppers)
+            foreach (var review in stats.Reviews)
             {
-                if (reviewCount == 4) break;
+                if (reviewCount == 6) break;
                 reviewCount++;
                 var shopperReviewObj = Instantiate(_reviewPrefab, _reviewPanel);
                 var canvasGroup = shopperReviewObj.GetComponent<CanvasGroup>();
-                var img = shopperReviewObj.GetComponentInChildren<Image>();
-                img.sprite = shopper.Sprite;
+                var backgroundImg = shopperReviewObj.FindComponentInChildWithTag<Image>("ReviewBackgroundIcon");
+                backgroundImg.sprite = review.Type == ReviewType.Happy ? _goodReviewBackground : _badReviewBackground;
+                var img = shopperReviewObj.FindComponentInChildWithTag<Image>("ReviewShopperIcon");
+                img.sprite = Resources.Load<Sprite>(review.ReviewSpriteFilePath);
                 var reviewText = shopperReviewObj.GetComponentInChildren<TextMeshProUGUI>();
                 seq.Append(canvasGroup.DOFade(1f, 0.2f)
                     .OnComplete(() =>
                     {
-                        reviewText.DOText(shopper.Review, 0.6f);
+                        reviewText.DOText(review.ReviewText, 0.6f);
                     }));
             }
 

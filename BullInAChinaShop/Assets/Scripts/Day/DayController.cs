@@ -357,6 +357,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         private void EndDay()
         {
             GameManager.Instance.DayStats = DayStats;
+            Time.timeScale = 1f;
             SceneFader.Instance.FadeToScene("Night");
         }
 

@@ -23,6 +23,8 @@ TagManager:
   - DayController
   - QuantityText
   - QuantityNode
+  - ReviewShopperIcon
+  - ReviewBackgroundIcon
   layers:
   - Default
   - TransparentFX

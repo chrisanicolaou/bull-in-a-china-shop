@@ -45,6 +45,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         public RectTransform Rect { get; set; }
 
+        private ShopperReview _review;
+
         private Image _img;
 
         private ImpatienceBar _impatienceBar;
@@ -94,6 +96,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             _animatorIds = new[] { IsIdle, IsAnnoyed, IsWalkingSide, IsWalkingAway, IsWalkingForward };
             _defaultIdle = IsIdle;
+            _review = new ShopperReview(name[..name.IndexOf("(", StringComparison.Ordinal)]);
         }
 
         private void Update()
@@ -293,16 +296,15 @@ namespace CharaGaming.BullInAChinaShop.Day
         private void PurchaseStock(BaseStock stock)
         {
             _isBeingServed = false;
+            _review.RequestedStock = stock;
             StartCoroutine(Controller.RequestStock(stock, 2) ? LeaveHappily() : LeaveInAHuff());
         }
 
         private IEnumerator LeaveInAHuff()
         {
-            Controller.DayStats.UnhappyShoppers.Add(new UnhappyShopper
-            {
-                Sprite = GetComponent<Image>().sprite,
-                Review = "I had a bad experience! :("
-            });
+            _review.Type = ReviewType.Unhappy;
+            _review.GenerateReviewText();
+            Controller.DayStats.Reviews.Add(_review);
             if (Controller.ShopperQueue.Contains(this)) Controller.Remove(this);
             StartCoroutine(ExitShop());
             yield break;
@@ -310,6 +312,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator LeaveHappily()
         {
+            _review.Type = ReviewType.Happy;
+            _review.GenerateReviewText();
+            Controller.DayStats.Reviews.Add(_review);
             Controller.Remove(this);
 
             StartCoroutine(ExitShop());
