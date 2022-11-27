@@ -210,8 +210,6 @@ namespace CharaGaming.BullInAChinaShop.Day
                 _purchaseMenuButton.enabled = true;
                 _purchaseMenuButton.onClick.AddListener(() => { _purchaseMenu.SetActive(true); });
                 _purchaseMenuLight.SetActive(true);
-                
-                ChangeMusic(_preDayMusic);
             }
             else
             {
