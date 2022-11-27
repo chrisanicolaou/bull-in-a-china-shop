@@ -100,7 +100,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 ReviewText = randomPrompts[Random.Range(0, randomPrompts.Count)];
                 if (ReviewText.Contains("{0}"))
                 {
-                    ReviewText = string.Format(ReviewText, isShopperSpecific ? ShopperName : RequestedStock.Name);
+                    ReviewText = string.Format(ReviewText, isShopperSpecific ? ShopperName.ToTMProColor(Color.yellow) : RequestedStock.Name.ToTMProColor(Color.yellow));
                 }
 
                 return;
