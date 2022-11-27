@@ -44,6 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca75ce6ccd934fea953542678b1d8424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _breakSfxClips:
+  - {fileID: 8300000, guid: ada73f6f16bd65c48874dedd1888823d, type: 3}
+  - {fileID: 8300000, guid: de248f04f0830f4488eee63f47f2e5e9, type: 3}
+  - {fileID: 8300000, guid: 94e436917fb37c541997229df3912e17, type: 3}
+  - {fileID: 8300000, guid: 227d302d534e9a04f8243a9e0d90e1a1, type: 3}
+  - {fileID: 8300000, guid: 06bb978da75c42d44bc02db8c3ce64b6, type: 3}
+  - {fileID: 8300000, guid: 1ed83391ee78b0c459e188fe99bc21f4, type: 3}
   _startPosition:
     <Location>k__BackingField: 0
     _singleLocation: 1

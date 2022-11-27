@@ -28,6 +28,11 @@ namespace CharaGaming.BullInAChinaShop.Day
         public DayController Controller { get; set; }
         
         public CharacterMover Mover { get; set; }
+        
+        public List<AudioSource> BreakSfxChannels { get; set; }
+
+        [SerializeField]
+        private AudioClip[] _breakSfxClips;
 
         [SerializeField]
         private ShopPosition _startPosition;
@@ -360,6 +365,8 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private void DestroyStockAndCash()
         {
+            var sfxChannel = BreakSfxChannels.FirstOrDefault(c => !c.isPlaying);
+            if (sfxChannel != null) sfxChannel.PlayOneShot(_breakSfxClips[Random.Range(0, _breakSfxClips.Length)]);
             var minCashLoss = Mathf.CeilToInt(GameManager.Instance.Cash * _percentCashToLosePerBounce);
             if (minCashLoss != 0)
             {

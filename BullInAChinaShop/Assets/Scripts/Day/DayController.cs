@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
@@ -34,6 +35,9 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         [SerializeField]
         private AudioSource _doorSfxController;
+
+        [SerializeField]
+        private AudioSource[] _plateBreakSfxChannels;
 
         [SerializeField]
         private GameObject _stockMenuTutorialText;
@@ -112,6 +116,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 var bullEncounter = Instantiate(_bullEncounterPrefab).GetComponent<BullEncounter>();
                 bullEncounter.Controller = this;
                 bullEncounter.Mover = Mover;
+                bullEncounter.BreakSfxChannels = _plateBreakSfxChannels.ToList();
                 bullEncounter.PlayBullEncounter(GameManager.Instance.DayNum);
                 return;
             }
