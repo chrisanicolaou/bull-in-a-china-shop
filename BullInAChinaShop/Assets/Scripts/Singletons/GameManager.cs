@@ -41,8 +41,11 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         [field: SerializeField]
         public int DayDuration { get; set; } = 45;
 
+        [field: SerializeField]
+        public int ShopperPurchaseAmount { get; set; } = 1;
+
         [SerializeField]
-        private float _spawnTime { get; set; } = 5f;
+        private float _spawnTime = 5f;
 
         public float SpawnTime
         {
