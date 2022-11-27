@@ -39,11 +39,15 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private Vector2 _startPos;
 
+        private Animator _animator;
+        private static readonly int HasSoldStock = Animator.StringToHash("hasSoldStock");
+
         private void Start()
         {
             GameEventsManager.Instance.AddListener(GameEvent.ItemSold, OnItemSold);
             _startPos = _sellTipTransform.anchoredPosition;
             _sfxController.loop = false;
+            _animator = GetComponent<Animator>();
         }
 
         public void Upgrade(int numOfTimes = 1)
@@ -78,6 +82,15 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 Debug.LogError("Item or quantity key missing!");
                 return;
+            }
+
+            if (_animator != null)
+            {
+                _animator.SetBool(HasSoldStock, true);
+
+                var seq = DOTween.Sequence();
+                seq.AppendInterval(3f);
+                seq.AppendCallback(() => _animator.SetBool(HasSoldStock, false));
             }
 
             var stock = (BaseStock)stockObj;

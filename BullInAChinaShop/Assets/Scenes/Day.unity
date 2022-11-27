@@ -3005,15 +3005,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cash: 1700
   <LoanAmount>k__BackingField: 161950
-  <DayNum>k__BackingField: 1
-  <DayDuration>k__BackingField: 0
+  <DayNum>k__BackingField: 2
+  <DayDuration>k__BackingField: 64
   <ShopperPurchaseAmount>k__BackingField: 1
   _spawnTime: 5
   <SpawnTimeVariance>k__BackingField: 4
   <ShopperServeTime>k__BackingField: 3
   _shopperImpatienceTime: 10
   _shopperThinkTime: 10
-  <NumOfDaysBetweenBullEncounters>k__BackingField: 2
+  <NumOfDaysBetweenBullEncounters>k__BackingField: 3
   <TotalNumOfDays>k__BackingField: 4
   <CurrentTill>k__BackingField: {fileID: 7149246821796268895, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
   <DefaultCursor>k__BackingField: {fileID: 0}

@@ -62,7 +62,6 @@ MonoBehaviour:
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
@@ -2525,6 +2524,7 @@ GameObject:
   - component: {fileID: 2453132901764218365}
   - component: {fileID: 7149246821772000762}
   - component: {fileID: 5875566314855467910}
+  - component: {fileID: 5466220353406667903}
   m_Layer: 5
   m_Name: TouchTill
   m_TagString: Till
@@ -2552,7 +2552,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -71.29999, y: 89}
-  m_SizeDelta: {x: 79, y: 72}
+  m_SizeDelta: {x: 80.55555, y: 69.44444}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7149246821796268892
 CanvasRenderer:
@@ -2582,7 +2582,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e769cde7c6536a44db78d2d43c048774, type: 3}
+  m_Sprite: {fileID: -1558120815, guid: 3ea58e92ecb9b3a4c83ac92317bb8aaa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2768,3 +2768,23 @@ MonoBehaviour:
   <NewCursor>k__BackingField: {fileID: 2800000, guid: d59661c02f28cc842a826c9aad5f40d6, type: 3}
   <HotSpot>k__BackingField: {x: 0, y: 0}
   <Mode>k__BackingField: 0
+--- !u!95 &5466220353406667903
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7149246821796268895}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6e71a2272ef1ddb40973b3d54fa18ead, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
