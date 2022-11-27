@@ -195,7 +195,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             
             StartCoroutine(nameof(StartDayCoroutine));
             if (_startDayTutorialText.activeSelf) _startDayTutorialText.SetActive(false);
-            ChangeMusic(_dayMusic);
+            ChangeMusic(_dayMusic, volume: 0.3f);
         }
 
         public void TogglePurchaseMenuButton(bool toggle = true)
@@ -367,11 +367,12 @@ namespace CharaGaming.BullInAChinaShop.Day
                    animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         }
 
-        private void ChangeMusic(AudioClip targetClip, bool loop = true)
+        private void ChangeMusic(AudioClip targetClip, bool loop = true, float? volume = null)
         {
             _musicController.Pause();
             _musicController.clip = targetClip;
             _musicController.loop = loop;
+            if (volume != null) _musicController.volume = (float)volume;
             _musicController.Play();
         }
     }

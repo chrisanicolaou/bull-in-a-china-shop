@@ -81,9 +81,15 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private Sequence _moveAlongSeq;
 
+        private AudioSource _audioSource;
+
+        [SerializeField]
+        private ShopperSfx _sfx = new ShopperSfx();
+
         private void Awake()
         {
             Rect = GetComponent<RectTransform>();
+            _audioSource = GetComponent<AudioSource>();
             Rect.SetSiblingIndex(1);
 
             _img = GetComponent<Image>();
@@ -266,6 +272,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
             _defaultIdle = IsIdle;
             Animate(_defaultIdle);
+            if (_sfx.Thinking != null) _audioSource.PlayOneShot(_sfx.Thinking);
             _thoughtBubble.SetActive(true);
             yield return new WaitForSeconds(GameManager.Instance.ShopperThinkTime);
 
@@ -279,6 +286,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             stockRect.anchorMin = new Vector2(0.5f, 0.5f);
             stockRect.anchorMax = new Vector2(0.5f, 0.5f);
             stockRect.anchoredPosition = stockRect.anchorMin;
+            
+            if (_sfx.Decided != null) _audioSource.PlayOneShot(_sfx.Decided);
 
             yield return new WaitForSeconds(GameManager.Instance.ShopperServeTime);
 
@@ -304,6 +313,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         private IEnumerator LeaveInAHuff()
         {
+            if (_sfx.Angry != null) _audioSource.PlayOneShot(_sfx.Angry);
             _review.Type = ReviewType.Unhappy;
             _review.GenerateReviewText();
             Controller.DayStats.Reviews.Add(_review);
