@@ -3001,9 +3001,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd2c6ec56a1dff348b6f0b45fabd1582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cash: 2389
+  _cash: 170000
   <LoanAmount>k__BackingField: 161950
-  <DayNum>k__BackingField: 3
+  <DayNum>k__BackingField: 4
   <DayDuration>k__BackingField: 0
   <ShopperPurchaseAmount>k__BackingField: 1
   _spawnTime: 5

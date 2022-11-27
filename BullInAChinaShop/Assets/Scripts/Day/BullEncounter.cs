@@ -20,14 +20,6 @@ namespace CharaGaming.BullInAChinaShop.Day
 {
     public class BullEncounter : MonoBehaviour
     {
-        // Be nice to do this with some sort of severity flag to change how pissed off his prompts are!
-        //
-        // private readonly List<string> _randomAngryPrompts = new List<string>()
-        // {
-        //     "You know what I'm here for...",
-        //     "I'm getting real tired of this.",
-        //     "You are <color=\"red\">REALLY starting to test my patience.</b> "
-        // }
         public DayController Controller { get; set; }
 
         public CharacterMover Mover { get; set; }
@@ -118,6 +110,12 @@ namespace CharaGaming.BullInAChinaShop.Day
             if (bullEncounterIndex == -1)
             {
                 Debug.LogError("Bull encounter does not exist in BullEncounterDays!");
+                return;
+            }
+
+            if (GameManager.Instance.Cash > GameManager.Instance.LoanAmount)
+            {
+                StartCoroutine(nameof(VictoryBullEncounter));
                 return;
             }
 
@@ -276,6 +274,50 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return seq.WaitForCompletion();
 
             OnEncounterFinish();
+        }
+
+        private IEnumerator VictoryBullEncounter()
+        {
+            yield return StartCoroutine(ApproachShop());
+
+            Animate(IsWalkingForward);
+
+            yield return StartCoroutine(WalkInsideDoor());
+
+            yield return StartCoroutine(WalkToDesk());
+
+            Animate(IsIdle);
+
+            yield return StartCoroutine(PrepareDialogue("You know what I'm here for."));
+
+            yield return StartCoroutine(PrepareDialogue("Do you have my money?"));
+
+            yield return StartCoroutine(PrepareDialogue("...Oh...Y-you do?"));
+            
+            // Kaching sfx?
+            GameManager.Instance.Cash -= GameManager.Instance.LoanAmount;
+
+            yield return StartCoroutine(PrepareDialogue("Wow. I never really thought you would do it."));
+
+            yield return StartCoroutine(PrepareDialogue("Well - in that case, I guess - good luck with your shop.", false));
+
+            Animate(IsWalkingAway);
+
+            yield return StartCoroutine(WalkInsideDoor());
+
+            Animate(IsIdle);
+
+            yield return StartCoroutine(PrepareDialogue("Hey - if you ever need another loan, you know where to find me.", false));
+
+            yield return StartCoroutine(ExitDoor());
+
+            Animate(IsWalkingSide);
+
+            var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
+
+            yield return new WaitForSeconds(0.3f);
+            
+            SceneFader.Instance.FadeToScene("Victory");
         }
 
         private IEnumerator LastBullEncounter()
