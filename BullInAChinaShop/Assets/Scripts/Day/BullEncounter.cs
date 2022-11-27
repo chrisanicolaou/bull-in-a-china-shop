@@ -10,6 +10,9 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -26,9 +29,9 @@ namespace CharaGaming.BullInAChinaShop.Day
         //     "You are <color=\"red\">REALLY starting to test my patience.</b> "
         // }
         public DayController Controller { get; set; }
-        
+
         public CharacterMover Mover { get; set; }
-        
+
         public List<AudioSource> BreakSfxChannels { get; set; }
 
         [SerializeField]
@@ -43,7 +46,7 @@ namespace CharaGaming.BullInAChinaShop.Day
 
         [SerializeField]
         private ShopPosition _insideDoorPosition;
-        
+
         [SerializeField]
         private ShopPosition _centerOfTillPosition;
 
@@ -68,7 +71,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         [SerializeField]
         [Range(0.1f, 1f)]
         private float _screenShakeDuration = 1f;
-        
+
         private Transform _shopperSpawnCanvas;
 
         private RectTransform _bullRect;
@@ -88,7 +91,7 @@ namespace CharaGaming.BullInAChinaShop.Day
         private static readonly int IsBlowingSmoke = Animator.StringToHash("isBlowingSmoke");
 
         private List<int> _animatorIds;
-        
+
         private void Awake()
         {
             _shopperSpawnCanvas = GameObject.FindWithTag("SpawnCanvas").GetComponent<Transform>();
@@ -117,7 +120,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 Debug.LogError("Bull encounter does not exist in BullEncounterDays!");
                 return;
             }
-            
+
             if (bullEncounterIndex == GameManager.Instance.BullEncounterDays.Count - 1)
             {
                 StartCoroutine(nameof(LastBullEncounter));
@@ -141,143 +144,172 @@ namespace CharaGaming.BullInAChinaShop.Day
         private IEnumerator FirstBullEncounter()
         {
             yield return StartCoroutine(ApproachShop());
-            
+
             Animate(IsWalkingForward);
 
             yield return StartCoroutine(WalkInsideDoor());
 
             yield return StartCoroutine(WalkToDesk());
-            
+
             Animate(IsIdle);
 
             yield return StartCoroutine(PrepareDialogue("Wow - I love what you've done with the place!"));
-            
+
             yield return StartCoroutine(PrepareDialogue("I tell you somethin', this be the best china shop I ever did see in my life."));
-            
+
             yield return StartCoroutine(PrepareDialogue("Say - you will do well here for sure.", false));
-            
+
             Animate(IsWalkingAway);
 
             yield return StartCoroutine(WalkInsideDoor());
-            
+
             Animate(IsIdle);
-            
+
             yield return StartCoroutine(PrepareDialogue($"Oh, that reminds me. Remember that teeny, tiny, {$"$ {GameManager.Instance.LoanAmount.KiloFormat()}".ToTMProColor(Color.red)} loan?"));
-            
+
             yield return StartCoroutine(PrepareDialogue($"Well, I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter} days to collect.", false));
 
             yield return StartCoroutine(ExitDoor());
-            
+
             Animate(IsWalkingSide);
-            
+
             var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
 
             yield return seq.WaitForCompletion();
-            
+
             OnEncounterFinish();
         }
-        
+
         private IEnumerator SecondBullEncounter()
         {
             yield return StartCoroutine(ApproachShop());
-            
+
             Animate(IsWalkingForward);
 
             yield return StartCoroutine(WalkInsideDoor());
 
             yield return StartCoroutine(WalkToDesk());
-            
+
             Animate(IsIdle);
 
             yield return StartCoroutine(PrepareDialogue("Well, well. The day has come."));
-            
+
             yield return StartCoroutine(PrepareDialogue("Do you have my money?"));
-            
+
             yield return StartCoroutine(PrepareDialogue("..."));
-            
+
             yield return StartCoroutine(PrepareDialogue("I see."));
-            
+
             yield return StartCoroutine(PrepareDialogue("So it has come to this."));
-            
+
             Animate(IsBlowingSmoke);
-            
+
             yield return StartCoroutine(PrepareDialogue($"Mr. Shopkeeper, you are now {"LATE.".ToTMProColor(Color.red)}"));
-            
+
             yield return StartCoroutine(PrepareDialogue($"You have {(GameManager.Instance.TotalNumOfDays - GameManager.Instance.DayNum).ToString().ToTMProColor(Color.red)} days to get me my money."));
 
             yield return StartCoroutine(PrepareDialogue("If you don't have it by then I'll..."));
-            
+
             yield return StartCoroutine(PrepareDialogue("...I'll get reaaal clumsy.", false));
-            
+
             Animate(IsWalkingAway);
-            
+
             yield return StartCoroutine(WalkInsideDoor());
-            
+
             Animate(IsIdle);
-            
+
             yield return StartCoroutine(PrepareDialogue($"I'll be back in {GameManager.Instance.DaysUntilNextBullEncounter.ToString().ToTMProColor(Color.red)} days..."));
-            
+
             yield return StartCoroutine(PrepareDialogue($"You know, to...check up on you.", false));
-            
+
             yield return StartCoroutine(ExitDoor());
-            
+
             Animate(IsWalkingSide);
-            
+
             var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
 
             yield return seq.WaitForCompletion();
-            
+
             OnEncounterFinish();
         }
 
         private IEnumerator AngryBullEncounter()
         {
             yield return StartCoroutine(ApproachShop());
-            
+
             Animate(IsWalkingForward);
 
             yield return StartCoroutine(WalkInsideDoor());
 
             yield return StartCoroutine(WalkToDesk());
-            
+
             Animate(IsIdle);
-            
+
             yield return StartCoroutine(PrepareDialogue("You know what I'm here for."));
-            
+
             yield return StartCoroutine(PrepareDialogue("Do you have my money?"));
-            
+
             Animate(IsBlowingSmoke);
-            
+
             yield return StartCoroutine(PrepareDialogue("That's it - <color=\"red\">YOU'LL PAY</color> for this!", false));
 
             yield return StartCoroutine(Tornado());
-            
+
             yield return StartCoroutine(PrepareDialogue("I warned you this would happen.", false));
-            
+
             Animate(IsWalkingAway);
-            
+
             yield return StartCoroutine(WalkInsideDoor());
-            
+
             Animate(IsIdle);
-            
+
             yield return StartCoroutine(PrepareDialogue($"I'll be back again in {GameManager.Instance.DaysUntilNextBullEncounter.ToString().ToTMProColor(Color.red)} days."));
-            
+
             yield return StartCoroutine(PrepareDialogue($"You better have my money.", false));
-            
+
             yield return StartCoroutine(ExitDoor());
-            
+
             Animate(IsWalkingSide);
-            
+
             var seq = Mover.MoveTo(_bullRect, _startPosition.PosAndScale.pos, _startPosition.PosAndScale.scale, true);
 
             yield return seq.WaitForCompletion();
-            
+
             OnEncounterFinish();
         }
 
         private IEnumerator LastBullEncounter()
         {
-            yield break;
+            yield return StartCoroutine(ApproachShop());
+
+            Animate(IsWalkingForward);
+
+            yield return StartCoroutine(WalkInsideDoor());
+
+            yield return StartCoroutine(WalkToDesk());
+
+            Animate(IsBlowingSmoke);
+
+            yield return StartCoroutine(PrepareDialogue("This has gone on long enough."));
+
+            yield return StartCoroutine(PrepareDialogue("Your time has come."));
+
+            yield return StartCoroutine(PrepareDialogue("I should have NEVER believed in you!"));
+
+            StartCoroutine(Tornado());
+
+            yield return new WaitForSeconds(1f);
+
+            var volume = GameObject.FindWithTag("GlobalVolume").GetComponent<Volume>();
+
+            volume.profile.TryGet(out Bloom bloom);
+
+            DOTween.To(() => bloom.threshold.value, (x) => bloom.threshold.value = x, 0f, 1f).SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    DOTween.To(() => bloom.intensity.value, (x) => bloom.intensity.value = x, 15f, 5f).SetEase(Ease.OutQuad)
+                        .OnComplete(() => { SceneManager.LoadScene("Defeat"); });
+                });
         }
 
         private void OnEncounterFinish()
@@ -295,12 +327,12 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return seq.WaitForCompletion();
 
             Animate(IsIdle);
-            
+
             Controller.RequestShopEntry();
 
             yield return new WaitUntil(() => Controller.IsDoorOpen);
         }
-        
+
         public IEnumerator WalkInsideDoor()
         {
             var seq = Mover.MoveTo(_bullRect, _insideDoorPosition.PosAndScale.pos, _insideDoorPosition.PosAndScale.scale, true);
@@ -308,16 +340,16 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return new WaitForSeconds(0.05f);
 
             _bullRect.SetSiblingIndex(_bullRect.parent.childCount - 3);
-            
+
             yield return seq.WaitForCompletion();
         }
-        
+
         public IEnumerator ExitDoor()
         {
             Controller.StartCoroutine(Controller.OpenDoorCoroutine);
-            
+
             yield return new WaitUntil(() => Controller.IsDoorOpen);
-            
+
             Animate(IsWalkingAway);
 
             var seq = Mover.MoveTo(_bullRect, _outsideDoorPosition.PosAndScale.pos, _outsideDoorPosition.PosAndScale.scale, true);
@@ -325,7 +357,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return new WaitForSeconds(0.05f);
 
             _bullRect.SetSiblingIndex(1);
-            
+
             yield return seq.WaitForCompletion();
 
             Controller.StartCoroutine(Controller.CloseDoorCoroutine);
@@ -352,13 +384,13 @@ namespace CharaGaming.BullInAChinaShop.Day
             yield return new WaitUntil(() => DialogueBox.Instance.CurrentTween == null);
         }
 
-        private IEnumerator Tornado()
+        private IEnumerator Tornado(bool endless = false)
         {
             Animate(IsTornado);
 
             List<ShopLocation> locations = new List<ShopLocation> { ShopLocation.LoiterOne, ShopLocation.LoiterTwo, ShopLocation.LoiterThree };
 
-            for (int i = 0; i < _numberOfBounces; i++)
+            for (int i = 0; endless ? i < 34 : i < _numberOfBounces; i++)
             {
                 var location = locations[i % locations.Count];
 
@@ -366,13 +398,16 @@ namespace CharaGaming.BullInAChinaShop.Day
 
                 yield return seq.WaitForCompletion();
                 ShakeScreen(_screenShakeDuration, _screenShakeMagnitude);
-                DestroyStockAndCash();
+                if (!endless)
+                {
+                    DestroyStockAndCash();
+                }
             }
 
             _cam.transform.DOScale(new Vector3(1, 1, 1), _screenShakeDuration);
 
             yield return StartCoroutine(WalkToDesk());
-            
+
             Animate(IsBlowingSmoke);
         }
 
@@ -386,7 +421,7 @@ namespace CharaGaming.BullInAChinaShop.Day
                 var randomLoss = Mathf.CeilToInt(Random.Range(minCashLoss, minCashLoss + minCashLoss * 0.2f));
                 GameManager.Instance.Cash -= randomLoss > GameManager.Instance.Cash ? minCashLoss : randomLoss;
             }
-            
+
             var availableStock = GameManager.Instance.AvailableStock.Where(s => s.AvailableQuantity > 0).ToList();
 
             if (availableStock.Count > 0)
@@ -398,7 +433,8 @@ namespace CharaGaming.BullInAChinaShop.Day
                 GameEventsManager.Instance.TriggerEvent(GameEvent.StockDestroyed, new Dictionary<string, object> { { "item", stockToLose } });
             }
         }
-        public void ShakeScreen (float duration, float magnitude)
+
+        public void ShakeScreen(float duration, float magnitude)
         {
             _cam ??= Camera.main;
             _cam.backgroundColor = Color.black;
