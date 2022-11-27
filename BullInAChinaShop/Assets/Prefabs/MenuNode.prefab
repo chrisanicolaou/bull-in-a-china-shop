@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 753553130817881672}
   - component: {fileID: 1604760340089494231}
   - component: {fileID: 8628531288611442029}
+  - component: {fileID: 1970957867774637849}
   m_Layer: 5
   m_Name: MenuNode
   m_TagString: Untagged
@@ -289,6 +290,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1970957867774637849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3755290730357754538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3bc0e3c1dbc5e4eb690d26623cc491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <NewCursor>k__BackingField: {fileID: 2800000, guid: d59661c02f28cc842a826c9aad5f40d6, type: 3}
+  <HotSpot>k__BackingField: {x: 0, y: 0}
+  <Mode>k__BackingField: 0
 --- !u!1 &6143848762781828865
 GameObject:
   m_ObjectHideFlags: 0

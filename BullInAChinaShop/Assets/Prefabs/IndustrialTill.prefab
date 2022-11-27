@@ -1460,9 +1460,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _light: {fileID: 2350883051436075380}
+  _startAtMax: 1
+  _ease: 5
   _minIntensity: 0
   _maxIntensity: 2.2
   _duration: 2
+  _startDelay: 0
+  _pulseInterval: 0
 --- !u!1 &1607633106253372751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1917,6 +1921,7 @@ GameObject:
   - component: {fileID: 8764461402557218886}
   - component: {fileID: 2453132901764218365}
   - component: {fileID: 7149246821772000762}
+  - component: {fileID: 806945694090977329}
   m_Layer: 5
   m_Name: IndustrialTill
   m_TagString: Till
@@ -2145,3 +2150,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &806945694090977329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7149246821796268895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3bc0e3c1dbc5e4eb690d26623cc491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <NewCursor>k__BackingField: {fileID: 2800000, guid: d59661c02f28cc842a826c9aad5f40d6, type: 3}
+  <HotSpot>k__BackingField: {x: 0, y: 0}
+  <Mode>k__BackingField: 0
