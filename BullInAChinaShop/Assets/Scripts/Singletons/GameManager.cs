@@ -105,6 +105,7 @@ namespace CharaGaming.BullInAChinaShop.Singletons
             PopulateAvailableStock();
             PopulateUpgrades();
             CalculateBullEncounterDays();
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         }
 
         private void PopulateUpgrades()

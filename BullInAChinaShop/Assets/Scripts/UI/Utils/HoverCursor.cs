@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,6 +18,11 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
 
         public bool IsDisabled { get; set; }
 
+        private void Awake()
+        {
+            Mode = CursorMode.ForceSoftware;
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (eventData.pointerDrag != null) return;
@@ -25,12 +31,12 @@ namespace CharaGaming.BullInAChinaShop.UI.Utils
         }
         public void OnPointerExit(PointerEventData eventData)
         {
-            Cursor.SetCursor(null, new Vector2(0, 0), CursorMode.Auto);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         }
 
         private void OnDestroy()
         {
-            Cursor.SetCursor(null, new Vector2(0, 0), CursorMode.Auto);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         }
     }
 }
