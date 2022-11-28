@@ -2665,6 +2665,7 @@ MonoBehaviour:
   - {fileID: 2455142027325837898, guid: 7c93a9892b1a4bb4f93024a2d8e8cc0f, type: 3}
   - {fileID: 2455142027325837898, guid: 271dbc30c43822e408c01997b240ecdd, type: 3}
   - {fileID: 915570154861790355, guid: e18813117cda3714799266c10ca33514, type: 3}
+  - {fileID: 915570154861790355, guid: e8b39be996b5cd5499015045fed1d28e, type: 3}
   _shopperSpawnCanvas: {fileID: 1220248364}
   _doorAnimator: {fileID: 1234552059}
   _outsideFader: {fileID: 1449323777}
@@ -2879,9 +2880,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 0.032407407
+    width: 0.21041667
+    height: 0.21041666
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -3005,18 +3006,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cash: 1700
   <LoanAmount>k__BackingField: 161950
-  <DayNum>k__BackingField: 2
+  <DayNum>k__BackingField: 1
   <DayDuration>k__BackingField: 64
   <ShopperPurchaseAmount>k__BackingField: 1
   _spawnTime: 5
   <SpawnTimeVariance>k__BackingField: 4
   <ShopperServeTime>k__BackingField: 3
   _shopperImpatienceTime: 10
-  _shopperThinkTime: 10
-  <NumOfDaysBetweenBullEncounters>k__BackingField: 3
-  <TotalNumOfDays>k__BackingField: 4
+  _shopperThinkTime: 7
+  <NumOfDaysBetweenBullEncounters>k__BackingField: 2
+  <TotalNumOfDays>k__BackingField: 10
   <CurrentTill>k__BackingField: {fileID: 7149246821796268895, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
-  <DefaultCursor>k__BackingField: {fileID: 0}
+  <DefaultCursor>k__BackingField: {fileID: 2800000, guid: 76316858f8c2d584e8390c9f6ad8b6d1, type: 3}
 --- !u!4 &929815184
 Transform:
   m_ObjectHideFlags: 0
@@ -5023,7 +5024,7 @@ PrefabInstance:
     - target: {fileID: 7216877326338201850, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 359e5af8832ce514681dcb29fdd1a6f1, type: 3}
+      objectReference: {fileID: 21300000, guid: e06b27d061de5b84eaef53a76002813d, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f89075ac5bebbcd45bdf31d0d4b40e88, type: 3}
 --- !u!114 &944495415468064035 stripped
