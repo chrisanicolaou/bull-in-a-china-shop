@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
@@ -38,6 +39,8 @@ namespace CharaGaming.BullInAChinaShop.Day
             GameEventsManager.Instance.AddListener(GameEvent.ItemPurchased, OnItemPurchaseOrSold);
             GameEventsManager.Instance.AddListener(GameEvent.ItemSold, OnItemPurchaseOrSold);
             GameEventsManager.Instance.AddListener(GameEvent.StockUpgraded, OnItemUpgraded);
+            
+            PopulatePlateShelves();
         }
 
         private void OnItemPurchaseOrSold(Dictionary<string, object> message)
@@ -53,7 +56,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             switch (stockType)
             {
                 case StockType.Plate:
-                    PopulatePlateShelves(stock);
+                    PopulatePlateShelves();
                     break;
             }
         }
@@ -72,13 +75,15 @@ namespace CharaGaming.BullInAChinaShop.Day
             {
                 case StockType.Plate:
                     _plateShelfTransforms.ForEach(s => s.DestroyAllChildren());
-                    PopulatePlateShelves(stock, true);
+                    PopulatePlateShelves(true);
                     break;
             }
         }
 
-        private void PopulatePlateShelves(BaseStock stock, bool forceReload = false)
+        private void PopulatePlateShelves(bool forceReload = false)
         {
+            var stock = GameManager.Instance.AvailableStock.FirstOrDefault(s => s.Type == StockType.Plate);
+            if (stock == null) return;
             var normalizedQuantity = stock.AvailableQuantity;
             if (stock.AvailableQuantity > _plateShelfCap) normalizedQuantity -= _plateShelfCap / 2;
             var requiredShelves = Mathf.Min(Mathf.CeilToInt(normalizedQuantity / (float)_plateShelfCap), _backShelfLocations.Length);
