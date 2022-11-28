@@ -2913,7 +2913,7 @@ MonoBehaviour:
   _cash: 300
   <LoanAmount>k__BackingField: 25000
   <DayNum>k__BackingField: 1
-  <DayDuration>k__BackingField: 60
+  <DayDuration>k__BackingField: 0
   <ShopperPurchaseAmount>k__BackingField: 1
   _spawnTime: 5
   <SpawnTimeVariance>k__BackingField: 4

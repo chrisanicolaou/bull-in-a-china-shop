@@ -86,6 +86,7 @@ namespace CharaGaming.BullInAChinaShop.Night
         {
             // Handle whatever needs to change before the next day
             GameManager.Instance.DayNum++;
+            _continueButton.onClick.RemoveAllListeners();
             SceneFader.Instance.FadeToScene("Day"); //!!!! - CHANGE THIS PRE RELEASE !!!!!
         }
     }
