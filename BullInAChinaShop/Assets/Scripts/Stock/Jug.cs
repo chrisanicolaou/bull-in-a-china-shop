@@ -10,7 +10,5 @@ namespace CharaGaming.BullInAChinaShop.Stock
         public override string[] FlavourTexts { get; set; } = { "For both baking AND serving!", "Milk sold separately", "What a nice jug", "Fit for a king", };
         public override int[] SellValues { get; set; } = { 35, 60, 110, 250 };
         public override int[] UpgradeCosts { get; set; } = { 75, 180, 350 };
-
-        public override int UnlockCost { get; protected set; } = 100;
     }
 }
