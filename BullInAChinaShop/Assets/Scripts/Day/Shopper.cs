@@ -281,7 +281,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             var stock = GameManager.Instance.AvailableStock[Random.Range(0, GameManager.Instance.AvailableStock.Count)];
 
             var stockObj = new StockBuilder().SetParent(_thoughtBubble.transform).SetScale(0f).SetStock(stock).Build();
-            stockObj.transform.DOScale(0.35f, 0.2f);
+            stockObj.transform.DOScale(0.45f, 0.2f);
             var stockRect = stockObj.GetComponent<RectTransform>();
             stockRect.anchorMin = new Vector2(0.5f, 0.5f);
             stockRect.anchorMax = new Vector2(0.5f, 0.5f);

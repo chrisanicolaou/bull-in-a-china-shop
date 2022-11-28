@@ -6,6 +6,7 @@ using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.Stock;
 using CharaGaming.BullInAChinaShop.UI.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CharaGaming.BullInAChinaShop.Day
 {
@@ -19,6 +20,9 @@ namespace CharaGaming.BullInAChinaShop.Day
         
         [SerializeField]
         private GameObject _plateShelfPrefab;
+
+        [SerializeField]
+        private Sprite[] _pixelatedPlateSprites;
 
         private readonly List<RectTransform> _plateShelfTransforms  = new();
 
@@ -85,7 +89,6 @@ namespace CharaGaming.BullInAChinaShop.Day
             var stock = GameManager.Instance.AvailableStock.FirstOrDefault(s => s.Type == StockType.Plate);
             if (stock == null) return;
             var normalizedQuantity = stock.AvailableQuantity;
-            if (stock.AvailableQuantity > _plateShelfCap) normalizedQuantity -= _plateShelfCap / 2;
             var requiredShelves = Mathf.Min(Mathf.CeilToInt(normalizedQuantity / (float)_plateShelfCap), _backShelfLocations.Length);
             var remainingPlates = Mathf.Min(stock.AvailableQuantity, requiredShelves * _plateShelfCap);
 
@@ -121,36 +124,14 @@ namespace CharaGaming.BullInAChinaShop.Day
                     }
                     else
                     {
-                        _stockBuilder.SetParent(plateShelfTransform)
-                            .SetScale(_plateScale)
-                            .SetStock(stock)
-                            .SetRotation(new Vector3(-20f, 55f, 0f))
-                            .Build();
+                        var stockObj = new GameObject("shelfStock", typeof(RectTransform));
+                        stockObj.transform.SetParent(plateShelfTransform, false);
+                        var img = stockObj.AddComponent<Image>();
+                        img.sprite = _pixelatedPlateSprites.FirstOrDefault(s => s.name == stock.Name);
+                        img.SetNativeSize();
                     }
                 }
             }
-            // var plateShelfNum = !forceReload ? _plateShelf.childCount : 0;
-            // if (plateShelfNum == stock.AvailableQuantity || (plateShelfNum == _plateShelfCap && stock.AvailableQuantity >= _plateShelfCap))
-            // {
-            //     return;
-            // }
-            //
-            // var plateDiff = stock.AvailableQuantity - plateShelfNum;
-            // for (var i = 0; i < Mathf.Min(Mathf.Abs(plateDiff), _plateShelfCap); i++)
-            // {
-            //     if (plateDiff < 0)
-            //     {
-            //         Destroy(_plateShelf.GetChild(0).gameObject);
-            //     }
-            //     else
-            //     {
-            //         _stockBuilder.SetParent(_plateShelf)
-            //             .SetScale(_plateScale)
-            //             .SetStock(stock)
-            //             .SetRotation(new Vector3(-20f, 55f, 0f))
-            //             .Build();
-            //     }
-            // }
         }
 
         private void OnDestroy()

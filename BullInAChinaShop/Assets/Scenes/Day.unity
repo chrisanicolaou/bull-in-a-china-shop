@@ -619,7 +619,12 @@ MonoBehaviour:
   _backShelfLocations:
   - {x: 25.5407, y: 68.33566, z: 0}
   _plateShelfPrefab: {fileID: 5813315670893152679, guid: 6fc2fa37246f4b54d8b4b355b5304c43, type: 3}
-  _plateShelfCap: 40
+  _pixelatedPlateSprites:
+  - {fileID: -1000881756, guid: f6f5a2ef53015a448a7b0bd544849cc4, type: 3}
+  - {fileID: -120578503, guid: f6f5a2ef53015a448a7b0bd544849cc4, type: 3}
+  - {fileID: 659178075, guid: f6f5a2ef53015a448a7b0bd544849cc4, type: 3}
+  - {fileID: 1820161395, guid: f6f5a2ef53015a448a7b0bd544849cc4, type: 3}
+  _plateShelfCap: 29
   _plateScale: 0.25
 --- !u!4 &363942105
 Transform:
