@@ -70,7 +70,9 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                 var upgradeSprite = Resources.Load<Sprite>(upgrade.SpriteFilePath) ??
                                     SpriteHelpers.LoadFromSheet("Upgrades/UpgradesSheet", new string(upgrade.Name.Where(c => !char.IsWhiteSpace(c)).ToArray()));
                 
-                gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = upgradeSprite;
+                var img = gridNodeObj.FindComponentInChildWithTag<Image>("StockImage");
+                img.sprite = upgradeSprite;
+                img.SetNativeSize();
                 var btn = gridNodeObj.AddComponent<Button>();
                 btn.onClick.AddListener(() => LoadUpgradePreview(upgrade));
                 gridNodeObj.FindComponentInChildWithTag<Image>("QuantityNode").gameObject.SetActive(false);
@@ -86,6 +88,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                                 SpriteHelpers.LoadFromSheet("Upgrades/UpgradesSheet", new string(upgrade.Name.Where(c => !char.IsWhiteSpace(c)).ToArray()));
 
             _upgradePreviewImage.sprite = upgradeSprite;
+            _upgradePreviewImage.SetNativeSize();
             _upgradeNameText.text = upgrade.Name;
             _upgradeDescription.text = upgrade.Description;
 
@@ -120,6 +123,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                                 SpriteHelpers.LoadFromSheet("Upgrades/UpgradesSheet", new string(upgrade.Name.Where(c => !char.IsWhiteSpace(c)).ToArray()));
             var img = _loadedUpgrades[upgrade].FindComponentInChildWithTag<Image>("StockImage");
             img.sprite = upgradeSprite;
+            img.SetNativeSize();
 
             LoadUpgradePreview(upgrade);
         }

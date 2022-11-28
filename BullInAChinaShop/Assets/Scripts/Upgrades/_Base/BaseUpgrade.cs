@@ -17,9 +17,9 @@ namespace CharaGaming.BullInAChinaShop.Upgrades
         
         public abstract string[] Descriptions { get; set; }
 
-        public string Name => Names[Mathf.Min(UpgradeLevel, UpgradeCosts.Length - 1)];
+        public string Name => Names[Mathf.Min(UpgradeLevel, Names.Length - 1)];
 
-        public virtual string Description => Descriptions[Mathf.Min(UpgradeLevel, UpgradeCosts.Length - 1)];
+        public virtual string Description => Descriptions[Mathf.Min(UpgradeLevel, Descriptions.Length - 1)];
 
         public int UpgradeCost => UpgradeCosts[Mathf.Min(UpgradeLevel, UpgradeCosts.Length - 1)];
 

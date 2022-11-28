@@ -83,6 +83,8 @@ namespace CharaGaming.BullInAChinaShop.Singletons
 
         public float ShopperThinkTimeMultiplier { get; set; } = 1.0f;
 
+        public float GlobalSellValueMultiplier { get; set; } = 1.0f;
+
         [field: SerializeField]
         public int NumOfDaysBetweenBullEncounters { get; set; } = 5;
 
@@ -95,6 +97,8 @@ namespace CharaGaming.BullInAChinaShop.Singletons
         public int DaysUntilNextBullEncounter => BullEncounterDays.FirstOrDefault(d => d > DayNum) - DayNum;
         
         public DayStats DayStats { get; set; }
+
+        public float BullDestructionMultiplier { get; set; } = 1.0f;
 
         public List<int> BullEncounterDays { get; set; }
         

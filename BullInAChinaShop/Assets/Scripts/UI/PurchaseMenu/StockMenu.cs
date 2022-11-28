@@ -93,7 +93,9 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             GameManager.Instance.AvailableStock.ForEach((stock) =>
             {
                 var gridNodeObj = Instantiate(stock.IsUnlocked ? _gridNode : _lockedGridNode, _stockContentArea, false);
-                gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
+                var img = gridNodeObj.FindComponentInChildWithTag<Image>("StockImage");
+                img.sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
+                img.SetNativeSize();
                 var btn = gridNodeObj.AddComponent<Button>();
                 btn.onClick.AddListener(() => LoadStockPreview(stock));
 
@@ -203,6 +205,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
 
             var stockImg = _loadedStock[stock].FindComponentInChildWithTag<Image>("StockImage");
             stockImg.sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
+            stockImg.SetNativeSize();
 
             LoadStockPreview(stock);
         }
@@ -215,7 +218,9 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             Destroy(stockObj);
             
             var gridNodeObj = Instantiate(_gridNode, _stockContentArea, false);
-            gridNodeObj.FindComponentInChildWithTag<Image>("StockImage").sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
+            var img = gridNodeObj.FindComponentInChildWithTag<Image>("StockImage");
+            img.sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
+            img.SetNativeSize();
             var btn = gridNodeObj.AddComponent<Button>();
             btn.onClick.AddListener(() => LoadStockPreview(stock));
             gridNodeObj.GetComponent<RectTransform>().SetSiblingIndex(siblingIndex);

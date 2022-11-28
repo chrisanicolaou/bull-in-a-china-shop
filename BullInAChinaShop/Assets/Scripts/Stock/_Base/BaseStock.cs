@@ -16,7 +16,6 @@ namespace CharaGaming.BullInAChinaShop.Stock
 {
     public abstract class BaseStock
     {
-
         private int _upgradeLevel;
         
         public abstract StockType Type { get; set; }
@@ -37,7 +36,7 @@ namespace CharaGaming.BullInAChinaShop.Stock
 
         public string FlavourText => FlavourTexts[UpgradeLevel];
 
-        public int SellValue => SellValues[UpgradeLevel];
+        public int SellValue => Mathf.CeilToInt(SellValues[UpgradeLevel] * GameManager.Instance.GlobalSellValueMultiplier);
 
         public int SellValueUpgradeIncrease => SellValues[UpgradeLevel + 1] - SellValues[UpgradeLevel];
 

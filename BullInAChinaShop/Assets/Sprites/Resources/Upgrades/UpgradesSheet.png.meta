@@ -3,7 +3,7 @@ guid: b286b34cde57d5842ba70dc4f4a619f1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 12
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -63,7 +63,6 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
-  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -126,7 +125,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BikBokAds
+      name: OnlineReputation
       rect:
         serializedVersion: 2
         x: 16
@@ -147,7 +146,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CleanerShop
+      name: CleanerStock
       rect:
         serializedVersion: 2
         x: 14
@@ -189,7 +188,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgrades-Sheet_4
+      name: MagicClock
       rect:
         serializedVersion: 2
         x: 2
@@ -231,7 +230,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: upgrades-Sheet_9
+      name: FocusPheromones
       rect:
         serializedVersion: 2
         x: 10
@@ -262,16 +261,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BikBokAds: 2108696855
+      FocusPheromones: -1897758078
       upgrades-Sheet_7: 1369109358
       Wifi: -1820415246
       Radio: -1359401739
       NewspaperAds: -941896926
       upgrades-Sheet_8: 324672930
-      upgrades-Sheet_9: -1897758078
+      MagicClock: -1504171512
       upgrades-Sheet_6: -797903182
-      upgrades-Sheet_4: -1504171512
-      CleanerShop: -1501813565
+      OnlineReputation: 2108696855
+      CleanerStock: -1501813565
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
