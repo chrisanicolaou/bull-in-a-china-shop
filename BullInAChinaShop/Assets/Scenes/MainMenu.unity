@@ -2911,7 +2911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cash: 300
-  <LoanAmount>k__BackingField: 25000
+  <LoanAmount>k__BackingField: 35000
   <DayNum>k__BackingField: 1
   <DayDuration>k__BackingField: 0
   <ShopperPurchaseAmount>k__BackingField: 1

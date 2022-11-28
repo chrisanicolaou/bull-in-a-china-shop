@@ -6,7 +6,7 @@ namespace CharaGaming.BullInAChinaShop.Upgrades
     public class BullDestructionUpgrade : BaseUpgrade
     {
         private float[] _destructionModifier = { 0.15f, 0.25f, 0.4f, 0.7f };
-        public override int[] UpgradeCosts { get; set; } = { 120, 200, 600, 1200 };
+        public override int[] UpgradeCosts { get; set; } = { 120, 350, 700, 1200 };
         public override string[] Names { get; set; } = { "Online Reputation" };
         public override string[] Descriptions { get; set; } = { "Become more respectable. Mr. Bull destroys <color=#357D2D>{0}%</color> less each visit." };
 
