@@ -307,7 +307,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             _isBeingServed = false;
             _review.RequestedStock = stock;
             var baseAmount = GameManager.Instance.ShopperPurchaseAmount;
-            var amount = Random.Range(baseAmount, Mathf.Max(3, (int)(baseAmount * 1.1)));
+            var amount = Random.Range(baseAmount, baseAmount + 3);
             StartCoroutine(Controller.RequestStock(stock, amount) ? LeaveHappily() : LeaveInAHuff());
         }
 

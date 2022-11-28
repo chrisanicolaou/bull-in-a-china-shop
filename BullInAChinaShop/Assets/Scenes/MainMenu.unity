@@ -2625,7 +2625,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1677293382
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2642,9 +2642,9 @@ RectTransform:
   m_Father: {fileID: 48536635}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 68.265, y: -61.25}
   m_SizeDelta: {x: 101.06, y: 22.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1677293383
@@ -2792,77 +2792,6 @@ MonoBehaviour:
   <NewCursor>k__BackingField: {fileID: 2800000, guid: d59661c02f28cc842a826c9aad5f40d6, type: 3}
   <HotSpot>k__BackingField: {x: 0, y: 0}
   <Mode>k__BackingField: 1
---- !u!1 &1741555857
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1741555860}
-  - component: {fileID: 1741555859}
-  - component: {fileID: 1741555858}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1741555858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741555857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 069260068ace4f8c9ba0d1a0eedf0fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1741555859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741555857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd2c6ec56a1dff348b6f0b45fabd1582, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cash: 1700
-  <LoanAmount>k__BackingField: 161950
-  <DayNum>k__BackingField: 1
-  <DayDuration>k__BackingField: 64
-  <ShopperPurchaseAmount>k__BackingField: 1
-  _spawnTime: 5
-  <SpawnTimeVariance>k__BackingField: 4
-  <ShopperServeTime>k__BackingField: 3
-  _shopperImpatienceTime: 10
-  _shopperThinkTime: 7
-  <NumOfDaysBetweenBullEncounters>k__BackingField: 2
-  <TotalNumOfDays>k__BackingField: 10
-  <CurrentTill>k__BackingField: {fileID: 7149246821796268895, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
-  <DefaultCursor>k__BackingField: {fileID: 2800000, guid: 76316858f8c2d584e8390c9f6ad8b6d1, type: 3}
---- !u!4 &1741555860
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741555857}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7462696, y: -0.08242886, z: -9.896817}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1754148675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2939,3 +2868,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1754148675}
   m_CullTransparentMesh: 1
+--- !u!1 &2044597576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2044597579}
+  - component: {fileID: 2044597578}
+  - component: {fileID: 2044597577}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2044597577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044597576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069260068ace4f8c9ba0d1a0eedf0fc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2044597578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044597576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd2c6ec56a1dff348b6f0b45fabd1582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cash: 300
+  <LoanAmount>k__BackingField: 25000
+  <DayNum>k__BackingField: 1
+  <DayDuration>k__BackingField: 60
+  <ShopperPurchaseAmount>k__BackingField: 1
+  _spawnTime: 5
+  <SpawnTimeVariance>k__BackingField: 4
+  <ShopperServeTime>k__BackingField: 3
+  _shopperImpatienceTime: 10
+  _shopperThinkTime: 7
+  <NumOfDaysBetweenBullEncounters>k__BackingField: 3
+  <TotalNumOfDays>k__BackingField: 15
+  <CurrentTill>k__BackingField: {fileID: 7149246821796268895, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
+  <DefaultCursor>k__BackingField: {fileID: 2800000, guid: 76316858f8c2d584e8390c9f6ad8b6d1, type: 3}
+--- !u!4 &2044597579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044597576}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.7462696, y: -0.08242886, z: -9.896817}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

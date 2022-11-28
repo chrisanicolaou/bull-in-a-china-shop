@@ -89,7 +89,7 @@ MonoBehaviour:
     <MaxScale>k__BackingField: 0
   _bullPrefab: {fileID: 643485616154760620, guid: d912218ed1416754a93ea9b5359f8b56, type: 3}
   _numberOfBounces: 12
-  _percentCashToLosePerBounce: 0.02
-  _percentStockToLosePerBounce: 0.02
+  _percentCashToLosePerBounce: 0.01
+  _percentStockToLosePerBounce: 0.01
   _screenShakeMagnitude: 0.02
   _screenShakeDuration: 0.5
