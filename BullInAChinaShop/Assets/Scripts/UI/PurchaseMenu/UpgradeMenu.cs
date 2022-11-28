@@ -72,6 +72,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                 
                 var img = gridNodeObj.FindComponentInChildWithTag<Image>("StockImage");
                 img.sprite = upgradeSprite;
+                img.rectTransform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
                 img.SetNativeSize();
                 var btn = gridNodeObj.AddComponent<Button>();
                 btn.onClick.AddListener(() => LoadUpgradePreview(upgrade));
@@ -123,6 +124,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
                                 SpriteHelpers.LoadFromSheet("Upgrades/UpgradesSheet", new string(upgrade.Name.Where(c => !char.IsWhiteSpace(c)).ToArray()));
             var img = _loadedUpgrades[upgrade].FindComponentInChildWithTag<Image>("StockImage");
             img.sprite = upgradeSprite;
+            img.rectTransform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
             img.SetNativeSize();
 
             LoadUpgradePreview(upgrade);

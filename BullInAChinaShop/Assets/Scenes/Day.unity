@@ -805,6 +805,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8402050390743402851, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_Spacing.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402050390743402851, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_Spacing.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402050390743402851, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_CellSize.x
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402050390743402851, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_CellSize.y
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402050390743402851, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 947f318f267272b4993e63c2086df2f9, type: 3}
 --- !u!224 &430206804 stripped
@@ -3078,7 +3098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cash: 1700
   <LoanAmount>k__BackingField: 161950
-  <DayNum>k__BackingField: 1
+  <DayNum>k__BackingField: 2
   <DayDuration>k__BackingField: 64
   <ShopperPurchaseAmount>k__BackingField: 1
   _spawnTime: 5
@@ -3086,7 +3106,7 @@ MonoBehaviour:
   <ShopperServeTime>k__BackingField: 3
   _shopperImpatienceTime: 10
   _shopperThinkTime: 7
-  <NumOfDaysBetweenBullEncounters>k__BackingField: 2
+  <NumOfDaysBetweenBullEncounters>k__BackingField: 3
   <TotalNumOfDays>k__BackingField: 10
   <CurrentTill>k__BackingField: {fileID: 7149246821796268895, guid: ce368ef82c7ec7b458f75c7c5b8d262e, type: 3}
   <DefaultCursor>k__BackingField: {fileID: 2800000, guid: 76316858f8c2d584e8390c9f6ad8b6d1, type: 3}
