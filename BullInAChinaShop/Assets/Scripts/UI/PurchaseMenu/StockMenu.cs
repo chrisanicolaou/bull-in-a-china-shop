@@ -149,7 +149,7 @@ namespace CharaGaming.BullInAChinaShop.UI.PurchaseMenu
             {
                 _stockUpgradeButtonText.text = "Max level reached";
                 _stockUpgradeButton.interactable = false;
-                _stockUpgradeHover.Clear();
+                if (_stockUpgradeHover != null) _stockUpgradeHover.Clear();
                 _stockUpgradedSellValueText.gameObject.SetActive(false);
             }
             
