@@ -3,6 +3,7 @@ using CharaGaming.BullInAChinaShop.Day;
 using CharaGaming.BullInAChinaShop.Enums;
 using CharaGaming.BullInAChinaShop.Singletons;
 using CharaGaming.BullInAChinaShop.UI.Utils;
+using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -53,7 +54,7 @@ namespace CharaGaming.BullInAChinaShop.Night
             seq.Append(_headerText.DOText($"Day {GameManager.Instance.DayNum} Complete", 0.3f));
             seq.Append(_cashEarnedText.DOText("Cash earned:", 0.3f));
             seq.Insert(1.3f, _shoppersServedText.DOText("Shoppers served:", 0.3f));
-            seq.Append(_cashEarnedNumText.DOText(stats.CashEarned.ToString(), 1f, scrambleMode: ScrambleMode.Numerals));
+            seq.Append(_cashEarnedNumText.DOText(stats.CashEarned.KiloFormat(), 1f, scrambleMode: ScrambleMode.Numerals));
             seq.Insert(1.6f, _shoppersServedNumText.DOText(stats.ShoppersServed.ToString(), 1f, scrambleMode: ScrambleMode.Numerals));
 
             var reviewCount = 0;
@@ -84,10 +85,9 @@ namespace CharaGaming.BullInAChinaShop.Night
 
         private void OnContinueButtonPress()
         {
-            // Handle whatever needs to change before the next day
             GameManager.Instance.DayNum++;
             _continueButton.onClick.RemoveAllListeners();
-            SceneFader.Instance.FadeToScene("Day"); //!!!! - CHANGE THIS PRE RELEASE !!!!!
+            SceneFader.Instance.FadeToScene("Day");
         }
     }
 }

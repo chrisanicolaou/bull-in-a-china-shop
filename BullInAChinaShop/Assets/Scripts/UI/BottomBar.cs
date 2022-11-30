@@ -29,7 +29,7 @@ namespace CharaGaming.BullInAChinaShop.UI
 
         private void Start()
         {
-            _cashText.text = GameManager.Instance.Cash.KiloFormat();
+            UpdateCashText();
             _daysRemainingText.text = (GameManager.Instance.TotalNumOfDays - GameManager.Instance.DayNum).ToString().ToTMProColor(Color.red);
             
             GameManager.Instance.AvailableStock.ForEach(s =>
@@ -62,7 +62,7 @@ namespace CharaGaming.BullInAChinaShop.UI
 
         private void OnCashChange(Dictionary<string, object> obj)
         {
-            _cashText.text = GameManager.Instance.Cash.KiloFormat();
+            UpdateCashText();
         }
 
         private void OnStockPurchaseOrSold(Dictionary<string, object> message)
@@ -72,8 +72,8 @@ namespace CharaGaming.BullInAChinaShop.UI
             {
                 kvp.Value.text = stock.AvailableQuantity.KiloFormat().ToTMProColor(stock.AvailableQuantity > 0 ? Color.green : Color.red);
             }
-
-            _cashText.text = GameManager.Instance.Cash.KiloFormat();
+            
+            UpdateCashText();
         }
 
         private void OnStockUpgrade(Dictionary<string, object> message)
@@ -83,13 +83,20 @@ namespace CharaGaming.BullInAChinaShop.UI
             {
                 kvp.Key.sprite = Resources.Load<Sprite>(stock.SpriteFilePath);
             }
-
-            _cashText.text = GameManager.Instance.Cash.KiloFormat();
+            
+            UpdateCashText();
         }
 
         private BaseStock GetStockFromMessage(Dictionary<string, object> message)
         {
             return (BaseStock)message["item"];
+        }
+
+        private void UpdateCashText()
+        {
+            var loanAmountColor = GameManager.Instance.Cash >= GameManager.Instance.LoanAmount ? Color.green : Color.red;
+            var cashStr = $"{GameManager.Instance.Cash.KiloFormat()} / {GameManager.Instance.LoanAmount.KiloFormat().ToTMProColor(loanAmountColor)}";
+            _cashText.text = cashStr;
         }
 
         private void OnDestroy()
