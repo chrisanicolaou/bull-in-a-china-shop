@@ -10,6 +10,6 @@ If you would like to pull the project down locally, follow the [Setup](#setup) g
 
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
-2. Making sure you have [Unity 2021.3.3f1](https://unity3d.com/unity/whats-new/2021.3.3), in Unity Hub, select "Open Project", and navigate to the `BullInAChinaShop` folder inside the repo.
+2. Making sure you have [Unity 2021.3.3f1](https://unity3d.com/unity/whats-new/2021.3.3) installed, in Unity Hub, select "Open Project", and navigate to the `BullInAChinaShop` folder inside the repo.
 
 3. Unity Hub will open the project in Unity 2021.3.3f1. (This may take a while).
