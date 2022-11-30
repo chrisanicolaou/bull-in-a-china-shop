@@ -1,5 +1,6 @@
 using System;
 using CharaGaming.BullInAChinaShop.Singletons;
+using CharaGaming.BullInAChinaShop.Utils;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace CharaGaming.BullInAChinaShop.GameEnd
             seq.Append(_uhOhText.DOAnchorPos(new Vector2(uhOhPos.x, uhOhPos.y + 82f), 0.8f).SetEase(Ease.OutQuad));
             seq.AppendInterval(0.5f);
             seq.Append(_descriptionFader.DOFade(1f, 0.7f));
-            seq.AppendCallback(() => _quitButton.onClick.AddListener(() => SceneFader.Instance.FadeToScene("MainMenu")));
+            seq.AppendCallback(() => _quitButton.onClick.AddListener(() => WebGLHelpers.Quit()));
             seq.AppendInterval(2f);
             seq.Append(_quitButtonFader.DOFade(1f, 0.7f));
         }
