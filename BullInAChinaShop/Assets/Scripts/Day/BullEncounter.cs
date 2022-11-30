@@ -89,8 +89,7 @@ namespace CharaGaming.BullInAChinaShop.Day
             _shopperSpawnCanvas = GameObject.FindWithTag("SpawnCanvas").GetComponent<Transform>();
             _bull = CreateBull();
             _animatorIds = new List<int> { IsIdle, IsAnnoyed, IsWalkingAway, IsWalkingForward, IsWalkingSide, IsTornado, IsBlowingSmoke };
-
-            _numberOfBounces = Mathf.CeilToInt(_numberOfBounces * GameManager.Instance.BullDestructionMultiplier);
+            
             _percentCashToLosePerBounce *= GameManager.Instance.BullDestructionMultiplier;
             _percentStockToLosePerBounce *= GameManager.Instance.BullDestructionMultiplier;
         }

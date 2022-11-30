@@ -5,8 +5,8 @@ namespace CharaGaming.BullInAChinaShop.Upgrades
 {
     public class PurchaseQuantityUpgrade : BaseUpgrade
     {
-        private int[] _minPurchaseQuantity = { 3, 4, 5 };
-        public override int[] UpgradeCosts { get; set; } = { 450, 950, 2000 };
+        private int[] _minPurchaseQuantity = { 2, 3, 4, 5 };
+        public override int[] UpgradeCosts { get; set; } = { 450, 950, 1400, 2000 };
         public override string[] Names { get; set; } = { "Cleaner Stock" };
         public override string[] Descriptions { get; set; } = { "Customers buy at least <color=#357D2D>{0}</color> stock per visit." };
 

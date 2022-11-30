@@ -12,7 +12,7 @@ namespace CharaGaming.BullInAChinaShop.Upgrades
         private bool _isSubscribed;
         
         private float[] _sellValueIncreases = { 0.2f, 0.5f, };
-        public override int[] UpgradeCosts { get; set; } = { 750, 1500, };
+        public override int[] UpgradeCosts { get; set; } = { 1000, 2500, };
         public override string[] Names { get; set; } = { "Industrial Till", "Touch Till" };
         public override string[] Descriptions { get; set; } = { "ALL stock sells for <color=#357D2D>{0}%</color> more." };
 

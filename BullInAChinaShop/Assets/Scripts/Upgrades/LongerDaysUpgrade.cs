@@ -6,7 +6,7 @@ namespace CharaGaming.BullInAChinaShop.Upgrades
     public class LongerDaysUpgrade : BaseUpgrade
     {
         private float[] _dayDurationIncrease = { 0.1f, 0.3f, 0.5f };
-        public override int[] UpgradeCosts { get; set; } = { 200, 600, 1200 };
+        public override int[] UpgradeCosts { get; set; } = { 200, 600, 1500 };
         public override string[] Names { get; set; } = { "Magic Clock" };
         public override string[] Descriptions { get; set; } = { "Days last <color=#357D2D>{0}%</color> longer." };
 
